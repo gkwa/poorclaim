@@ -1,0 +1,24 @@
+# -*- mode: org -*-
+#+STARTUP:   showeverything
+
+* {# jinja2 - keep space #}
+
+{%- for item in data %}
+** {{ item.title }}
+
+{%- if item.query_commment %}{{- item.query_commment -}}{%- endif %}
+
+#+begin_example
+{{ item.cypher_query | trim }}
+#+end_example
+
+{%- if item.results_commment %}{{ item.results_commment }}{%- endif %}
+
+Results:
+#+begin_example
+{%- for result in item.results %}
+{{ result }}
+{%- endfor %}
+#+end_example
+{# jinja2 - keep newline #}
+{%- endfor %}
