@@ -55,7 +55,7 @@ ORDER BY objectType
         ),
     },
     {
-        "title": "If I were to make Thai Curry, what ingredients do I need?",
+        "title": "suppose I were to make Thai Curry, then what ingredients do I need?",
         "query_comment": "",
         "results_comment": "",
         "cypher_query": textwrap.dedent(
@@ -78,6 +78,24 @@ RETURN s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients
 MATCH (p:Product)-[:PURCHASE_AT]->(s:Store)
 RETURN p.name AS ProductName, s.name AS StoreName, p.type as Type
 ORDER BY toLower(p.type)
+;
+
+            """
+        ),
+    },
+    {
+        "title": "list the products that aren't marked with a purchase location",
+        "query_comment": "",
+        "results_comment": "",
+        "cypher_query": textwrap.dedent(
+            """
+MATCH (product:Product)
+WHERE NOT (product)-[:PURCHASE_AT]->(:Store)
+WITH product
+ORDER BY rand()
+LIMIT 10
+RETURN product.name AS ProductName
+ORDER BY ProductName
 ;
 
             """
@@ -112,12 +130,44 @@ RETURN r.name AS RecipeName, c.quantity AS Quantity, c.urls AS RecipeUrls
         ),
     },
     {
-        "title": "list all Product nodes",
+        "title": "list all Product nodes and their properties",
         "query_comment": "",
         "results_comment": "",
         "cypher_query": textwrap.dedent(
             """
 MATCH (n:Product) RETURN n
+            """
+        ),
+    },
+    {
+        "title": "count the products that have a brand",
+        "query_comment": "",
+        "results_comment": "",
+        "cypher_query": textwrap.dedent(
+            """
+MATCH (p:Product)
+OPTIONAL MATCH (p)-[:PURCHASE_AT]->(s:Store)
+RETURN p.name AS ProductName, p.type AS Type, COALESCE(p.brand, '') AS Brand, COLLECT(DISTINCT s.name) AS AvailableAtStores
+ORDER BY toLower(Brand)
+;
+
+            """
+        ),
+    },
+    {
+        "title": "hilight the products that don't yet have a brand associated",
+        "query_comment": "",
+        "results_comment": "",
+        "cypher_query": textwrap.dedent(
+            """
+
+MATCH (p:Product)
+WITH count(p) AS TotalProducts,
+     sum(CASE WHEN p.brand IS NOT NULL AND p.brand <> '' THEN 1 ELSE 0 END) AS ProductsWithBrand,
+     sum(CASE WHEN p.brand IS NULL OR p.brand = '' THEN 1 ELSE 0 END) AS ProductsWithoutBrand
+RETURN TotalProducts, ProductsWithBrand, ProductsWithoutBrand
+;
+
             """
         ),
     },
@@ -130,6 +180,7 @@ MATCH (n:Product) RETURN n
 MATCH (p:Product)
 OPTIONAL MATCH (p)-[:PURCHASE_AT]->(s:Store)
 RETURN p.name AS ProductName, p.type AS Type, COALESCE(p.brand, '') AS Brand, COLLECT(DISTINCT s.name) AS AvailableAtStores
+ORDER BY toLower(Brand)
 ;
 
             """
@@ -213,7 +264,7 @@ ORDER BY type, propertyName
         ),
     },
     {
-        "title": "products that have a store associated",
+        "title": "list products that have at least one store associated with it",
         "query_comment": "",
         "results_comment": "",
         "cypher_query": textwrap.dedent(
@@ -318,20 +369,7 @@ RETURN p.name AS ProductName
         ),
     },
     {
-        "title": "if I were to make recipe Chicken Teriyaki Recipe, then what stores need I visit to get products i'd need for recipe",
-        "query_comment": "",
-        "results_comment": "",
-        "cypher_query": textwrap.dedent(
-            """
-MATCH (r:Recipe {name: 'Tomatillo Salsa Verde'})-[:CONTAINS]->(p:Product)
-MATCH (p)-[:PURCHASE_AT]->(s:Store)
-RETURN s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients
-;
-            """
-        ),
-    },
-    {
-        "title": "if i would like to make a particular recipe, then what stores do I need to visit?",
+        "title": "suppose I would like to make a particular recipe, then what stores do I need to visit?",
         "query_comment": "",
         "results_comment": "",
         "cypher_query": textwrap.dedent(
@@ -350,7 +388,20 @@ ORDER BY [store IN Stores | toLower(store)]
         ),
     },
     {
-        "title": "if i would like to make 2 recipes, then what stores do I need to visit?",
+        "title": "suppose I were to make Chicken Teriyaki, then what stores need I visit to get products I'd need for it?",
+        "query_comment": "",
+        "results_comment": "",
+        "cypher_query": textwrap.dedent(
+            """
+MATCH (r:Recipe {name: 'Tomatillo Salsa Verde'})-[:CONTAINS]->(p:Product)
+MATCH (p)-[:PURCHASE_AT]->(s:Store)
+RETURN s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients
+;
+            """
+        ),
+    },
+    {
+        "title": "suppose I would like to make 2 recipes, then what stores do I need to visit?",
         "query_comment": "",
         "results_comment": "",
         "cypher_query": textwrap.dedent(
@@ -388,24 +439,6 @@ WITH p, COLLECT(DISTINCT s) AS stores
 RETURN COLLECT(DISTINCT p.name) AS Ingredients,
        [store IN stores | CASE WHEN store IS NOT NULL THEN store.name ELSE 'Unknown' END] AS Stores
 ORDER BY [store IN Stores | toLower(store)]
-;
-
-            """
-        ),
-    },
-    {
-        "title": "list the products that aren't marked with a purchase location",
-        "query_comment": "",
-        "results_comment": "",
-        "cypher_query": textwrap.dedent(
-            """
-MATCH (product:Product)
-WHERE NOT (product)-[:PURCHASE_AT]->(:Store)
-WITH product
-ORDER BY rand()
-LIMIT 10
-RETURN product.name AS ProductName
-ORDER BY ProductName
 ;
 
             """
