@@ -260,16 +260,16 @@ ORDER BY RAND()
 
 Results:
 #+begin_example
+{'ProductName': 'Broth - Beef - low sodium'}
+{'ProductName': "Coffee / BB's 1st preference / BB / PLU 8863 / Equal Exchange / Peruvian"}
+{'ProductName': 'Chili Pepper, Ancho, Ground'}
+{'ProductName': 'Avocados (not in bag stupid)'}
+{'ProductName': 'Pancake Mix - Snoqualmie Falls Lodge'}
+{'ProductName': 'Thai-style Baked Tofu'}
+{'ProductName': "Dave's Seed Bread"}
 {'ProductName': 'Coffee - BB - PLU 8875 (less yums than 8863)'}
-{'ProductName': 'Red, Organic Kidney Beans, 15 Oz'}
-{'ProductName': 'Nonfat Yogurt (Plain/Blue Bucket)'}
-{'ProductName': 'Marketspice Tea Decaf - 2 Oz for Mommy'}
-{'ProductName': 'Tomato Sauce - 15 oz can'}
-{'ProductName': 'Tomato Paste - 6 oz can'}
-{'ProductName': 'Boullion - Beef'}
-{'ProductName': 'chardonnay - terres dorees'}
-{'ProductName': 'Ramen Noodles - Dry'}
-{'ProductName': 'Barbecue sauce - Baby Rays bbq sauce'}
+{'ProductName': 'Garlic Chives (alternative: chives)'}
+{'ProductName': 'Sun Dried Tomatoes - sun dried - real big jar'}
 # ...tructed to 10 for brevity
 #+end_example
 
@@ -667,7 +667,14 @@ Results:
 {'Ingredients': ['Lime juice'], 'Stores': ['Whole Foods']}
 #+end_example
 
-** I want to make a recipe and travel to the fewest number of stores
+** I want to make a recipe and travel to the fewest number of storesIf I would like to make a particular recipe, then what stores do I
+need to visit and sort products by stores so I don't have to leave
+and return because I didn't realize there were two products from the same store
+
+Also, make sure that if a recipe has an item that is not assigned
+to a store by the PURCAHSE_AT relation, then the store field
+appears empty as opposed to not seeing the product at all
+
 
 #+begin_example
 MATCH (r:Recipe {name: 'Korean Sesame Noodles'})-[:CONTAINS]->(p:Product)

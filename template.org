@@ -6,7 +6,7 @@
 {%- for item in data %}
 ** {{ item.title }}
 
-{%- if item.query_commment %}{{- item.query_commment -}}{%- endif %}
+{%- if item.query_comment %}{{- item.query_comment -}}{%- endif %}
 
 #+begin_example
 {{ item.cypher_query | trim }}
