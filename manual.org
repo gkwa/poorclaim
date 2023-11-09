@@ -1,0 +1,743 @@
+# -*- mode: org -*-
+#+STARTUP:   showeverything
+
+*
+** list all nodes and relations
+
+#+begin_example
+MATCH (n) RETURN n
+;
+#+end_example
+
+Results:
+#+begin_example
+{'n': {'name': 'Charity Ferreira'}}
+{'n': {'urls': ['https://christieathome.com/'], 'name': 'christieathome'}}
+{'n': {'urls': ['https://www.simplyrecipes.com/recipes/tomatillo_salsa_verde/'], 'name': 'Elise Bauer'}}
+{'n': {'urls': ['https://www.cookerru.com/about-me/'], 'name': 'Elle'}}
+{'n': {'urls': ['https://www.youtube.com/c/HanaAsbrink', 'https://www.instagram.com/hanaasbrink/'], 'name': 'Hana Asbrink'}}
+{'n': {'urls': [''], 'name': 'J. Kenji López-Alt'}}
+{'n': {'urls': ['https://drivemehungry.com/zaru-soba-cold-soba-noodles/'], 'name': 'Jamie'}}
+{'n': {'urls': ['https://www.youtube.com/@JoshuaWeissman'], 'name': 'Joshua Weissman'}}
+{'n': {'ytb': 'https://www.youtube.com/@Marionskitchen', 'name': 'Marionskitchen'}}
+{'n': {'urls': ['https://www.ambitiouskitchen.com/'], 'name': 'Monique Volz'}}
+# ...tructed to 10 for brevity
+#+end_example
+
+** list all properties across all objects
+
+#+begin_example
+MATCH (n)
+UNWIND keys(n) AS propertyName
+RETURN DISTINCT propertyName
+;
+#+end_example
+
+Results:
+#+begin_example
+{'propertyName': 'name'}
+{'propertyName': 'urls'}
+{'propertyName': 'ytb'}
+{'propertyName': 'origin'}
+{'propertyName': 'notes'}
+{'propertyName': 'google_maps'}
+{'propertyName': 'type'}
+{'propertyName': 'brand'}
+{'propertyName': 'bb_says'}
+{'propertyName': 'photos'}
+# ...tructed to 10 for brevity
+#+end_example
+
+** list distict node types
+
+#+begin_example
+MATCH (n)
+RETURN DISTINCT labels(n) AS objectType
+ORDER BY objectType
+;
+#+end_example
+
+Results:
+#+begin_example
+{'objectType': []}
+{'objectType': ['Person']}
+{'objectType': ['Product']}
+{'objectType': ['Recipe']}
+{'objectType': ['Store']}
+#+end_example
+
+** suppose I were to make Thai Curry, then what ingredients do I need?
+
+#+begin_example
+MATCH (r:Recipe {name: 'Vegan Thai Red Curry'})-[:CONTAINS]->(p:Product)
+MATCH (p)-[:PURCHASE_AT]->(s:Store)
+RETURN s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients
+;
+#+end_example
+
+Results:
+#+begin_example
+{'StoreName': 'Safeway', 'Ingredients': ['Shallots', 'Cilantro roots', 'Lemongrass']}
+{'StoreName': 'Madison Co-op', 'Ingredients': ['Coriander seeds', 'White Peppercorns', 'Cumin seeds']}
+{'StoreName': 'Uwajimaya', 'Ingredients': ['Galangal']}
+{'StoreName': "Trader Joe's", 'Ingredients': ['Garlic']}
+#+end_example
+
+** order products by type
+
+#+begin_example
+MATCH (p:Product)-[:PURCHASE_AT]->(s:Store)
+RETURN p.name AS ProductName, s.name AS StoreName, p.type as Type
+ORDER BY toLower(p.type)
+;
+#+end_example
+
+Results:
+#+begin_example
+{'ProductName': 'A.1. Sauce', 'StoreName': 'dummy place holder', 'Type': 'A.1. Sauce'}
+{'ProductName': 'Allspice', 'StoreName': 'Central Co-op', 'Type': 'Allspice'}
+{'ProductName': 'Almond Milk', 'StoreName': "Trader Joe's", 'Type': 'Almond Milk'}
+{'ProductName': 'Almonds - bulk roasted or raw -- whichever is cheaper', 'StoreName': "Trader Joe's", 'Type': 'Almonds'}
+{'ProductName': 'Artichoke Hearts', 'StoreName': 'Safeway', 'Type': 'Artichokes'}
+{'ProductName': 'Asparagus', 'StoreName': 'dummy place holder', 'Type': 'Asparagus'}
+{'ProductName': 'Asparagus', 'StoreName': "Trader Joe's", 'Type': 'Asparagus'}
+{'ProductName': 'Avocado Oil', 'StoreName': 'Whole Foods', 'Type': 'Avocado Oil'}
+{'ProductName': 'Avocados (not in bag stupid)', 'StoreName': "Trader Joe's", 'Type': 'Avocados'}
+{'ProductName': 'Johnsons Creamy Baby Oil', 'StoreName': 'dummy place holder', 'Type': 'Baby Oil'}
+# ...tructed to 10 for brevity
+#+end_example
+
+** list the products that aren't marked with a purchase location
+
+#+begin_example
+MATCH (product:Product)
+WHERE NOT (product)-[:PURCHASE_AT]->(:Store)
+WITH product
+ORDER BY rand()
+RETURN product.name AS ProductName
+ORDER BY ProductName
+;
+#+end_example
+
+Results:
+#+begin_example
+{'ProductName': 'Apple Cider Vinegar in Glass Bottle (Non-Organic)'}
+{'ProductName': 'Beansprouts'}
+{'ProductName': 'Candlenuts'}
+{'ProductName': 'Chickpeas'}
+{'ProductName': 'Chili Sauce'}
+{'ProductName': 'Coconut Oil'}
+{'ProductName': 'Cooking Oil'}
+{'ProductName': 'Cooking Oil'}
+{'ProductName': 'Corn on cob'}
+{'ProductName': 'Dashi'}
+# ...tructed to 10 for brevity
+#+end_example
+
+** get products that i've not yet assiged a type to
+
+#+begin_example
+MATCH (p:Product)
+WHERE p.type IS NULL
+RETURN p.name
+;
+#+end_example
+
+Results:
+#+begin_example
+#+end_example
+
+** something about urls
+
+#+begin_example
+MATCH (r:Recipe)-[c:CONTAINS]->(p:Product)
+WHERE id(p) IS NULL
+RETURN r.name AS RecipeName, c.quantity AS Quantity, c.urls AS RecipeUrls
+;
+#+end_example
+
+Results:
+#+begin_example
+#+end_example
+
+** list all Product nodes and their properties
+
+#+begin_example
+MATCH (n:Product) RETURN n
+;
+#+end_example
+
+Results:
+#+begin_example
+{'n': {'name': 'A.1. Sauce', 'type': 'A.1. Sauce'}}
+{'n': {'name': 'Allspice', 'type': 'Allspice'}}
+{'n': {'name': 'Almond Milk', 'type': 'Almond Milk'}}
+{'n': {'name': 'Almonds - bulk roasted or raw -- whichever is cheaper', 'type': 'Almonds'}}
+{'n': {'name': 'Angkor Cambodian Food Paste Lemongrass', 'type': 'Food Paste'}}
+{'n': {'name': 'Apples', 'type': 'Fruit'}}
+{'n': {'urls': ['https://www.google.com/search?sca_esv=579549787&sxsrf=AM9HkKlJ1akktSB6XfxzBxrRxM_VM-9vxA:1699158988679&q=aroy-d+red+curry+paste', 'https://www.youtube.com/watch?v=GC7ccNKatVU'], 'name': 'Red Curry Paste', 'type': 'Curry Paste', 'brand': 'Aroy D'}}
+{'n': {'name': 'Artichoke Hearts', 'type': 'Artichokes'}}
+{'n': {'name': 'Asparagus', 'type': 'Asparagus'}}
+{'n': {'name': 'Avocados (not in bag stupid)', 'type': 'Avocados'}}
+# ...tructed to 10 for brevity
+#+end_example
+
+** count the products that have a brand
+
+#+begin_example
+MATCH (p:Product)
+OPTIONAL MATCH (p)-[:PURCHASE_AT]->(s:Store)
+RETURN p.name AS ProductName, p.type AS Type, COALESCE(p.brand, '') AS Brand, COLLECT(DISTINCT s.name) AS AvailableAtStores
+ORDER BY toLower(Brand)
+;
+#+end_example
+
+Results:
+#+begin_example
+{'ProductName': 'A.1. Sauce', 'Type': 'A.1. Sauce', 'Brand': '', 'AvailableAtStores': ['dummy place holder']}
+{'ProductName': 'Allspice', 'Type': 'Allspice', 'Brand': '', 'AvailableAtStores': ['Central Co-op']}
+{'ProductName': 'Almond Milk', 'Type': 'Almond Milk', 'Brand': '', 'AvailableAtStores': ["Trader Joe's"]}
+{'ProductName': 'Almonds - bulk roasted or raw -- whichever is cheaper', 'Type': 'Almonds', 'Brand': '', 'AvailableAtStores': ["Trader Joe's"]}
+{'ProductName': 'Angkor Cambodian Food Paste Lemongrass', 'Type': 'Food Paste', 'Brand': '', 'AvailableAtStores': ['QFC']}
+{'ProductName': 'Apples', 'Type': 'Fruit', 'Brand': '', 'AvailableAtStores': ['Safeway']}
+{'ProductName': 'Artichoke Hearts', 'Type': 'Artichokes', 'Brand': '', 'AvailableAtStores': ['Safeway']}
+{'ProductName': 'Asparagus', 'Type': 'Asparagus', 'Brand': '', 'AvailableAtStores': ["Trader Joe's", 'dummy place holder']}
+{'ProductName': 'Avocados (not in bag stupid)', 'Type': 'Avocados', 'Brand': '', 'AvailableAtStores': ["Trader Joe's"]}
+{'ProductName': 'Bacon', 'Type': 'Bacon', 'Brand': '', 'AvailableAtStores': ['Safeway']}
+# ...tructed to 10 for brevity
+#+end_example
+
+** hilight the products that don't yet have a brand associated
+
+#+begin_example
+MATCH (p:Product)
+WITH count(p) AS TotalProducts,
+     sum(CASE WHEN p.brand IS NOT NULL AND p.brand <> '' THEN 1 ELSE 0 END) AS ProductsWithBrand,
+     sum(CASE WHEN p.brand IS NULL OR p.brand = '' THEN 1 ELSE 0 END) AS ProductsWithoutBrand
+RETURN TotalProducts, ProductsWithBrand, ProductsWithoutBrand
+;
+#+end_example
+
+Results:
+#+begin_example
+{'TotalProducts': 538, 'ProductsWithBrand': 6, 'ProductsWithoutBrand': 532}
+#+end_example
+
+** list the brand of the product too
+
+#+begin_example
+MATCH (p:Product)
+OPTIONAL MATCH (p)-[:PURCHASE_AT]->(s:Store)
+RETURN p.name AS ProductName, p.type AS Type, COALESCE(p.brand, '') AS Brand, COLLECT(DISTINCT s.name) AS AvailableAtStores
+ORDER BY toLower(Brand)
+;
+#+end_example
+
+Results:
+#+begin_example
+{'ProductName': 'A.1. Sauce', 'Type': 'A.1. Sauce', 'Brand': '', 'AvailableAtStores': ['dummy place holder']}
+{'ProductName': 'Allspice', 'Type': 'Allspice', 'Brand': '', 'AvailableAtStores': ['Central Co-op']}
+{'ProductName': 'Almond Milk', 'Type': 'Almond Milk', 'Brand': '', 'AvailableAtStores': ["Trader Joe's"]}
+{'ProductName': 'Almonds - bulk roasted or raw -- whichever is cheaper', 'Type': 'Almonds', 'Brand': '', 'AvailableAtStores': ["Trader Joe's"]}
+{'ProductName': 'Angkor Cambodian Food Paste Lemongrass', 'Type': 'Food Paste', 'Brand': '', 'AvailableAtStores': ['QFC']}
+{'ProductName': 'Apples', 'Type': 'Fruit', 'Brand': '', 'AvailableAtStores': ['Safeway']}
+{'ProductName': 'Artichoke Hearts', 'Type': 'Artichokes', 'Brand': '', 'AvailableAtStores': ['Safeway']}
+{'ProductName': 'Asparagus', 'Type': 'Asparagus', 'Brand': '', 'AvailableAtStores': ["Trader Joe's", 'dummy place holder']}
+{'ProductName': 'Avocados (not in bag stupid)', 'Type': 'Avocados', 'Brand': '', 'AvailableAtStores': ["Trader Joe's"]}
+{'ProductName': 'Bacon', 'Type': 'Bacon', 'Brand': '', 'AvailableAtStores': ['Safeway']}
+# ...tructed to 10 for brevity
+#+end_example
+
+** products whose names contain non-alphanum sorted randomly to prevent boredom while cleaning data
+
+#+begin_example
+MATCH (p:Product)
+WHERE p.name =~ ".*[^a-zA-Z0-9 ].*"
+RETURN p.name AS ProductName
+ORDER BY RAND()
+;
+#+end_example
+
+Results:
+#+begin_example
+{'ProductName': 'Apple Cider Vinegar in Glass Bottle (Non-Organic)'}
+{'ProductName': 'Pinot Grigio - Dry White Wine'}
+{'ProductName': 'Garlic Chives (alternative: chives)'}
+{'ProductName': 'Chicken Broth - 16 Oz'}
+{'ProductName': 'Nonfat Yogurt (Plain/Blue Bucket)'}
+{'ProductName': 'Primo Taglio Cheese Goat - 4 Oz'}
+{'ProductName': 'Boullion - Vegetable Broth Powdered'}
+{'ProductName': 'Signature Select Garbanzo Beans - 15 Oz'}
+{'ProductName': "Coffee / BB's 1st preference / BB / PLU 8863 / Equal Exchange / Peruvian"}
+{'ProductName': 'Yeast (Active Dry)'}
+# ...tructed to 10 for brevity
+#+end_example
+
+** list all possible Product properties
+
+#+begin_example
+MATCH (n:Product)
+WITH DISTINCT keys(n) AS propertyNamesList
+UNWIND propertyNamesList AS propertyName
+RETURN DISTINCT propertyName
+ORDER BY toLower(propertyName)
+;
+#+end_example
+
+Results:
+#+begin_example
+{'propertyName': 'bb_says'}
+{'propertyName': 'brand'}
+{'propertyName': 'comments'}
+{'propertyName': 'detail'}
+{'propertyName': 'google'}
+{'propertyName': 'googleSearch'}
+{'propertyName': 'manufacturer'}
+{'propertyName': 'name'}
+{'propertyName': 'note'}
+{'propertyName': 'photos'}
+{'propertyName': 'type'}
+{'propertyName': 'urls'}
+#+end_example
+
+** list all properties assigned to the PURCHASE_AT relation
+
+#+begin_example
+MATCH ()-[r:PURCHASE_AT]->()
+UNWIND keys(r) AS propertyNames
+RETURN DISTINCT propertyNames
+;
+#+end_example
+
+Results:
+#+begin_example
+{'propertyNames': 'urls'}
+{'propertyNames': 'aisle'}
+{'propertyNames': 'url'}
+{'propertyNames': 'note'}
+#+end_example
+
+** list all properties across all objects sorted case insensetively
+
+#+begin_example
+MATCH (n)
+UNWIND keys(n) AS propertyName
+RETURN DISTINCT propertyName
+ORDER BY toLower(propertyName)
+;
+#+end_example
+
+Results:
+#+begin_example
+{'propertyName': 'bb_says'}
+{'propertyName': 'brand'}
+{'propertyName': 'comments'}
+{'propertyName': 'detail'}
+{'propertyName': 'google'}
+{'propertyName': 'google_maps'}
+{'propertyName': 'googleSearch'}
+{'propertyName': 'manufacturer'}
+{'propertyName': 'name'}
+{'propertyName': 'note'}
+{'propertyName': 'notes'}
+{'propertyName': 'origin'}
+{'propertyName': 'photos'}
+{'propertyName': 'type'}
+{'propertyName': 'urls'}
+{'propertyName': 'ytb'}
+#+end_example
+
+** list all properties of all objects including relations
+
+#+begin_example
+// get properties of objects:
+MATCH (n)
+UNWIND keys(n) AS propertyName
+RETURN DISTINCT 'Node' AS type, propertyName
+ORDER BY type, propertyName
+
+// combine both sets of properties:
+UNION
+
+// get properties of relations:
+MATCH ()-[r]-()
+UNWIND keys(r) AS propertyNames
+RETURN DISTINCT type(r) AS type, propertyNames AS propertyName
+ORDER BY type, propertyName
+;
+#+end_example
+
+Results:
+#+begin_example
+{'type': 'Node', 'propertyName': 'bb_says'}
+{'type': 'Node', 'propertyName': 'brand'}
+{'type': 'Node', 'propertyName': 'comments'}
+{'type': 'Node', 'propertyName': 'detail'}
+{'type': 'Node', 'propertyName': 'google'}
+{'type': 'Node', 'propertyName': 'googleSearch'}
+{'type': 'Node', 'propertyName': 'google_maps'}
+{'type': 'Node', 'propertyName': 'manufacturer'}
+{'type': 'Node', 'propertyName': 'name'}
+{'type': 'Node', 'propertyName': 'note'}
+{'type': 'Node', 'propertyName': 'notes'}
+{'type': 'Node', 'propertyName': 'origin'}
+{'type': 'Node', 'propertyName': 'photos'}
+{'type': 'Node', 'propertyName': 'type'}
+{'type': 'Node', 'propertyName': 'urls'}
+{'type': 'Node', 'propertyName': 'ytb'}
+{'type': 'CONTAINS', 'propertyName': 'quantity'}
+{'type': 'CONTAINS', 'propertyName': 'urls'}
+{'type': 'PURCHASE_AT', 'propertyName': 'aisle'}
+{'type': 'PURCHASE_AT', 'propertyName': 'note'}
+{'type': 'PURCHASE_AT', 'propertyName': 'url'}
+{'type': 'PURCHASE_AT', 'propertyName': 'urls'}
+{'type': 'RECOMMENDS', 'propertyName': 'urls'}
+#+end_example
+
+** list products that have at least one store associated with it
+
+#+begin_example
+MATCH (p:Product)-[:PURCHASE_AT]->(s:Store)
+RETURN p.name AS ProductName, s.name AS StoreName, p.type as Type
+;
+#+end_example
+
+Results:
+#+begin_example
+{'ProductName': 'Gochugaru', 'StoreName': 'Amazon', 'Type': 'Gochugaru'}
+{'ProductName': 'Sonicare soft bristles', 'StoreName': 'Bartell', 'Type': 'Sonicare Bristles'}
+{'ProductName': 'Cleanser - Bon Ami', 'StoreName': 'Bartell', 'Type': 'Cleanser'}
+{'ProductName': 'Crest', 'StoreName': 'Bartell', 'Type': 'Toothpaste'}
+{'ProductName': 'Marketspice Tea Decaf - 2 Oz for Mommy', 'StoreName': 'Bartell', 'Type': 'Marketspice Tea'}
+{'ProductName': 'ACT Restoring Mouthwash', 'StoreName': 'Bartell', 'Type': 'Mouthwash'}
+{'ProductName': 'Garam Masala', 'StoreName': 'Central Co-op', 'Type': 'Spice'}
+{'ProductName': 'Dry Vegetable bouillon', 'StoreName': 'Central Co-op', 'Type': 'bouillon'}
+{'ProductName': 'Cinamon', 'StoreName': 'Central Co-op', 'Type': 'Spice'}
+{'ProductName': 'Green Lentils', 'StoreName': 'Central Co-op', 'Type': 'Lentils'}
+# ...tructed to 10 for brevity
+#+end_example
+
+** list the object type its assocted with
+
+#+begin_example
+MATCH (n)
+UNWIND labels(n) AS label
+UNWIND keys(n) AS propertyName
+RETURN label, propertyName
+;
+#+end_example
+
+Results:
+#+begin_example
+{'label': 'Person', 'propertyName': 'name'}
+{'label': 'Person', 'propertyName': 'urls'}
+{'label': 'Person', 'propertyName': 'name'}
+{'label': 'Person', 'propertyName': 'urls'}
+{'label': 'Person', 'propertyName': 'name'}
+{'label': 'Person', 'propertyName': 'urls'}
+{'label': 'Person', 'propertyName': 'name'}
+{'label': 'Person', 'propertyName': 'urls'}
+{'label': 'Person', 'propertyName': 'name'}
+{'label': 'Person', 'propertyName': 'urls'}
+# ...tructed to 10 for brevity
+#+end_example
+
+** list all distinct objects
+
+#+begin_example
+MATCH (n)
+WITH DISTINCT labels(n) AS distinctLabels, keys(n) AS propertyNames
+UNWIND distinctLabels AS label
+UNWIND propertyNames AS propertyName
+RETURN DISTINCT label, propertyName
+;
+#+end_example
+
+Results:
+#+begin_example
+{'label': 'Person', 'propertyName': 'name'}
+{'label': 'Person', 'propertyName': 'urls'}
+{'label': 'Person', 'propertyName': 'ytb'}
+{'label': 'Recipe', 'propertyName': 'urls'}
+{'label': 'Recipe', 'propertyName': 'name'}
+{'label': 'Store', 'propertyName': 'name'}
+{'label': 'Store', 'propertyName': 'urls'}
+{'label': 'Store', 'propertyName': 'origin'}
+{'label': 'Store', 'propertyName': 'notes'}
+{'label': 'Store', 'propertyName': 'google_maps'}
+{'label': 'Product', 'propertyName': 'type'}
+{'label': 'Product', 'propertyName': 'name'}
+{'label': 'Product', 'propertyName': 'urls'}
+{'label': 'Product', 'propertyName': 'brand'}
+{'label': 'Product', 'propertyName': 'bb_says'}
+{'label': 'Product', 'propertyName': 'photos'}
+{'label': 'Product', 'propertyName': 'manufacturer'}
+{'label': 'Product', 'propertyName': 'note'}
+{'label': 'Product', 'propertyName': 'google'}
+{'label': 'Product', 'propertyName': 'comments'}
+{'label': 'Product', 'propertyName': 'googleSearch'}
+{'label': 'Product', 'propertyName': 'detail'}
+#+end_example
+
+** list uniquely all CONTAINS relations
+
+#+begin_example
+MATCH ()-[r:CONTAINS]-()
+UNWIND keys(r) AS propertyNames
+RETURN DISTINCT type(r) AS type, propertyNames AS propertyName
+ORDER BY type, propertyName
+;
+#+end_example
+
+Results:
+#+begin_example
+{'type': 'CONTAINS', 'propertyName': 'quantity'}
+{'type': 'CONTAINS', 'propertyName': 'urls'}
+#+end_example
+
+** list all CONTAINS relations
+
+#+begin_example
+MATCH ()-[r:CONTAINS]-()
+UNWIND keys(r) AS propertyNames
+RETURN type(r) AS type, propertyNames AS propertyName
+ORDER BY type, propertyName
+;
+#+end_example
+
+Results:
+#+begin_example
+{'type': 'CONTAINS', 'propertyName': 'quantity'}
+{'type': 'CONTAINS', 'propertyName': 'quantity'}
+{'type': 'CONTAINS', 'propertyName': 'quantity'}
+{'type': 'CONTAINS', 'propertyName': 'quantity'}
+{'type': 'CONTAINS', 'propertyName': 'quantity'}
+{'type': 'CONTAINS', 'propertyName': 'quantity'}
+{'type': 'CONTAINS', 'propertyName': 'quantity'}
+{'type': 'CONTAINS', 'propertyName': 'quantity'}
+{'type': 'CONTAINS', 'propertyName': 'quantity'}
+{'type': 'CONTAINS', 'propertyName': 'quantity'}
+{'type': 'CONTAINS', 'propertyName': 'quantity'}
+{'type': 'CONTAINS', 'propertyName': 'quantity'}
+{'type': 'CONTAINS', 'propertyName': 'quantity'}
+{'type': 'CONTAINS', 'propertyName': 'quantity'}
+{'type': 'CONTAINS', 'propertyName': 'quantity'}
+{'type': 'CONTAINS', 'propertyName': 'quantity'}
+{'type': 'CONTAINS', 'propertyName': 'quantity'}
+{'type': 'CONTAINS', 'propertyName': 'quantity'}
+{'type': 'CONTAINS', 'propertyName': 'quantity'}
+{'type': 'CONTAINS', 'propertyName': 'quantity'}
+# ...tructed to 20 for brevity
+#+end_example
+
+** list all relations
+
+#+begin_example
+MATCH ()-[r]-()
+RETURN DISTINCT type(r) AS relationType
+ORDER BY relationType
+;
+#+end_example
+
+Results:
+#+begin_example
+{'relationType': 'CONTAINS'}
+{'relationType': 'CREATED'}
+{'relationType': 'IS_THE_SAME_AS'}
+{'relationType': 'PURCHASE_AT'}
+{'relationType': 'RECOMMENDS'}
+#+end_example
+
+** list all relations, not just CONTAINS and inlude relation properties
+
+#+begin_example
+MATCH ()-[r]-()
+UNWIND keys(r) AS propertyNames
+RETURN DISTINCT type(r) AS type, propertyNames AS propertyName
+ORDER BY type, propertyName
+;
+#+end_example
+
+Results:
+#+begin_example
+{'type': 'CONTAINS', 'propertyName': 'quantity'}
+{'type': 'CONTAINS', 'propertyName': 'urls'}
+{'type': 'PURCHASE_AT', 'propertyName': 'aisle'}
+{'type': 'PURCHASE_AT', 'propertyName': 'note'}
+{'type': 'PURCHASE_AT', 'propertyName': 'url'}
+{'type': 'PURCHASE_AT', 'propertyName': 'urls'}
+{'type': 'RECOMMENDS', 'propertyName': 'urls'}
+#+end_example
+
+** products that don't have a store associated with them
+
+#+begin_example
+MATCH (p:Product)
+WHERE NOT (p)-[:PURCHASE_AT]->(:Store)
+RETURN p.name AS ProductName
+;
+#+end_example
+
+Results:
+#+begin_example
+{'ProductName': 'Beansprouts'}
+{'ProductName': 'Candlenuts'}
+{'ProductName': 'Chickpeas'}
+{'ProductName': 'Thai chili'}
+{'ProductName': 'Chili Sauce'}
+{'ProductName': 'Coconut Oil'}
+{'ProductName': 'Cooking Oil'}
+{'ProductName': 'Corn on cob'}
+{'ProductName': 'Dashi'}
+{'ProductName': 'Dried Thai Chilis'}
+# ...tructed to 10 for brevity
+#+end_example
+
+** suppose I would like to make a particular recipe, then what stores do I need to visit?
+
+#+begin_example
+MATCH (r:Recipe)
+WHERE r.name IN ['Vietnamese Spring Rolls (Gỏi Cuốn)']
+WITH r
+MATCH (r)-[:CONTAINS]->(p:Product)
+OPTIONAL MATCH (p)-[:PURCHASE_AT]->(s:Store)
+WITH p, COLLECT(DISTINCT s) AS stores
+RETURN COLLECT(DISTINCT p.name) AS Ingredients,
+       [store IN stores | CASE WHEN store IS NOT NULL THEN store.name ELSE 'Unknown' END] AS Stores
+ORDER BY [store IN Stores | toLower(store)]
+;
+#+end_example
+
+Results:
+#+begin_example
+{'Ingredients': ['Green lettuce'], 'Stores': []}
+{'Ingredients': ['Water'], 'Stores': ['dummy place holder']}
+{'Ingredients': ['Shrimp'], 'Stores': ['Hau Hau Market']}
+{'Ingredients': ['Rice vermicelli'], 'Stores': ["Lam's Seafood Asian Market"]}
+{'Ingredients': ['Dry-Roasted Peanuts'], 'Stores': ['PCC']}
+{'Ingredients': ['Adams Peanut Butter', 'Ginger', 'Vegetable Oil', 'Koon Chun Chee Hou Sauce'], 'Stores': ['Safeway']}
+{'Ingredients': ['Garlic'], 'Stores': ["Trader Joe's"]}
+{'Ingredients': ['Mint leaves', 'Rice paper'], 'Stores': ['Uwajimaya']}
+#+end_example
+
+** suppose I were to make Chicken Teriyaki, then what stores need I visit to get products I'd need for it?
+
+#+begin_example
+MATCH (r:Recipe {name: 'Tomatillo Salsa Verde'})-[:CONTAINS]->(p:Product)
+MATCH (p)-[:PURCHASE_AT]->(s:Store)
+RETURN s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients
+;
+#+end_example
+
+Results:
+#+begin_example
+{'StoreName': 'QFC', 'Ingredients': ['Salt']}
+{'StoreName': 'Safeway', 'Ingredients': ['Tomatillos', 'Jalapeno Pepper', 'Cilantro', 'White Onion']}
+{'StoreName': "Trader Joe's", 'Ingredients': ['Garlic']}
+{'StoreName': 'Whole Foods', 'Ingredients': ['Lime juice']}
+#+end_example
+
+** suppose I would like to make 2 recipes, then what stores do I need to visit?
+
+#+begin_example
+MATCH (r:Recipe)
+WHERE r.name IN ['Vietnamese Spring Rolls (Gỏi Cuốn)','Tom Yum Goong']
+WITH r
+MATCH (r)-[:CONTAINS]->(p:Product)
+OPTIONAL MATCH (p)-[:PURCHASE_AT]->(s:Store)
+WITH p, COLLECT(DISTINCT s) AS stores
+RETURN COLLECT(DISTINCT p.name) AS Ingredients,
+       [store IN stores | CASE WHEN store IS NOT NULL THEN store.name ELSE 'Unknown' END] AS Stores
+ORDER BY [store IN Stores | toLower(store)]
+;
+#+end_example
+
+Results:
+#+begin_example
+{'Ingredients': ['Sawtooth Coriander', 'Green lettuce'], 'Stores': []}
+{'Ingredients': ['Water'], 'Stores': ['dummy place holder']}
+{'Ingredients': ['Fish sauce', 'Shrimp'], 'Stores': ['Hau Hau Market']}
+{'Ingredients': ['Rice vermicelli'], 'Stores': ["Lam's Seafood Asian Market"]}
+{'Ingredients': ['Thai chilies'], 'Stores': ["Lam's Seafood Asian Market", 'Uwajimaya']}
+{'Ingredients': ['Jasmine Rice', 'Dry-Roasted Peanuts'], 'Stores': ['PCC']}
+{'Ingredients': ['Lemongrass', 'Evaporated Milk', 'Oyster Mushrooms', 'Adams Peanut Butter', 'Ginger', 'Vegetable Oil', 'Koon Chun Chee Hou Sauce'], 'Stores': ['Safeway']}
+{'Ingredients': ['Garlic'], 'Stores': ["Trader Joe's"]}
+{'Ingredients': ['Mae Ploy Thai Chili Paste in Oil', 'Galangal', 'Mint leaves', 'Rice paper'], 'Stores': ['Uwajimaya']}
+{'Ingredients': ['Kaffir lime leaves'], 'Stores': ['Uwajimaya', 'Hau Hau Market']}
+{'Ingredients': ['Lime juice'], 'Stores': ['Whole Foods']}
+#+end_example
+
+** I want to make a recipe and travel to the fewest number of stores
+
+#+begin_example
+MATCH (r:Recipe {name: 'Korean Sesame Noodles'})-[:CONTAINS]->(p:Product)
+OPTIONAL MATCH (p)-[:PURCHASE_AT]->(s:Store)
+WITH p, COLLECT(DISTINCT s) AS stores
+RETURN COLLECT(DISTINCT p.name) AS Ingredients,
+       [store IN stores | CASE WHEN store IS NOT NULL THEN store.name ELSE 'Unknown' END] AS Stores
+ORDER BY [store IN Stores | toLower(store)]
+;
+#+end_example
+
+Results:
+#+begin_example
+{'Ingredients': ['Toasted Sesame Seeds'], 'Stores': ['Central Co-op']}
+{'Ingredients': ['Soba Noodles', 'Tsuyu', 'Chili Oil', 'Toasted Seaweed', 'Korean Wild Sesame Oil'], 'Stores': ['M2M Mart']}
+{'Ingredients': ['Sesame Seeds'], 'Stores': ['Naked Grocer', 'PCC']}
+{'Ingredients': ['Red Chilli Peppers', 'Green Onion'], 'Stores': ['Safeway']}
+#+end_example
+
+** some recipes point to the same product multiple times by mistake
+
+#+begin_example
+MATCH (p:Product)-[:CONTAINS]->(i:Ingredient)
+WITH p, COLLECT(i) AS ingredients
+WHERE SIZE(ingredients) > 1
+RETURN p, ingredients
+;
+#+end_example
+
+Results:
+#+begin_example
+#+end_example
+
+** find products whose type contains vegetable
+
+#+begin_example
+MATCH (p:Product)
+WHERE toLower(p.type) CONTAINS 'vegetable'
+RETURN p.name AS ProductName, p.type AS Type
+;
+#+end_example
+
+Results:
+#+begin_example
+{'ProductName': 'Beansprouts', 'Type': 'Vegetable'}
+{'ProductName': 'Vegetable Oil', 'Type': 'Vegetable Oil'}
+#+end_example
+
+** find products whose type contains peas
+
+#+begin_example
+MATCH (p:Product)
+WHERE toLower(p.type) CONTAINS 'pea'
+RETURN p.name AS ProductName, p.type AS Type
+;
+#+end_example
+
+Results:
+#+begin_example
+{'ProductName': 'Chickpeas', 'Type': 'Chickpeas'}
+{'ProductName': 'Frozen Peas', 'Type': 'Peas'}
+{'ProductName': 'Grounded Roasted Peanuts', 'Type': 'Peanuts'}
+{'ProductName': 'Adams Peanut Butter', 'Type': 'Peanut Butter'}
+{'ProductName': 'Bulk Peanut Butter', 'Type': 'Peanut Butter'}
+{'ProductName': 'Dry-Roasted Peanuts', 'Type': 'Peanuts'}
+{'ProductName': 'Anjou Pears', 'Type': 'Pear'}
+{'ProductName': 'Bartlett Pears', 'Type': 'Pear'}
+{'ProductName': 'Bosc Pears', 'Type': 'Pear'}
+{'ProductName': 'Roasted peanuts', 'Type': 'Peanuts'}
+{'ProductName': 'Roasted Unsalted Peanuts', 'Type': 'Peanuts'}
+{'ProductName': 'Snow peas', 'Type': 'Snow Peas'}
+{'ProductName': 'Sugar Snap Peas', 'Type': 'Sugar Snap Peas'}
+#+end_example

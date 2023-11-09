@@ -20,6 +20,9 @@ Results:
 {%- for result in item.results %}
 {{ result }}
 {%- endfor %}
+{%- if item.limit %}
+# ...tructed to {{ item.limit }} for brevity
+{%- endif %}
 #+end_example
 {# jinja2 - keep newline #}
 {%- endfor %}

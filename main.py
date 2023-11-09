@@ -6,11 +6,18 @@ import jinja2
 import neo4j
 
 
-def run_cypher_query(driver, item):
-    cypher_query = item["cypher_query"]
-
+def run_cypher_query(driver, query, limiter=None):
     with driver.session() as session:
-        return session.run(cypher_query).data()
+        results = session.run(query).data()
+
+    if limiter:
+        results = limiter(results)
+
+    return results
+
+
+def limit_results(results, limit):
+    return results[:limit] if limit else results
 
 
 driver = neo4j.GraphDatabase.driver(
@@ -24,6 +31,7 @@ query_data = [
         "title": "list all nodes and relations",
         "query_comment": "",
         "results_comment": "",
+        "limit": 10,
         "cypher_query": textwrap.dedent(
             """
 MATCH (n) RETURN n
@@ -33,6 +41,7 @@ MATCH (n) RETURN n
     {
         "title": "list all properties across all objects",
         "query_comment": "",
+        "limit": 10,
         "results_comment": "",
         "cypher_query": textwrap.dedent(
             """
@@ -70,6 +79,7 @@ RETURN s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients
     {
         "title": "order products by type",
         "query_comment": "",
+        "limit": 10,
         "results_comment": "",
         "cypher_query": textwrap.dedent(
             """
@@ -82,6 +92,7 @@ ORDER BY toLower(p.type)
     {
         "title": "list the products that aren't marked with a purchase location",
         "query_comment": "",
+        "limit": 10,
         "results_comment": "",
         "cypher_query": textwrap.dedent(
             """
@@ -121,6 +132,7 @@ RETURN r.name AS RecipeName, c.quantity AS Quantity, c.urls AS RecipeUrls
     {
         "title": "list all Product nodes and their properties",
         "query_comment": "",
+        "limit": 10,
         "results_comment": "",
         "cypher_query": textwrap.dedent(
             """
@@ -131,6 +143,7 @@ MATCH (n:Product) RETURN n
     {
         "title": "count the products that have a brand",
         "query_comment": "",
+        "limit": 10,
         "results_comment": "",
         "cypher_query": textwrap.dedent(
             """
@@ -159,6 +172,7 @@ RETURN TotalProducts, ProductsWithBrand, ProductsWithoutBrand
     {
         "title": "list the brand of the product too",
         "query_comment": "",
+        "limit": 10,
         "results_comment": "",
         "cypher_query": textwrap.dedent(
             """
@@ -172,6 +186,7 @@ ORDER BY toLower(Brand)
     {
         "title": "products whose names contain non-alphanum sorted randomly to prevent boredom while cleaning data",
         "query_comment": "",
+        "limit": 10,
         "results_comment": "",
         "cypher_query": textwrap.dedent(
             """
@@ -247,6 +262,7 @@ ORDER BY type, propertyName
     {
         "title": "list products that have at least one store associated with it",
         "query_comment": "",
+        "limit": 10,
         "results_comment": "",
         "cypher_query": textwrap.dedent(
             """
@@ -258,6 +274,7 @@ RETURN p.name AS ProductName, s.name AS StoreName, p.type as Type
     {
         "title": "list the object type its assocted with",
         "query_comment": "",
+        "limit": 10,
         "results_comment": "",
         "cypher_query": textwrap.dedent(
             """
@@ -298,6 +315,7 @@ ORDER BY type, propertyName
     {
         "title": "list all CONTAINS relations",
         "query_comment": "",
+        "limit": 20,
         "results_comment": "",
         "cypher_query": textwrap.dedent(
             """
@@ -338,6 +356,7 @@ ORDER BY type, propertyName
     {
         "title": "products that don't have a store associated with them",
         "query_comment": "",
+        "limit": 10,
         "results_comment": "",
         "cypher_query": textwrap.dedent(
             """
@@ -458,10 +477,14 @@ RETURN p.name AS ProductName, p.type AS Type
 ]
 
 for item in query_data:
-    item["results"] = run_cypher_query(driver, item)
+    item["results"] = run_cypher_query(
+        driver,
+        item["cypher_query"],
+        limiter=lambda results: limit_results(results, item.get("limit")),
+    )
 
 env = jinja2.Environment(
-    loader=jinja2.FileSystemLoader("templates"),
+    loader=jinja2.FileSystemLoader("."),
 )
 template = env.get_template("template.org")
 
