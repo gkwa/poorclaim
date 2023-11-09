@@ -260,16 +260,16 @@ ORDER BY RAND()
 
 Results:
 #+begin_example
-{'ProductName': 'Apple Cider Vinegar in Glass Bottle (Non-Organic)'}
-{'ProductName': 'Pinot Grigio - Dry White Wine'}
-{'ProductName': 'Garlic Chives (alternative: chives)'}
-{'ProductName': 'Chicken Broth - 16 Oz'}
+{'ProductName': 'Coffee - BB - PLU 8875 (less yums than 8863)'}
+{'ProductName': 'Red, Organic Kidney Beans, 15 Oz'}
 {'ProductName': 'Nonfat Yogurt (Plain/Blue Bucket)'}
-{'ProductName': 'Primo Taglio Cheese Goat - 4 Oz'}
-{'ProductName': 'Boullion - Vegetable Broth Powdered'}
-{'ProductName': 'Signature Select Garbanzo Beans - 15 Oz'}
-{'ProductName': "Coffee / BB's 1st preference / BB / PLU 8863 / Equal Exchange / Peruvian"}
-{'ProductName': 'Yeast (Active Dry)'}
+{'ProductName': 'Marketspice Tea Decaf - 2 Oz for Mommy'}
+{'ProductName': 'Tomato Sauce - 15 oz can'}
+{'ProductName': 'Tomato Paste - 6 oz can'}
+{'ProductName': 'Boullion - Beef'}
+{'ProductName': 'chardonnay - terres dorees'}
+{'ProductName': 'Ramen Noodles - Dry'}
+{'ProductName': 'Barbecue sauce - Baby Rays bbq sauce'}
 # ...tructed to 10 for brevity
 #+end_example
 
