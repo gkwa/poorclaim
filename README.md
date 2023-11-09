@@ -19,7 +19,8 @@ copy/paste...maybe later I'll read the manual.
 * [list the brand of the product too](#list-the-brand-of-the-product-too)
 * [list products whose names contain non-alphanum chars](#list-products-whose-names-contain-non-alphanum-chars)
 * [fetch all urls for all products](#fetch-all-urls-for-all-products)
-* [fetch all urls for all products, but then don’t show urls if product doesn’t have any](#fetch-all-urls-for-all-products-but-then-dont-show-urls-if-product-doesnt-have-any)
+* [WRONG: fetch all urls for all products, but then don’t show urls if product doesn’t have any](#wrong-fetch-all-urls-for-all-products-but-then-dont-show-urls-if-product-doesnt-have-any)
+* [fetch all products whose urls list is not empty](#fetch-all-products-whose-urls-list-is-not-empty)
 * [list Product properties](#list-product-properties)
 * [list properties assigned to the PURCHASE-AT relation](#list-properties-assigned-to-the-purchase-at-relation)
 * [list properties across all entities sorted case insensitively](#list-properties-across-all-entities-sorted-case-insensitively)
@@ -493,16 +494,16 @@ ORDER BY RAND()
 Results:
 
 ``` example
-{'ProductName': 'Oil-packed sun-dried tomatoes'}
-{'ProductName': 'WEL-PAC Dashi Kombu Dried Seaweed'}
-{'ProductName': 'Almonds - bulk roasted or raw -- whichever is cheaper'}
-{'ProductName': 'Fresh flat-leaf parsley'}
-{'ProductName': 'Turkey (whole)'}
-{'ProductName': 'Grapes, grape shaped'}
-{'ProductName': "Granola 'cookies'"}
-{'ProductName': 'Barbecue sauce - Baby Rays bbq sauce'}
-{'ProductName': 'Tomato Sauce - 29 oz can'}
-{'ProductName': 'Broth - Beef - low sodium'}
+{'ProductName': 'Coffee / MTM / PLU 5820 / Kivu / Kivu Dark French Roast'}
+{'ProductName': 'Chicken Tenderloins / Rubber Duckies / 1 BAG ONLY'}
+{'ProductName': 'Coffee - BB - PLU 8875 (less yums than 8863)'}
+{'ProductName': 'Rolled Oats / Oats / Old Fashioned / PLU 8490'}
+{'ProductName': 'Garlic Chives (alternative: chives)'}
+{'ProductName': 'Coffee - T - PLU 8852 T likes it, BB says YUX!'}
+{'ProductName': 'Sweet BBQ Pre-Marinated Super Firm Baked Tofu'}
+{'ProductName': 'A.1. Sauce'}
+{'ProductName': 'Pinot Grigio - Dry White Wine'}
+{'ProductName': 'Pancake Mix - Snoqualmie Falls Lodge'}
 # ...truncated to 10 for brevity
 ```
 
@@ -530,7 +531,9 @@ Results:
 # ...truncated to 10 for brevity
 ```
 
-# fetch all urls for all products, but then don't show urls if product doesn't have any
+# WRONG: fetch all urls for all products, but then don't show urls if product doesn't have any
+
+This is not possible.
 
 ``` example
 MATCH (p:Product)
@@ -551,6 +554,31 @@ Results:
 {'ProductName': 'Artichoke Hearts', 'URLs': None}
 {'ProductName': 'Asparagus', 'URLs': None}
 {'ProductName': 'Avocados (not in bag stupid)', 'URLs': None}
+# ...truncated to 10 for brevity
+```
+
+# fetch all products whose urls list is not empty
+
+``` example
+MATCH (p:Product)
+WHERE p.urls IS NOT NULL AND SIZE(p.urls) > 0
+RETURN p.name AS ProductName, p.urls AS URLs
+;
+```
+
+Results:
+
+``` example
+{'ProductName': 'Red Curry Paste', 'URLs': ['https://www.google.com/search?sca_esv=579549787&sxsrf=AM9HkKlJ1akktSB6XfxzBxrRxM_VM-9vxA:1699158988679&q=aroy-d+red+curry+paste', 'https://www.youtube.com/watch?v=GC7ccNKatVU']}
+{'ProductName': 'Baked Tofu', 'URLs': ['https://www.google.com/search?sca_esv=579179295&sxsrf=AM9HkKnAjZCHvxR_pYrcL19p0l0Qjk1Zjg:1699032994034&q=Baked+Tofu&tbm=isch&source=lnms&sa=X&ved=2ahUKEwiwrsiQr6iCAxXHHjQIHVGWDjkQ0pQJegQIDRAB&biw=1440&bih=758&dpr=2']}
+{'ProductName': 'Bonito Flakes', 'URLs': ['https://chefjacooks.com/en/wprm_print/7506', 'https://www.amazon.com/Kaneso-Tokuyou-Hanakatsuo-Bonito-Flakes/dp/B0052BGLMS', 'https://www.google.com/search?sca_esv=577907868&sxsrf=AM9HkKmChgo0Ktu9IlnGTSWuzmK5YqQsiQ:1698696041201&q=Bonito+Flakes&tbm=isch&source=lnms&sa=X&ved=2ahUKEwjy0Pfwx56CAxUBODQIHey0BwcQ0pQJegQIDhAB&biw=1440&bih=758&dpr=2']}
+{'ProductName': 'brownie clif bar', 'URLs': ['https://shop.clifbar.com/collections/clif-bar']}
+{'ProductName': 'Buckwheat Soba Nodles', 'URLs': ['https://www.amazon.com/gp/product/B00101YEBO', 'https://veggiekinsblog.com/2020/01/13/vegan-zaru-soba/']}
+{'ProductName': 'Candlenuts', 'URLs': ['https://www.google.com/search?client=emacs&sca_esv=580758711&sxsrf=AM9HkKmwGL8OAnRZ8-PJqCLp_VU9-SlJfg:1699507479310&q=Candlenuts&tbm=isch&source=lnms&sa=X&ved=2ahUKEwiwsOPclraCAxVVETQIHabkCi0Q0pQJegQIDRAB&biw=1440&bih=754&dpr=2#imgrc=7uHbBToP7aPjSM']}
+{'ProductName': 'Chili Sauce', 'URLs': ['https://thewoksoflife.com/wp-content/uploads/2020/07/chili-oil-recipe-18.jpg', 'https://www.amazon.com/%E8%80%81%E5%B9%B2%E5%A6%88%E9%A6%99%E8%BE%A3%E8%84%86%E6%B2%B9%E8%BE%A3%E6%A4%92-Spicy-Chili-Crisp-7-41/dp/B07VHKTTR3/ref=asc_df_B07VHKTTR3/?tag=hyprod-20&linkCode=df0&hvadid=642112947349&hvpos=&hvnetw=g&hvrand=12580253979732381700&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9061293&hvtargid=pla-1951193779579&psc=1', 'https://www.google.com/search?sca_esv=580857096&sxsrf=AM9HkKmLh9FDQ0x5jNY12kJCSSbwO6Q3FA:1699539552211&q=thai+and+true+hot+chili&tbm=isch&source=lnms&sa=X&ved=2ahUKEwiJ8KiajreCAxWqAjQIHaMBDKYQ0pQJegQIDBAB&biw=1440&bih=754&dpr=2#imgrc=KDhcVOHe9yNjkM', 'https://photos.google.com/photo/AF1QipMQPtIdU1_m3SkgBWs5RcE2QXFs2OnbbJAdaG9M']}
+{'ProductName': 'Dashi', 'URLs': ['https://en.wikipedia.org/wiki/Dashi']}
+{'ProductName': 'Eucerin Creme Daily Moisturizing Skin Calming', 'URLs': ['https://photos.google.com/photo/AF1QipM2_uDtc-2Uc7XriFP3k4H0L_DxcvxVeYvgUlpG']}
+{'ProductName': 'Fermented shrimp paste', 'URLs': ['https://thewoksoflife.com/shrimp-paste-sauce/']}
 # ...truncated to 10 for brevity
 ```
 
@@ -868,16 +896,16 @@ ORDER BY ProductName
 Results:
 
 ``` example
-{'ProductName': 'Dashi'}
-{'ProductName': 'Dried Thai shrimp paste'}
-{'ProductName': 'Feta Cheese'}
-{'ProductName': 'Grape Tomatoes'}
-{'ProductName': 'Kaffir Lime'}
-{'ProductName': 'Mild dried red chilies'}
+{'ProductName': 'Beansprouts'}
+{'ProductName': 'Candlenuts'}
+{'ProductName': 'Chickpeas'}
+{'ProductName': 'Corn on cob'}
+{'ProductName': 'Green Bell Pepper'}
+{'ProductName': 'Kalamata Olives'}
+{'ProductName': 'Makrut lime zest'}
+{'ProductName': 'Red Curry Paste'}
 {'ProductName': 'Rosemary'}
-{'ProductName': 'Tamarind Paste'}
-{'ProductName': 'Tofu puffs'}
-{'ProductName': 'Yellow Curry Paste'}
+{'ProductName': 'Wasabi'}
 ```
 
 # list the entity type its assocted with

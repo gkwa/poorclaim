@@ -202,10 +202,18 @@
   cypher_query: |
     MATCH (p:Product)
     RETURN p.name AS ProductName, p.urls AS URLs;
-- title: fetch all urls for all products, but then don't show urls if product doesn't have any
+- title: "WRONG: fetch all urls for all products, but then don't show urls if product doesn't have any"
+  comment: |
+    This is not possible.
   limit: 10
   cypher_query: |
     MATCH (p:Product)
+    RETURN p.name AS ProductName, p.urls AS URLs;
+- title: fetch all products whose urls list is not empty
+  limit: 10
+  cypher_query: |
+    MATCH (p:Product)
+    WHERE p.urls IS NOT NULL AND SIZE(p.urls) > 0
     RETURN p.name AS ProductName, p.urls AS URLs;
 - title: list Product properties
   comment: |
