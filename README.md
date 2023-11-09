@@ -1,15 +1,54 @@
-# -*- mode: org -*-
-#+STARTUP: overview
-* list nodes and relations
+Please, just give me a shitton of examples that I can
+copy/paste...maybe later I'll read the manual.
+* [list nodes and relations](#list-nodes-and-relations)
+* [list distinct node types](#list-distinct-node-types)
+* [list products with the same name](#list-products-with-the-same-name)
+* [for each product, count the number of duplicates that exist for it](#for-each-product-count-the-number-of-duplicates-that-exist-for-it)
+* [how many products have duplicates](#how-many-products-have-duplicates)
+* [suppose I were to make Thai Curry, then what ingredients do I need?](#suppose-i-were-to-make-thai-curry-then-what-ingredients-do-i-need)
+* [order products by type](#order-products-by-type)
+* [get products that I’ve not yet assiged a type to](#get-products-that-ive-not-yet-assiged-a-type-to)
+* [something about urls](#something-about-urls)
+* [list Product nodes and their properties](#list-product-nodes-and-their-properties)
+* [WRONG: count the products that have a brand](#wrong-count-the-products-that-have-a-brand)
+* [hilight the products that don’t yet have a brand associated](#hilight-the-products-that-dont-yet-have-a-brand-associated)
+* [list the brand of the product too](#list-the-brand-of-the-product-too)
+* [products whose names contain non-alphanum sorted randomly to prevent boredom while cleaning data](#products-whose-names-contain-non-alphanum-sorted-randomly-to-prevent-boredom-while-cleaning-data)
+* [fetch all urls for all products](#fetch-all-urls-for-all-products)
+* [fetch all urls for all products, but then don’t show urls if product doesn’t have any](#fetch-all-urls-for-all-products-but-then-dont-show-urls-if-product-doesnt-have-any)
+* [list possible Product properties](#list-possible-product-properties)
+* [list properties assigned to the PURCHASE-AT relation](#list-properties-assigned-to-the-purchase-at-relation)
+* [list properties across all entities sorted case insensitively](#list-properties-across-all-entities-sorted-case-insensitively)
+* [WRONG: list properties across all entities](#wrong-list-properties-across-all-entities)
+* [FIXED: list properties across all entities](#fixed-list-properties-across-all-entities)
+* [list products that have at least one store associated with each](#list-products-that-have-at-least-one-store-associated-with-each)
+* [products that don’t have a store associated with them](#products-that-dont-have-a-store-associated-with-them)
+* [products that don’t have a store associated with them, but list only 10](#products-that-dont-have-a-store-associated-with-them-but-list-only-10)
+* [list the entity type its assocted with](#list-the-entity-type-its-assocted-with)
+* [list distinct entities](#list-distinct-entities)
+* [list uniquely all CONTAINS relations](#list-uniquely-all-contains-relations)
+* [list CONTAINS relations](#list-contains-relations)
+* [FIXED: list the products that have urls that are photos in google drive](#fixed-list-the-products-that-have-urls-that-are-photos-in-google-drive)
+* [list relations](#list-relations)
+* [WRONG: list relations, not just CONTAINS and show relation properties](#wrong-list-relations-not-just-contains-and-show-relation-properties)
+* [FIXED: list relations, not just CONTAINS and show relation properties](#fixed-list-relations-not-just-contains-and-show-relation-properties)
+* [suppose I would like to make a particular recipe, then what stores do I need to visit?](#suppose-i-would-like-to-make-a-particular-recipe-then-what-stores-do-i-need-to-visit)
+* [suppose I were to make Chicken Teriyaki, then what stores need I visit to get products I’d need for it?](#suppose-i-were-to-make-chicken-teriyaki-then-what-stores-need-i-visit-to-get-products-id-need-for-it)
+* [suppose I would like to make 2 recipes, then what stores do I need to visit?](#suppose-i-would-like-to-make-2-recipes-then-what-stores-do-i-need-to-visit)
+* [I want to make a recipe and travel to the fewest number of stores](#i-want-to-make-a-recipe-and-travel-to-the-fewest-number-of-stores)
+* [WRONG: some recipes point to the same product multiple times by mistake](#wrong-some-recipes-point-to-the-same-product-multiple-times-by-mistake)
+* [find products whose type contains vegetable](#find-products-whose-type-contains-vegetable)
+* [find products whose type contains peas](#find-products-whose-type-contains-peas)
+# list nodes and relations
 
-
-#+begin_example
+``` example
 MATCH (n) RETURN n
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'n': {'name': 'Charity Ferreira'}}
 {'n': {'urls': ['https://christieathome.com/'], 'name': 'christieathome'}}
 {'n': {'urls': ['https://www.simplyrecipes.com/recipes/tomatillo_salsa_verde/'], 'name': 'Elise Bauer'}}
@@ -21,42 +60,42 @@ Results:
 {'n': {'ytb': 'https://www.youtube.com/@Marionskitchen', 'name': 'Marionskitchen'}}
 {'n': {'urls': ['https://www.ambitiouskitchen.com/'], 'name': 'Monique Volz'}}
 # ...truncated to 10 for brevity
-#+end_example
+```
 
-* list distinct node types
+# list distinct node types
 
-
-#+begin_example
+``` example
 MATCH (n)
 RETURN DISTINCT labels(n) AS objectType
 ORDER BY objectType
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'objectType': []}
 {'objectType': ['Person']}
 {'objectType': ['Product']}
 {'objectType': ['Recipe']}
 {'objectType': ['Store']}
-#+end_example
+```
 
-* list products with the same name
-
+# list products with the same name
 
 I need clean up duplicates.
 
-#+begin_example
+``` example
 MATCH (p:Product)
 WITH p.name AS productName, COLLECT(p) AS products
 WHERE SIZE(products) > 1
 RETURN productName, products
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'productName': 'Red Curry Paste', 'products': [{'urls': ['https://www.google.com/search?sca_esv=579549787&sxsrf=AM9HkKlJ1akktSB6XfxzBxrRxM_VM-9vxA:1699158988679&q=aroy-d+red+curry+paste', 'https://www.youtube.com/watch?v=GC7ccNKatVU'], 'name': 'Red Curry Paste', 'type': 'Curry Paste', 'brand': 'Aroy D'}, {'urls': ['https://www.youtube.com/watch?v=d6YbVqqcR4w', 'https://www.google.com/search?sca_esv=579549787&sxsrf=AM9HkKn2yZQ4RvsQT3gvUhOknWGy59VJhQ:1699159240924&q=mae+ploy+red+curry+paste&tbm=isch&source=lnms&sa=X&sqi=2&ved=2ahUKEwiwjuO3hayCAxVdHzQIHSe3B3oQ0pQJegQICRAB&biw=1440&bih=758&dpr=2'], 'name': 'Red Curry Paste', 'type': 'Curry Paste', 'brand': 'Mae Ploy'}, {'name': 'Red Curry Paste', 'type': 'Curry Paste'}]}
 {'productName': 'Baked Tofu', 'products': [{'urls': ['https://www.google.com/search?sca_esv=579179295&sxsrf=AM9HkKnAjZCHvxR_pYrcL19p0l0Qjk1Zjg:1699032994034&q=Baked+Tofu&tbm=isch&source=lnms&sa=X&ved=2ahUKEwiwrsiQr6iCAxXHHjQIHVGWDjkQ0pQJegQIDRAB&biw=1440&bih=758&dpr=2'], 'name': 'Baked Tofu', 'type': 'Tofu'}, {'name': 'Baked Tofu', 'type': 'Tofu'}]}
 {'productName': 'Cooking Oil', 'products': [{'name': 'Cooking Oil', 'type': 'Cooking Oil'}, {'name': 'Cooking Oil', 'type': 'Oil'}]}
@@ -67,21 +106,21 @@ Results:
 {'productName': 'Yellow Curry Paste', 'products': [{'urls': ['https://www.safeway.com/shop/product-details.960076294.html', 'https://youtu.be/GC7ccNKatVU?t=696'], 'name': 'Yellow Curry Paste', 'type': 'Curry Paste', 'brand': 'Mae Ploy'}, {'urls': ['https://www.safeway.com/shop/product-details.960076294.html'], 'name': 'Yellow Curry Paste', 'type': 'Curry Paste'}]}
 {'productName': 'Red Onion', 'products': [{'name': 'Red Onion', 'type': 'Onion'}, {'name': 'Red Onion', 'type': 'Red Onion'}]}
 {'productName': 'White Onion', 'products': [{'name': 'White Onion', 'type': 'Onion'}, {'name': 'White Onion', 'type': 'Onion'}]}
-#+end_example
+```
 
-* for each product, count the number of duplicates that exist for it
+# for each product, count the number of duplicates that exist for it
 
-
-#+begin_example
+``` example
 MATCH (p:Product)
 WITH p.name AS productName, COLLECT(p) AS products
 WHERE SIZE(products) > 1
 RETURN productName, COUNT(products) AS duplicateCount
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'productName': 'Red Curry Paste', 'duplicateCount': 1}
 {'productName': 'Baked Tofu', 'duplicateCount': 1}
 {'productName': 'Cooking Oil', 'duplicateCount': 1}
@@ -92,56 +131,56 @@ Results:
 {'productName': 'Yellow Curry Paste', 'duplicateCount': 1}
 {'productName': 'Red Onion', 'duplicateCount': 1}
 {'productName': 'White Onion', 'duplicateCount': 1}
-#+end_example
+```
 
-* how many products have duplicates
-
+# how many products have duplicates
 
 In other words how much work do I have to do to cleanup my data?
 
-#+begin_example
+``` example
 MATCH (p:Product)
 WITH p.name AS productName, COUNT(p) AS productCount
 WHERE productCount > 1
 RETURN COUNT(productCount) AS totalDuplicateProducts
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'totalDuplicateProducts': 10}
-#+end_example
+```
 
-* suppose I were to make Thai Curry, then what ingredients do I need?
+# suppose I were to make Thai Curry, then what ingredients do I need?
 
-
-#+begin_example
+``` example
 MATCH (r:Recipe {name: 'Vegan Thai Red Curry'})-[:CONTAINS]->(p:Product)
 MATCH (p)-[:PURCHASE_AT]->(s:Store)
 RETURN s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'StoreName': 'Safeway', 'Ingredients': ['Shallots', 'Cilantro roots', 'Lemongrass']}
 {'StoreName': 'Madison Co-op', 'Ingredients': ['Coriander seeds', 'White Peppercorns', 'Cumin seeds']}
 {'StoreName': 'Uwajimaya', 'Ingredients': ['Galangal']}
 {'StoreName': "Trader Joe's", 'Ingredients': ['Garlic']}
-#+end_example
+```
 
-* order products by type
+# order products by type
 
-
-#+begin_example
+``` example
 MATCH (p:Product)-[:PURCHASE_AT]->(s:Store)
 RETURN p.name AS ProductName, s.name AS StoreName, p.type as Type
 ORDER BY toLower(p.type)
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'ProductName': 'A.1. Sauce', 'StoreName': 'dummy place holder', 'Type': 'A.1. Sauce'}
 {'ProductName': 'Allspice', 'StoreName': 'Central Co-op', 'Type': 'Allspice'}
 {'ProductName': 'Almond Milk', 'StoreName': "Trader Joe's", 'Type': 'Almond Milk'}
@@ -153,46 +192,46 @@ Results:
 {'ProductName': 'Avocados (not in bag stupid)', 'StoreName': "Trader Joe's", 'Type': 'Avocados'}
 {'ProductName': 'Johnsons Creamy Baby Oil', 'StoreName': 'dummy place holder', 'Type': 'Baby Oil'}
 # ...truncated to 10 for brevity
-#+end_example
+```
 
-* get products that I've not yet assiged a type to
+# get products that I've not yet assiged a type to
 
-
-#+begin_example
+``` example
 MATCH (p:Product)
 WHERE p.type IS NULL
 RETURN p.name
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
-#+end_example
 
-* something about urls
+``` example
+```
 
+# something about urls
 
-#+begin_example
+``` example
 MATCH (r:Recipe)-[c:CONTAINS]->(p:Product)
 WHERE id(p) IS NULL
 RETURN r.name AS RecipeName, c.quantity AS Quantity, c.urls AS RecipeUrls
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
-#+end_example
 
-* list Product nodes and their properties
+``` example
+```
 
+# list Product nodes and their properties
 
-#+begin_example
+``` example
 MATCH (n:Product) RETURN n
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'n': {'name': 'A.1. Sauce', 'type': 'A.1. Sauce'}}
 {'n': {'name': 'Allspice', 'type': 'Allspice'}}
 {'n': {'name': 'Almond Milk', 'type': 'Almond Milk'}}
@@ -204,14 +243,13 @@ Results:
 {'n': {'name': 'Asparagus', 'type': 'Asparagus'}}
 {'n': {'name': 'Avocados (not in bag stupid)', 'type': 'Avocados'}}
 # ...truncated to 10 for brevity
-#+end_example
+```
 
-* WRONG: count the products that have a brand
-
+# WRONG: count the products that have a brand
 
 I can't get this to do what I expect.
 
-#+begin_example
+``` example
 // MATCH (p:Product)
 // OPTIONAL MATCH (p)-[:PURCHASE_AT]->(s:Store)
 // WHERE p.brand = ''
@@ -304,43 +342,44 @@ MATCH (p:Product)
 WHERE p.Brand IS NULL OR p.Brand = ""
 RETURN COUNT(p) AS productCount
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'productCount': 538}
-#+end_example
+```
 
-* hilight the products that don't yet have a brand associated
+# hilight the products that don't yet have a brand associated
 
-
-#+begin_example
+``` example
 MATCH (p:Product)
 WITH count(p) AS TotalProducts,
      sum(CASE WHEN p.brand IS NOT NULL AND p.brand <> '' THEN 1 ELSE 0 END) AS ProductsWithBrand,
      sum(CASE WHEN p.brand IS NULL OR p.brand = '' THEN 1 ELSE 0 END) AS ProductsWithoutBrand
 RETURN TotalProducts, ProductsWithBrand, ProductsWithoutBrand
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'TotalProducts': 538, 'ProductsWithBrand': 6, 'ProductsWithoutBrand': 532}
-#+end_example
+```
 
-* list the brand of the product too
+# list the brand of the product too
 
-
-#+begin_example
+``` example
 MATCH (p:Product)
 OPTIONAL MATCH (p)-[:PURCHASE_AT]->(s:Store)
 RETURN p.name AS ProductName, p.type AS Type, COALESCE(p.brand, '') AS Brand, COLLECT(DISTINCT s.name) AS AvailableAtStores
 ORDER BY toLower(Brand)
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'ProductName': 'A.1. Sauce', 'Type': 'A.1. Sauce', 'Brand': '', 'AvailableAtStores': ['dummy place holder']}
 {'ProductName': 'Allspice', 'Type': 'Allspice', 'Brand': '', 'AvailableAtStores': ['Central Co-op']}
 {'ProductName': 'Almond Milk', 'Type': 'Almond Milk', 'Brand': '', 'AvailableAtStores': ["Trader Joe's"]}
@@ -352,21 +391,21 @@ Results:
 {'ProductName': 'Avocados (not in bag stupid)', 'Type': 'Avocados', 'Brand': '', 'AvailableAtStores': ["Trader Joe's"]}
 {'ProductName': 'Bacon', 'Type': 'Bacon', 'Brand': '', 'AvailableAtStores': ['Safeway']}
 # ...truncated to 10 for brevity
-#+end_example
+```
 
-* products whose names contain non-alphanum sorted randomly to prevent boredom while cleaning data
+# products whose names contain non-alphanum sorted randomly to prevent boredom while cleaning data
 
-
-#+begin_example
+``` example
 MATCH (p:Product)
 WHERE p.name =~ ".*[^a-zA-Z0-9 ].*"
 RETURN p.name AS ProductName
 ORDER BY RAND()
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'ProductName': 'Ramen Noodles - Dry'}
 {'ProductName': 'Sun Dried Tomatoes - sun dried - real big jar'}
 {'ProductName': 'Salmon - Still Frozen in the Shrink Wrap, 2 or 3 lbs'}
@@ -378,19 +417,19 @@ Results:
 {'ProductName': 'Chili Pepper, Ancho, Ground'}
 {'ProductName': 'Rice - Wild'}
 # ...truncated to 10 for brevity
-#+end_example
+```
 
-* fetch all urls for all products
+# fetch all urls for all products
 
-
-#+begin_example
+``` example
 MATCH (p:Product)
 RETURN p.name AS ProductName, p.urls AS URLs
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'ProductName': 'A.1. Sauce', 'URLs': None}
 {'ProductName': 'Allspice', 'URLs': None}
 {'ProductName': 'Almond Milk', 'URLs': None}
@@ -402,19 +441,19 @@ Results:
 {'ProductName': 'Asparagus', 'URLs': None}
 {'ProductName': 'Avocados (not in bag stupid)', 'URLs': None}
 # ...truncated to 10 for brevity
-#+end_example
+```
 
-* fetch all urls for all products, but then don't show urls if product doesn't have any
+# fetch all urls for all products, but then don't show urls if product doesn't have any
 
-
-#+begin_example
+``` example
 MATCH (p:Product)
 RETURN p.name AS ProductName, p.urls AS URLs
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'ProductName': 'A.1. Sauce', 'URLs': None}
 {'ProductName': 'Allspice', 'URLs': None}
 {'ProductName': 'Almond Milk', 'URLs': None}
@@ -426,22 +465,22 @@ Results:
 {'ProductName': 'Asparagus', 'URLs': None}
 {'ProductName': 'Avocados (not in bag stupid)', 'URLs': None}
 # ...truncated to 10 for brevity
-#+end_example
+```
 
-* list possible Product properties
+# list possible Product properties
 
-
-#+begin_example
+``` example
 MATCH (n:Product)
 WITH DISTINCT keys(n) AS propertyNamesList
 UNWIND propertyNamesList AS propertyName
 RETURN DISTINCT propertyName
 ORDER BY toLower(propertyName)
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'propertyName': 'bb_says'}
 {'propertyName': 'brand'}
 {'propertyName': 'comments'}
@@ -454,39 +493,39 @@ Results:
 {'propertyName': 'photos'}
 {'propertyName': 'type'}
 {'propertyName': 'urls'}
-#+end_example
+```
 
-* list properties assigned to the PURCHASE-AT relation
+# list properties assigned to the PURCHASE-AT relation
 
-
-#+begin_example
+``` example
 MATCH ()-[r:PURCHASE_AT]->()
 UNWIND keys(r) AS propertyNames
 RETURN DISTINCT propertyNames
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'propertyNames': 'urls'}
 {'propertyNames': 'aisle'}
 {'propertyNames': 'url'}
 {'propertyNames': 'note'}
-#+end_example
+```
 
-* list properties across all entities sorted case insensitively
+# list properties across all entities sorted case insensitively
 
-
-#+begin_example
+``` example
 MATCH (n)
 UNWIND keys(n) AS propertyName
 RETURN DISTINCT propertyName
 ORDER BY toLower(propertyName)
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'propertyName': 'bb_says'}
 {'propertyName': 'brand'}
 {'propertyName': 'comments'}
@@ -503,22 +542,22 @@ Results:
 {'propertyName': 'type'}
 {'propertyName': 'urls'}
 {'propertyName': 'ytb'}
-#+end_example
+```
 
-* WRONG: list properties across all entities
-
+# WRONG: list properties across all entities
 
 Item 'list properties of all entities including relations' fixes this.
 
-#+begin_example
+``` example
 MATCH (n)
 UNWIND keys(n) AS propertyName
 RETURN DISTINCT propertyName
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'propertyName': 'name'}
 {'propertyName': 'urls'}
 {'propertyName': 'ytb'}
@@ -535,15 +574,14 @@ Results:
 {'propertyName': 'comments'}
 {'propertyName': 'googleSearch'}
 {'propertyName': 'detail'}
-#+end_example
+```
 
-* FIXED: list properties across all entities
+# FIXED: list properties across all entities
 
+Get properties of nodes and then get properties of relation entities and
+then aggregate them into one list.
 
-Get properties of nodes and then get properties of relation
-entities and then aggregate them into one list.
-
-#+begin_example
+``` example
 MATCH (n)
 UNWIND keys(n) AS propertyName
 RETURN DISTINCT 'Node' AS type, propertyName
@@ -556,10 +594,11 @@ UNWIND keys(r) AS propertyNames
 RETURN DISTINCT type(r) AS type, propertyNames AS propertyName
 ORDER BY type, propertyName
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'type': 'Node', 'propertyName': 'bb_says'}
 {'type': 'Node', 'propertyName': 'brand'}
 {'type': 'Node', 'propertyName': 'comments'}
@@ -583,19 +622,19 @@ Results:
 {'type': 'PURCHASE_AT', 'propertyName': 'url'}
 {'type': 'PURCHASE_AT', 'propertyName': 'urls'}
 {'type': 'RECOMMENDS', 'propertyName': 'urls'}
-#+end_example
+```
 
-* list products that have at least one store associated with each
+# list products that have at least one store associated with each
 
-
-#+begin_example
+``` example
 MATCH (p:Product)-[:PURCHASE_AT]->(s:Store)
 RETURN p.name AS ProductName, s.name AS StoreName, p.type as Type
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'ProductName': 'Gochugaru', 'StoreName': 'Amazon', 'Type': 'Gochugaru'}
 {'ProductName': 'Marketspice Tea Decaf - 2 Oz for Mommy', 'StoreName': 'Bartell', 'Type': 'Marketspice Tea'}
 {'ProductName': 'Sonicare soft bristles', 'StoreName': 'Bartell', 'Type': 'Sonicare Bristles'}
@@ -607,23 +646,23 @@ Results:
 {'ProductName': 'Couscous', 'StoreName': 'Central Co-op', 'Type': 'Couscous'}
 {'ProductName': 'Cayenne Pepper', 'StoreName': 'Central Co-op', 'Type': 'Spice'}
 # ...truncated to 10 for brevity
-#+end_example
+```
 
-* products that don't have a store associated with them
-
+# products that don't have a store associated with them
 
 Where the hell do I buy this crap?
 
-#+begin_example
+``` example
 MATCH (p:Product)
 WHERE NOT (p)-[:PURCHASE_AT]->(:Store)
 RETURN p.name AS ProductName
 ORDER BY toLower(ProductName)
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'ProductName': 'Apple Cider Vinegar in Glass Bottle (Non-Organic)'}
 {'ProductName': 'Beansprouts'}
 {'ProductName': 'Candlenuts'}
@@ -678,16 +717,15 @@ Results:
 {'ProductName': 'Wasabi'}
 {'ProductName': 'Yellow Bell Pepper'}
 {'ProductName': 'Yellow Curry Paste'}
-#+end_example
+```
 
-* products that don't have a store associated with them, but list only 10
+# products that don't have a store associated with them, but list only 10
 
+Data cleanup is a pain in the ass and I want to take it in bite size
+pieces, so randomize the list to keep me interested and return just 10
+to keep me from being disheartended.
 
-Data cleanup is a pain in the ass and I want to take it in bite
-size pieces, so randomize the list to keep me interested and
-return just 10 to keep me from being disheartended.
-
-#+begin_example
+``` example
 // fail:
 // MATCH (product:Product)
 // WHERE NOT (product)-[:PURCHASE_AT]->(:Store)
@@ -736,10 +774,11 @@ LIMIT 10
 RETURN product.name AS ProductName
 ORDER BY ProductName
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'ProductName': 'Beansprouts'}
 {'ProductName': 'Coconut Oil'}
 {'ProductName': 'Egg yolk'}
@@ -750,21 +789,21 @@ Results:
 {'ProductName': 'Thai chili'}
 {'ProductName': 'Tofu puffs'}
 {'ProductName': 'Turmeric'}
-#+end_example
+```
 
-* list the entity type its assocted with
+# list the entity type its assocted with
 
-
-#+begin_example
+``` example
 MATCH (n)
 UNWIND labels(n) AS label
 UNWIND keys(n) AS propertyName
 RETURN label, propertyName
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'label': 'Person', 'propertyName': 'name'}
 {'label': 'Person', 'propertyName': 'urls'}
 {'label': 'Person', 'propertyName': 'name'}
@@ -776,22 +815,22 @@ Results:
 {'label': 'Person', 'propertyName': 'name'}
 {'label': 'Person', 'propertyName': 'urls'}
 # ...truncated to 10 for brevity
-#+end_example
+```
 
-* list distinct entities
+# list distinct entities
 
-
-#+begin_example
+``` example
 MATCH (n)
 WITH DISTINCT labels(n) AS distinctLabels, keys(n) AS propertyNames
 UNWIND distinctLabels AS label
 UNWIND propertyNames AS propertyName
 RETURN DISTINCT label, propertyName
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'label': 'Person', 'propertyName': 'name'}
 {'label': 'Person', 'propertyName': 'urls'}
 {'label': 'Person', 'propertyName': 'ytb'}
@@ -814,79 +853,81 @@ Results:
 {'label': 'Product', 'propertyName': 'comments'}
 {'label': 'Product', 'propertyName': 'googleSearch'}
 {'label': 'Product', 'propertyName': 'detail'}
-#+end_example
+```
 
-* list uniquely all CONTAINS relations
+# list uniquely all CONTAINS relations
 
-
-#+begin_example
+``` example
 MATCH ()-[r:CONTAINS]-()
 UNWIND keys(r) AS propertyNames
 RETURN DISTINCT type(r) AS type, propertyNames AS propertyName
 ORDER BY type, propertyName
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'type': 'CONTAINS', 'propertyName': 'quantity'}
 {'type': 'CONTAINS', 'propertyName': 'urls'}
-#+end_example
+```
 
-* list CONTAINS relations
+# list CONTAINS relations
 
+This doesn't help in the least bit…the properties are identical…find a
+better way.
 
-This doesn't help in the least bit...the properties are
-identical...find a better way.
-
-#+begin_example
+``` example
 MATCH ()-[r:CONTAINS]-()
 UNWIND keys(r) AS propertyNames
 RETURN type(r) AS type, propertyNames AS propertyName
 ORDER BY type, propertyName
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'type': 'CONTAINS', 'propertyName': 'quantity'}
 {'type': 'CONTAINS', 'propertyName': 'quantity'}
 {'type': 'CONTAINS', 'propertyName': 'quantity'}
 {'type': 'CONTAINS', 'propertyName': 'quantity'}
 {'type': 'CONTAINS', 'propertyName': 'quantity'}
 # ...truncated to 5 for brevity
-#+end_example
+```
 
-* FIXED: list the products that have urls that are photos in google drive
-
+# FIXED: list the products that have urls that are photos in google drive
 
 This fails
-#+begin_example
+
+``` example
 MATCH (p:Product)
 WHERE EXISTS(p.urls) AND ANY(url IN p.urls WHERE url CONTAINS 'google')
 RETURN p.name AS ProductName, p.urls AS URLs;
-#+end_example
+```
 
 with error
-#+begin_example
+
+``` example
 [mtm@Shane-s-Note:poorclaim(master)]$ cypher-shell -a neo4j://localhost:7687 --file /Users/mtm/pdev/taylormonacelli/anythingflorida/query.cypher
 The property existence syntax `... exists(variable.property)` is no longer supported. Please use `variable.property IS NOT NULL` instead. (line 2, column 7 (offset: 24))
 "WHERE EXISTS(p.urls) AND ANY(url IN p.urls WHERE url CONTAINS 'google')"
      ^
 [mtm@Shane-s-Note:poorclaim(master)]$
-#+end_example
+```
 
-#+begin_example
+``` example
 // this works as expected:
 
 MATCH (p:Product)
 WHERE p.urls IS NOT NULL AND ANY(url IN p.urls WHERE url CONTAINS 'photos.google.com')
 RETURN p.name AS ProductName, p.urls AS URLs
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'ProductName': 'Chili Sauce', 'URLs': ['https://thewoksoflife.com/wp-content/uploads/2020/07/chili-oil-recipe-18.jpg', 'https://www.amazon.com/%E8%80%81%E5%B9%B2%E5%A6%88%E9%A6%99%E8%BE%A3%E8%84%86%E6%B2%B9%E8%BE%A3%E6%A4%92-Spicy-Chili-Crisp-7-41/dp/B07VHKTTR3/ref=asc_df_B07VHKTTR3/?tag=hyprod-20&linkCode=df0&hvadid=642112947349&hvpos=&hvnetw=g&hvrand=12580253979732381700&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9061293&hvtargid=pla-1951193779579&psc=1', 'https://www.google.com/search?sca_esv=580857096&sxsrf=AM9HkKmLh9FDQ0x5jNY12kJCSSbwO6Q3FA:1699539552211&q=thai+and+true+hot+chili&tbm=isch&source=lnms&sa=X&ved=2ahUKEwiJ8KiajreCAxWqAjQIHaMBDKYQ0pQJegQIDBAB&biw=1440&bih=754&dpr=2#imgrc=KDhcVOHe9yNjkM', 'https://photos.google.com/photo/AF1QipMQPtIdU1_m3SkgBWs5RcE2QXFs2OnbbJAdaG9M']}
 {'ProductName': 'Eucerin Creme Daily Moisturizing Skin Calming', 'URLs': ['https://photos.google.com/photo/AF1QipM2_uDtc-2Uc7XriFP3k4H0L_DxcvxVeYvgUlpG']}
 {'ProductName': 'Jasmine Rice', 'URLs': ['https://photos.google.com/photo/AF1QipM0ragYoS8EjrRngQukQJH_U1hnen_ACdJyMqEV']}
@@ -897,42 +938,42 @@ Results:
 {'ProductName': 'Rice vermicelli', 'URLs': ['https://photos.google.com/photo/AF1QipPPETrmRSh8-h9guEbb90DRig4g_njAUvQ50Ol6', 'https://photos.google.com/photo/AF1QipMYLPcT9Oybki3TQGztAT1X5tIxpknKSJ0ZmdlP', 'https://www.amazon.com/Fresh-Stick-Vermicelli-SIMPLY-FOOD/dp/B08NXVTFTP/ref=asc_df_B08NXVTFTP/?tag=hyprod-20&linkCode=df0&hvadid=652498065761&hvpos=&hvnetw=g&hvrand=10598234170837115346&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9061293&hvtargid=pla-2065471401768&psc=1', 'https://www.amazon.com/Fresh-Stick-Vermicelli-SIMPLY-FOOD/dp/B08NXVTFTP/ref=asc_df_B08NXVTFTP/?tag=hyprod-20&linkCode=df0&hvadid=652498065761&hvpos=&hvnetw=g&hvrand=10598234170837115346&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9061293&hvtargid=pla-2065471401768&psc=1']}
 {'ProductName': 'Signature Care Baby Lotion', 'URLs': ['https://www.google.com/search?client=emacs&sca_esv=580645679&sxsrf=AM9HkKmFAe6c5ttC3Glgq4OAYuHfy2tEjw:1699487253983&q=Signature+Care+baby+lotion&tbm=isch&source=lnms&sa=X&ved=2ahUKEwjopsuwy7WCAxWzFTQIHdjcCGIQ0pQJegQIDhAB&biw=1440&bih=754&dpr=2#imgrc=0Cnl_Uyq2nmiBM', 'https://photos.google.com/photo/AF1QipPtyZkpbFq-ZvHy5JD9WYAiDFBvmkPXB_pFNjPL']}
 {'ProductName': 'Tamarind Liquid', 'URLs': ['https://photos.google.com/photo/AF1QipMTNoAmEBIUBgJiziw2Tl16y2KscVqpjfDGlS-q', 'https://photos.google.com/photo/AF1QipPd47xo0JnbBdfR9pbd6FgvPRvxghQoP_wmWxph']}
-#+end_example
+```
 
-* list relations
+# list relations
 
-
-#+begin_example
+``` example
 MATCH ()-[r]-()
 RETURN DISTINCT type(r) AS relationType
 ORDER BY relationType
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'relationType': 'CONTAINS'}
 {'relationType': 'CREATED'}
 {'relationType': 'IS_THE_SAME_AS'}
 {'relationType': 'PURCHASE_AT'}
 {'relationType': 'RECOMMENDS'}
-#+end_example
+```
 
-* WRONG: list relations, not just CONTAINS and show relation properties
+# WRONG: list relations, not just CONTAINS and show relation properties
 
+Gotcha! This is wrong. Notice we're missing the is-the-same-as relation.
 
-Gotcha!  This is wrong.  Notice we're missing the is-the-same-as relation.
-
-#+begin_example
+``` example
 MATCH ()-[r]-()
 UNWIND keys(r) AS propertyNames
 RETURN DISTINCT type(r) AS type, propertyNames AS propertyName
 ORDER BY type, propertyName
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'type': 'CONTAINS', 'propertyName': 'quantity'}
 {'type': 'CONTAINS', 'propertyName': 'urls'}
 {'type': 'PURCHASE_AT', 'propertyName': 'aisle'}
@@ -940,24 +981,24 @@ Results:
 {'type': 'PURCHASE_AT', 'propertyName': 'url'}
 {'type': 'PURCHASE_AT', 'propertyName': 'urls'}
 {'type': 'RECOMMENDS', 'propertyName': 'urls'}
-#+end_example
+```
 
-* FIXED: list relations, not just CONTAINS and show relation properties
+# FIXED: list relations, not just CONTAINS and show relation properties
 
+This fixes the item in section: 'WRONG: list relations, not just
+CONTAINS and show relation properties'
 
-This fixes the item in section: 'WRONG: list relations, not
-just CONTAINS and show relation properties'
-
-#+begin_example
+``` example
 MATCH ()-[r]-()
 RETURN DISTINCT type(r) AS type,
                 CASE WHEN size(keys(r)) > 0 THEN keys(r) ELSE [] END AS propertyNames
 ORDER BY type, propertyNames
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'type': 'CONTAINS', 'propertyNames': []}
 {'type': 'CONTAINS', 'propertyNames': ['quantity']}
 {'type': 'CONTAINS', 'propertyNames': ['quantity', 'urls']}
@@ -969,12 +1010,11 @@ Results:
 {'type': 'PURCHASE_AT', 'propertyNames': ['urls']}
 {'type': 'PURCHASE_AT', 'propertyNames': ['urls', 'aisle']}
 {'type': 'RECOMMENDS', 'propertyNames': ['urls']}
-#+end_example
+```
 
-* suppose I would like to make a particular recipe, then what stores do I need to visit?
+# suppose I would like to make a particular recipe, then what stores do I need to visit?
 
-
-#+begin_example
+``` example
 MATCH (r:Recipe)
 WHERE r.name IN ['Vietnamese Spring Rolls (Gỏi Cuốn)']
 WITH r
@@ -985,10 +1025,11 @@ RETURN COLLECT(DISTINCT p.name) AS Ingredients,
        [store IN stores | CASE WHEN store IS NOT NULL THEN store.name ELSE 'Unknown' END] AS Stores
 ORDER BY [store IN Stores | toLower(store)]
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'Ingredients': ['Green lettuce'], 'Stores': []}
 {'Ingredients': ['Water'], 'Stores': ['dummy place holder']}
 {'Ingredients': ['Shrimp'], 'Stores': ['Hau Hau Market']}
@@ -997,30 +1038,29 @@ Results:
 {'Ingredients': ['Adams Peanut Butter', 'Ginger', 'Vegetable Oil', 'Koon Chun Chee Hou Sauce'], 'Stores': ['Safeway']}
 {'Ingredients': ['Garlic'], 'Stores': ["Trader Joe's"]}
 {'Ingredients': ['Mint leaves', 'Rice paper'], 'Stores': ['Uwajimaya']}
-#+end_example
+```
 
-* suppose I were to make Chicken Teriyaki, then what stores need I visit to get products I'd need for it?
+# suppose I were to make Chicken Teriyaki, then what stores need I visit to get products I'd need for it?
 
-
-#+begin_example
+``` example
 MATCH (r:Recipe {name: 'Tomatillo Salsa Verde'})-[:CONTAINS]->(p:Product)
 MATCH (p)-[:PURCHASE_AT]->(s:Store)
 RETURN s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'StoreName': 'QFC', 'Ingredients': ['Salt']}
 {'StoreName': 'Safeway', 'Ingredients': ['Tomatillos', 'Jalapeno Pepper', 'Cilantro', 'White Onion']}
 {'StoreName': "Trader Joe's", 'Ingredients': ['Garlic']}
 {'StoreName': 'Whole Foods', 'Ingredients': ['Lime juice']}
-#+end_example
+```
 
-* suppose I would like to make 2 recipes, then what stores do I need to visit?
+# suppose I would like to make 2 recipes, then what stores do I need to visit?
 
-
-#+begin_example
+``` example
 MATCH (r:Recipe)
 WHERE r.name IN ['Vietnamese Spring Rolls (Gỏi Cuốn)','Tom Yum Goong']
 WITH r
@@ -1031,10 +1071,11 @@ RETURN COLLECT(DISTINCT p.name) AS Ingredients,
        [store IN stores | CASE WHEN store IS NOT NULL THEN store.name ELSE 'Unknown' END] AS Stores
 ORDER BY [store IN Stores | toLower(store)]
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'Ingredients': ['Sawtooth Coriander', 'Green lettuce'], 'Stores': []}
 {'Ingredients': ['Water'], 'Stores': ['dummy place holder']}
 {'Ingredients': ['Fish sauce', 'Shrimp'], 'Stores': ['Hau Hau Market']}
@@ -1046,20 +1087,19 @@ Results:
 {'Ingredients': ['Mae Ploy Thai Chili Paste in Oil', 'Galangal', 'Mint leaves', 'Rice paper'], 'Stores': ['Uwajimaya']}
 {'Ingredients': ['Kaffir lime leaves'], 'Stores': ['Uwajimaya', 'Hau Hau Market']}
 {'Ingredients': ['Lime juice'], 'Stores': ['Whole Foods']}
-#+end_example
+```
 
-* I want to make a recipe and travel to the fewest number of stores
+# I want to make a recipe and travel to the fewest number of stores
 
+If I would like to make a particular recipe, then what stores do I need
+to visit and sort products by stores so I don't have to leave and return
+because I didn't realize there were two products from the same store
 
-If I would like to make a particular recipe, then what stores do I
-need to visit and sort products by stores so I don't have to leave
-and return because I didn't realize there were two products from the same store
-
-Also, make sure that if a recipe has an item that is not assigned
-to a store by the PURCAHSE_AT relation, then the store field
+Also, make sure that if a recipe has an item that is not assigned to a
+store by the PURCAHSE<sub>AT</sub> relation, then the store field
 appears empty as opposed to not seeing the product at all
 
-#+begin_example
+``` example
 MATCH (r:Recipe {name: 'Korean Sesame Noodles'})-[:CONTAINS]->(p:Product)
 OPTIONAL MATCH (p)-[:PURCHASE_AT]->(s:Store)
 WITH p, COLLECT(DISTINCT s) AS stores
@@ -1067,29 +1107,30 @@ RETURN COLLECT(DISTINCT p.name) AS Ingredients,
        [store IN stores | CASE WHEN store IS NOT NULL THEN store.name ELSE 'Unknown' END] AS Stores
 ORDER BY [store IN Stores | toLower(store)]
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'Ingredients': ['Toasted Sesame Seeds'], 'Stores': ['Central Co-op']}
 {'Ingredients': ['Soba Noodles', 'Tsuyu', 'Chili Oil', 'Toasted Seaweed', 'Korean Wild Sesame Oil'], 'Stores': ['M2M Mart']}
 {'Ingredients': ['Sesame Seeds'], 'Stores': ['Naked Grocer', 'PCC']}
 {'Ingredients': ['Red Chilli Peppers', 'Green Onion'], 'Stores': ['Safeway']}
-#+end_example
+```
 
-* WRONG: some recipes point to the same product multiple times by mistake
+# WRONG: some recipes point to the same product multiple times by mistake
 
-
-#+begin_example
+``` example
 MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
 WITH r, COLLECT(p) AS products
 WHERE SIZE(products) > 1
 RETURN r, products
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'r': {'urls': ['https://theflavoursofkitchen.com/wprm_print/104534'], 'name': 'Chicken Thai Red Curry'}, 'products': [{'name': 'Ginger', 'type': 'Ginger'}, {'name': 'Red Curry Paste', 'type': 'Curry Paste'}, {'name': 'Onion', 'type': 'Onion'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'name': 'Red Bell Pepper', 'type': 'Bell Pepper'}, {'name': 'Full fat coconut milk', 'type': 'Coconut Milk'}, {'name': 'Boneless Chicken Thighs', 'type': 'Chicken'}, {'name': 'Zucchini', 'type': 'Zucchini'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Lemon Juice', 'type': 'Lemon Juice'}, {'name': 'Light Brown Sugar', 'type': 'Brown Sugar'}, {'urls': ['https://www.fredmeyer.com/p/simple-truth-organic-thai-basil/0001111001922'], 'name': 'Thai basil', 'type': 'Herb'}, {'name': 'Chicken Stock or Water', 'type': 'Chicken Stock'}, {'name': 'Cooking Oil', 'type': 'Oil'}]}
 {'r': {'urls': ['https://food52.com/recipes/print/86501', 'https://www.youtube.com/watch?v=VpAS3RarPi8'], 'name': 'Cold Soba With Periall Oil dresssing'}, 'products': [{'urls': ['https://www.youtube.com/watch?v=VpAS3RarPi8', 'https://megakfood.com/products/8801045448503', 'https://photos.google.com/photo/AF1QipNe7d-KXSpC90FJ1uJNMnH1fMFZ6E8Qlzr_j3Q0', 'https://photos.google.com/photo/AF1QipOLrXnJ8Bj20xFh5lg5yhm71ApUoRlT1z6_ZqnB', 'https://photos.google.com/photo/AF1QipP8OZZvarZPkNnnaOOv3k_ng9doQzMeVZgONlxK'], 'name': 'Perilla Oil', 'type': 'Oil'}, {'urls': ['https://www.amazon.com/gp/product/B00101YEBO', 'https://veggiekinsblog.com/2020/01/13/vegan-zaru-soba/'], 'name': 'Buckwheat Soba Nodles', 'type': 'Noodle'}, {'urls': ['https://www.google.com/search?client=emacs&sca_esv=577922779&sxsrf=AM9HkKkUxzT-KjHg9ziVgvqz5Zsqmn7xdw:1698703946500&q=Japanese+nori&tbm=isch&source=lnms&sa=X&ved=2ahUKEwi647yq5Z6CAxVxMjQIHRW8BBYQ0pQJegQIChAB&biw=1440&bih=758&dpr=2'], 'name': 'Japanese Nori', 'type': 'Nori'}]}
 {'r': {'urls': ['https://seonkyounglongest.com/drunken-noodles/'], 'name': 'The Best Drunken Noodles'}, 'products': [{'name': 'Dark soy sauce', 'type': 'Soy Sauce'}, {'name': 'Cooking Oil', 'type': 'Cooking Oil'}, {'name': 'Basil', 'type': 'Basil'}, {'name': 'Red Chilli Peppers', 'type': 'Chilli Pepper'}, {'name': 'Oyster Sauce', 'type': 'Oyster Sauce'}, {'name': 'Thai-style Baked Tofu', 'type': 'Tofu'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'name': 'Lime', 'type': 'Lime'}, {'name': 'Palm Sugar', 'type': 'Sugar'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'name': 'Soy sauce', 'type': 'Soy sauce'}, {'name': 'White pepper', 'type': 'White pepper'}, {'name': 'Shrimp', 'type': 'Shrimp'}, {'name': 'White pepper', 'type': 'White pepper'}, {'urls': ['https://www.google.com/search?sca_esv=579554252&sxsrf=AM9HkKlaWKZFra1JEJmQLagqVwu7lOpvPA:1699161392487&q=rice+paper&tbm=isch&source=lnms&sa=X&sqi=2&ved=2ahUKEwjyhdy5jayCAxWmADQIHTJBBhUQ0pQJegQIDxAB&biw=1440&bih=758&dpr=2', 'https://balancewithjess.com/hu-tieu-ap-chao/', 'https://www.google.com/search?q=hu+tieu+xao+rice+sheets&tbm=isch&ved=2ahUKEwjExZejjayCAxU_JjQIHf97ACQQ2-cCegQIABAA&oq=hu+tieu+xao+rice+sheets&gs_lcp=CgNpbWcQAzoECCMQJzoFCAAQgAQ6BwgAEIoFEEM6BwgAEBgQgARQvQRYpRdgxRpoAHAAeACAATmIAecEkgECMTOYAQCgAQGqAQtnd3Mtd2l6LWltZ8ABAQ&sclient=img&ei=ASVHZYTBDb_M0PEP__eBoAI&bih=758&biw=1440#imgrc=il_S9C1t9kGChM', 'https://www.foodsofjane.com/recipes/steamed-rice-rolls', 'https://www.google.com/search?client=emacs&sca_esv=579554252&sxsrf=AM9HkKkMHZcCbxpmpXqsj48WrwEW--xssw:1699161240321&q=Rice+noodle+sheets&tbm=isch&source=lnms&sa=X&ved=2ahUKEwiPypTxjKyCAxW_MDQIHVJjDeYQ0pQJegQIDBAB&biw=1440&bih=758&dpr=2#imgrc=Vw7_7S7XaN_v6M', 'https://photos.google.com/photo/AF1QipPM6Ts-zLh2dl10ono15alL7hCGwSCHhbOyav6v', 'https://phohoa.com/', 'https://www.google.com/search?q=pho+hoa+seattle&oq=pho+hoa+seatt&gs_lcrp=EgZjaHJvbWUqCggAEAAY4wIYgAQyCggAEAAY4wIYgAQyEAgBEC4YrwEYxwEYgAQYjgUyBggCEEUYOTIICAMQABgWGB4yCAgEEC4YFhgeMgoIBRAAGIYDGIoFMgYIBhBFGEDSAQg1Mjk1ajBqN6gCALACAA&sourceid=chrome&ie=UTF-8#lpg=cid:CgIgAQ%3D%3D,ik:CAoSLEFGMVFpcE40MXM4TXJDSzlDcFVRZWxBRHZPNUZXb1h5LWtIVFpaeHNnZm03', 'https://timeline.google.com/maps/timeline?pli=1&rapt=AEjHL4MhNWvrl4xjhvtinEYv8V8WTyxNYgSR-reE9VJgys6Ba7GccWm6B2Xi6Xa3uKxuR9rkftCXiinZ4f3LvAJGF9CnnqgrtUIGNdtCmaP1EhTNElp4eko&pb=!1m2!1m1!1s2023-11-04', 'https://www.google.com/search?client=emacs&sca_esv=579833118&sxsrf=AM9HkKmyvTZJVTjaoB4T2Is_emhNvlG1og:1699290431734&q=rice+paper&tbm=isch&source=lnms&sa=X&ved=2ahUKEwimz7aU7q-CAxVkFjQIHXrWCSgQ0pQJegQIDhAB&biw=1440&bih=758&dpr=2', 'https://i0.wp.com/www.wokandkin.com/wp-content/uploads/2021/04/Rice-Paper-saved-for-web-1200-px.png?w=1200&ssl=1'], 'name': 'Rice noodle sheets', 'google': 'Rice noodle sheets', 'type': 'Rice noodle sheets'}, {'name': 'Thai chili', 'type': 'Chilies'}, {'name': 'Pork', 'type': 'Pork'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Chinese Broccoli', 'type': 'Broccoli'}, {'name': 'Chicken', 'type': 'Chicken'}]}
@@ -1114,36 +1155,36 @@ Results:
 {'r': {'urls': ['https://www.templeofthai.com/recipes/yellow_chicken_curry.php'], 'name': 'Yellow Curry with Chicken'}, 'products': [{'name': 'Chicken', 'type': 'Chicken'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Shallots', 'type': 'Shallots'}, {'name': 'Full fat coconut milk', 'type': 'Coconut Milk'}, {'name': 'Ginger', 'type': 'Ginger'}, {'name': 'Dried Thai Chilis', 'type': 'Thai Chilies'}, {'name': 'Sea Salt', 'type': 'Seasoning'}, {'name': 'Shrimp Paste', 'type': 'Shrimp Paste'}, {'name': 'Curry Powder', 'type': 'Curry Powder'}, {'name': 'Fried shallots', 'type': 'Condiment'}, {'name': 'Lemongrass', 'type': 'Lemongrass'}, {'urls': ['https://www.safeway.com/shop/product-details.960076294.html'], 'name': 'Yellow Curry Paste', 'type': 'Curry Paste'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'name': 'Galangal', 'type': 'Galangal'}, {'name': 'Coriander seeds', 'type': 'Spice'}, {'name': 'Cumin seeds', 'type': 'Cumin '}, {'name': 'Potatoes', 'type': 'Potatoe'}]}
 {'r': {'urls': ['https://drivemehungry.com/wprm_print/13748'], 'name': '7-Minute Zaru Soba (Cold Soba Noodles)'}, 'products': [{'name': 'Wasabi', 'type': 'Wasabi'}, {'name': 'SWEET preserved daikon radish', 'type': 'Radish'}, {'urls': ['https://www.amazon.com/Kikkoman-Japanese-Noodle-Soup-Tsuyu/dp/B002Z3F0IW', 'https://www.google.com/search?q=kikkoman+japanese+noodle+soup+base(hon+tsuyu)&oq=Kikkoman+Japanese+Noodle+Soup+Base(Hon+Tsuyu)&gs_lcrp=EgZjaHJvbWUqBwgAEAAYgAQyBwgAEAAYgAQyBwgBEAAYgAQyCggCEAAYhgMYigUyCggDEAAYhgMYigUyBggEEEUYPDIGCAUQRRg9MgYIBhBFGD3SAQc0NzBqMGo0qAIAsAIA&sourceid=chrome&ie=UTF-8', 'https://www.youtube.com/watch?v=61nPpDkz1AI'], 'name': 'Kikkoman Japanese Noodle Soup Base (Hon Tsuyu)', 'type': 'Sauce', 'manufacturer': 'Kikkoman'}, {'name': 'Sesame Seeds', 'type': 'Sesame Seeds'}, {'urls': ['https://www.google.com/search?client=emacs&sca_esv=577922779&sxsrf=AM9HkKkUxzT-KjHg9ziVgvqz5Zsqmn7xdw:1698703946500&q=Japanese+nori&tbm=isch&source=lnms&sa=X&ved=2ahUKEwi647yq5Z6CAxVxMjQIHRW8BBYQ0pQJegQIChAB&biw=1440&bih=758&dpr=2'], 'name': 'Japanese Nori', 'type': 'Nori'}, {'name': 'Soba Noodles', 'type': 'Soba Noodles'}, {'name': 'Ice-cold water', 'type': 'Water'}]}
 {'r': {'urls': ['https://www.cookerru.com/wprm_print/7756'], 'name': '10-Minute Zaru Soba (Cold Soba Noodles)'}, 'products': [{'name': 'Wasabi', 'type': 'Wasabi'}, {'name': 'Toasted sesame flakes', 'type': 'Garnish'}, {'name': 'Toasted Seaweed', 'type': 'Seaweed'}, {'name': 'Green Onion', 'type': 'Onion'}, {'name': 'Egg yolk', 'type': 'Egg yolk'}, {'name': 'SWEET preserved daikon radish', 'type': 'Radish'}, {'name': 'Soba Noodles', 'type': 'Soba Noodles'}, {'name': 'Soy sauce', 'type': 'Soy sauce'}, {'name': 'Mirin', 'type': 'Mirin'}, {'name': 'Sugar', 'type': 'sugar'}]}
-#+end_example
+```
 
-* find products whose type contains vegetable
+# find products whose type contains vegetable
 
-
-#+begin_example
+``` example
 MATCH (p:Product)
 WHERE toLower(p.type) CONTAINS 'vegetable'
 RETURN p.name AS ProductName, p.type AS Type
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'ProductName': 'Beansprouts', 'Type': 'Vegetable'}
 {'ProductName': 'Vegetable Oil', 'Type': 'Vegetable Oil'}
-#+end_example
+```
 
-* find products whose type contains peas
+# find products whose type contains peas
 
-
-#+begin_example
+``` example
 MATCH (p:Product)
 WHERE toLower(p.type) CONTAINS 'pea'
 RETURN p.name AS ProductName, p.type AS Type
 ;
-#+end_example
+```
 
 Results:
-#+begin_example
+
+``` example
 {'ProductName': 'Chickpeas', 'Type': 'Chickpeas'}
 {'ProductName': 'Frozen Peas', 'Type': 'Peas'}
 {'ProductName': 'Grounded Roasted Peanuts', 'Type': 'Peanuts'}
@@ -1157,4 +1198,4 @@ Results:
 {'ProductName': 'Roasted Unsalted Peanuts', 'Type': 'Peanuts'}
 {'ProductName': 'Snow peas', 'Type': 'Snow Peas'}
 {'ProductName': 'Sugar Snap Peas', 'Type': 'Sugar Snap Peas'}
-#+end_example
+```

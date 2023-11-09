@@ -1,15 +1,18 @@
 # -*- mode: org -*-
-#+STARTUP:   showeverything
-
-* {# jinja2 - keep space #}
+#+STARTUP: overview
 
 {%- for item in data %}
-** {{ item.title }}
+* {{ item.title }}
 
-{%- if item.query_comment %}{{- item.query_comment -}}{%- endif %}
+{# jinja2 - keep newline #}
+{%- if item.comment %}
+{{ item.comment }}
+{%- endif -%}
 
+{# jinja2 - keep newline #}
 #+begin_example
-{{ item.cypher_query | trim }}
+{%- set q=item.cypher_query | trim %}
+{{ q.rstrip(';') }}
 ;
 #+end_example
 
@@ -21,7 +24,7 @@ Results:
 {{ result }}
 {%- endfor %}
 {%- if item.limit %}
-# ...tructed to {{ item.limit }} for brevity
+# ...truncated to {{ item.limit }} for brevity
 {%- endif %}
 #+end_example
 {# jinja2 - keep newline #}

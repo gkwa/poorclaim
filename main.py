@@ -1,7 +1,3 @@
-# flake8: noqa E501
-
-import textwrap
-
 import jinja2
 import neo4j
 import yaml
