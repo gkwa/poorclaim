@@ -1,5 +1,11 @@
 Please, just give me a shitton of examples that I can
 copy/paste...maybe later I'll read the manual.
+
+Data for this is generated from here:
+https://github.com/taylormonacelli/anythingflorida/blob/master/data.cypher
+
+in repo:
+https://github.com/taylormonacelli/anythingflorida
 * [list nodes and relations](#list-nodes-and-relations)
 * [list distinct node types](#list-distinct-node-types)
 * [list products with the same name](#list-products-with-the-same-name)
