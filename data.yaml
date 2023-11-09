@@ -444,5 +444,5 @@
 - title: find products whose type contains peas
   cypher_query: |
     MATCH (p:Product)
-    WHERE toLower(p.type) CONTAINS 'pea'
+    WHERE toLower(p.type) CONTAINS 'peas'
     RETURN p.name AS ProductName, p.type AS Type

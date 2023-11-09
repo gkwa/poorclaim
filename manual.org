@@ -452,16 +452,16 @@ ORDER BY RAND()
 
 Results:
 #+begin_example
-{'ProductName': 'Coffee / MTM / PLU 5820 / Kivu / Kivu Dark French Roast'}
-{'ProductName': 'Chicken Tenderloins / Rubber Duckies / 1 BAG ONLY'}
-{'ProductName': 'Coffee - BB - PLU 8875 (less yums than 8863)'}
-{'ProductName': 'Rolled Oats / Oats / Old Fashioned / PLU 8490'}
-{'ProductName': 'Garlic Chives (alternative: chives)'}
-{'ProductName': 'Coffee - T - PLU 8852 T likes it, BB says YUX!'}
-{'ProductName': 'Sweet BBQ Pre-Marinated Super Firm Baked Tofu'}
-{'ProductName': 'A.1. Sauce'}
-{'ProductName': 'Pinot Grigio - Dry White Wine'}
-{'ProductName': 'Pancake Mix - Snoqualmie Falls Lodge'}
+{'ProductName': 'Large Shrimp (not frozen)'}
+{'ProductName': "Ice cream double-fudge brownie Dreyer's slow-churned"}
+{'ProductName': 'Turkey (whole)'}
+{'ProductName': 'Quick Rolled Oats / Oats PLU 8485'}
+{'ProductName': 'Grapes, grape shaped'}
+{'ProductName': "Duke's Mayonnaise"}
+{'ProductName': 'Kidney Beans - S&W'}
+{'ProductName': 'Raisins - Bulk baby, bulk'}
+{'ProductName': 'chardonnay - terres dorees'}
+{'ProductName': 'Coffee / MTM / PLU 8368 / Decaf / Decaf / Decaf Kind Unknown'}
 # ...truncated to 10 for brevity
 #+end_example
 
@@ -854,16 +854,16 @@ ORDER BY ProductName
 
 Results:
 #+begin_example
-{'ProductName': 'Beansprouts'}
-{'ProductName': 'Candlenuts'}
-{'ProductName': 'Chickpeas'}
+{'ProductName': 'Apple Cider Vinegar in Glass Bottle (Non-Organic)'}
 {'ProductName': 'Corn on cob'}
-{'ProductName': 'Green Bell Pepper'}
-{'ProductName': 'Kalamata Olives'}
-{'ProductName': 'Makrut lime zest'}
-{'ProductName': 'Red Curry Paste'}
-{'ProductName': 'Rosemary'}
-{'ProductName': 'Wasabi'}
+{'ProductName': 'Egg yolk'}
+{'ProductName': 'Fermented shrimp paste'}
+{'ProductName': 'Fried shallots'}
+{'ProductName': 'Ice-cold water'}
+{'ProductName': 'Oil-packed sun-dried tomatoes'}
+{'ProductName': 'Sawtooth Coriander'}
+{'ProductName': 'Sea Salt'}
+{'ProductName': 'Thai chili'}
 #+end_example
 
 * list the entity type its assocted with
@@ -1208,7 +1208,7 @@ Results:
 
 #+begin_example
 MATCH (p:Product)
-WHERE toLower(p.type) CONTAINS 'pea'
+WHERE toLower(p.type) CONTAINS 'peas'
 RETURN p.name AS ProductName, p.type AS Type
 ;
 #+end_example
@@ -1217,15 +1217,6 @@ Results:
 #+begin_example
 {'ProductName': 'Chickpeas', 'Type': 'Chickpeas'}
 {'ProductName': 'Frozen Peas', 'Type': 'Peas'}
-{'ProductName': 'Grounded Roasted Peanuts', 'Type': 'Peanuts'}
-{'ProductName': 'Adams Peanut Butter', 'Type': 'Peanut Butter'}
-{'ProductName': 'Bulk Peanut Butter', 'Type': 'Peanut Butter'}
-{'ProductName': 'Dry-Roasted Peanuts', 'Type': 'Peanuts'}
-{'ProductName': 'Anjou Pears', 'Type': 'Pear'}
-{'ProductName': 'Bartlett Pears', 'Type': 'Pear'}
-{'ProductName': 'Bosc Pears', 'Type': 'Pear'}
-{'ProductName': 'Roasted peanuts', 'Type': 'Peanuts'}
-{'ProductName': 'Roasted Unsalted Peanuts', 'Type': 'Peanuts'}
 {'ProductName': 'Snow peas', 'Type': 'Snow Peas'}
 {'ProductName': 'Sugar Snap Peas', 'Type': 'Sugar Snap Peas'}
 #+end_example
