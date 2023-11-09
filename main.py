@@ -93,7 +93,6 @@ MATCH (product:Product)
 WHERE NOT (product)-[:PURCHASE_AT]->(:Store)
 WITH product
 ORDER BY rand()
-LIMIT 10
 RETURN product.name AS ProductName
 ORDER BY ProductName
 ;
