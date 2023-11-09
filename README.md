@@ -3,34 +3,36 @@ copy/paste...maybe later I'll read the manual.
 * [list nodes and relations](#list-nodes-and-relations)
 * [list distinct node types](#list-distinct-node-types)
 * [list products with the same name](#list-products-with-the-same-name)
+* [list products](#list-products)
+* [list product names](#list-product-names)
+* [list relations](#list-relations)
+* [WRONG: list relations, not just CONTAINS and show relation properties](#wrong-list-relations-not-just-contains-and-show-relation-properties)
 * [for each product, count the number of duplicates that exist for it](#for-each-product-count-the-number-of-duplicates-that-exist-for-it)
 * [how many products have duplicates](#how-many-products-have-duplicates)
 * [suppose I were to make Thai Curry, then what ingredients do I need?](#suppose-i-were-to-make-thai-curry-then-what-ingredients-do-i-need)
-* [order products by type](#order-products-by-type)
-* [get products that I’ve not yet assiged a type to](#get-products-that-ive-not-yet-assiged-a-type-to)
+* [list products ordered by type](#list-products-ordered-by-type)
+* [list products that I’ve not yet assiged a type to](#list-products-that-ive-not-yet-assiged-a-type-to)
 * [something about urls](#something-about-urls)
 * [list Product nodes and their properties](#list-product-nodes-and-their-properties)
 * [WRONG: count the products that have a brand](#wrong-count-the-products-that-have-a-brand)
-* [hilight the products that don’t yet have a brand associated](#hilight-the-products-that-dont-yet-have-a-brand-associated)
+* [list products that don’t yet have a brand associated](#list-products-that-dont-yet-have-a-brand-associated)
 * [list the brand of the product too](#list-the-brand-of-the-product-too)
-* [products whose names contain non-alphanum sorted randomly to prevent boredom while cleaning data](#products-whose-names-contain-non-alphanum-sorted-randomly-to-prevent-boredom-while-cleaning-data)
+* [list products whose names contain non-alphanum chars](#list-products-whose-names-contain-non-alphanum-chars)
 * [fetch all urls for all products](#fetch-all-urls-for-all-products)
 * [fetch all urls for all products, but then don’t show urls if product doesn’t have any](#fetch-all-urls-for-all-products-but-then-dont-show-urls-if-product-doesnt-have-any)
-* [list possible Product properties](#list-possible-product-properties)
+* [list Product properties](#list-product-properties)
 * [list properties assigned to the PURCHASE-AT relation](#list-properties-assigned-to-the-purchase-at-relation)
 * [list properties across all entities sorted case insensitively](#list-properties-across-all-entities-sorted-case-insensitively)
 * [WRONG: list properties across all entities](#wrong-list-properties-across-all-entities)
 * [FIXED: list properties across all entities](#fixed-list-properties-across-all-entities)
 * [list products that have at least one store associated with each](#list-products-that-have-at-least-one-store-associated-with-each)
-* [products that don’t have a store associated with them](#products-that-dont-have-a-store-associated-with-them)
-* [products that don’t have a store associated with them, but list only 10](#products-that-dont-have-a-store-associated-with-them-but-list-only-10)
+* [list products that don’t have a store associated with them](#list-products-that-dont-have-a-store-associated-with-them)
+* [list products that don’t have a store associated with them, but list only 10](#list-products-that-dont-have-a-store-associated-with-them-but-list-only-10)
 * [list the entity type its assocted with](#list-the-entity-type-its-assocted-with)
 * [list distinct entities](#list-distinct-entities)
-* [list uniquely all CONTAINS relations](#list-uniquely-all-contains-relations)
 * [list CONTAINS relations](#list-contains-relations)
-* [FIXED: list the products that have urls that are photos in google drive](#fixed-list-the-products-that-have-urls-that-are-photos-in-google-drive)
-* [list relations](#list-relations)
-* [WRONG: list relations, not just CONTAINS and show relation properties](#wrong-list-relations-not-just-contains-and-show-relation-properties)
+* [list uniquely all CONTAINS relations](#list-uniquely-all-contains-relations)
+* [FIXED: list products that have urls that are photos in google drive](#fixed-list-products-that-have-urls-that-are-photos-in-google-drive)
 * [FIXED: list relations, not just CONTAINS and show relation properties](#fixed-list-relations-not-just-contains-and-show-relation-properties)
 * [suppose I would like to make a particular recipe, then what stores do I need to visit?](#suppose-i-would-like-to-make-a-particular-recipe-then-what-stores-do-i-need-to-visit)
 * [suppose I were to make Chicken Teriyaki, then what stores need I visit to get products I’d need for it?](#suppose-i-were-to-make-chicken-teriyaki-then-what-stores-need-i-visit-to-get-products-id-need-for-it)
@@ -83,7 +85,7 @@ Results:
 
 # list products with the same name
 
-I need clean up duplicates.
+This reveals that I need to clean up duplicates.
 
 ``` example
 MATCH (p:Product)
@@ -106,6 +108,88 @@ Results:
 {'productName': 'Yellow Curry Paste', 'products': [{'urls': ['https://www.safeway.com/shop/product-details.960076294.html', 'https://youtu.be/GC7ccNKatVU?t=696'], 'name': 'Yellow Curry Paste', 'type': 'Curry Paste', 'brand': 'Mae Ploy'}, {'urls': ['https://www.safeway.com/shop/product-details.960076294.html'], 'name': 'Yellow Curry Paste', 'type': 'Curry Paste'}]}
 {'productName': 'Red Onion', 'products': [{'name': 'Red Onion', 'type': 'Onion'}, {'name': 'Red Onion', 'type': 'Red Onion'}]}
 {'productName': 'White Onion', 'products': [{'name': 'White Onion', 'type': 'Onion'}, {'name': 'White Onion', 'type': 'Onion'}]}
+```
+
+# list products
+
+``` example
+MATCH (p:Product)
+RETURN p
+;
+```
+
+Results:
+
+``` example
+{'p': {'name': 'A.1. Sauce', 'type': 'A.1. Sauce'}}
+{'p': {'name': 'Allspice', 'type': 'Allspice'}}
+{'p': {'name': 'Almond Milk', 'type': 'Almond Milk'}}
+{'p': {'name': 'Almonds - bulk roasted or raw -- whichever is cheaper', 'type': 'Almonds'}}
+{'p': {'name': 'Angkor Cambodian Food Paste Lemongrass', 'type': 'Food Paste'}}
+# ...truncated to 5 for brevity
+```
+
+# list product names
+
+``` example
+MATCH (p:Product)
+RETURN p.name
+ORDER BY toLower(p.name)
+;
+```
+
+Results:
+
+``` example
+{'p.name': 'A.1. Sauce'}
+{'p.name': 'ACT Restoring Mouthwash'}
+{'p.name': 'Adams Peanut Butter'}
+{'p.name': 'Allspice'}
+{'p.name': 'Almond Milk'}
+# ...truncated to 5 for brevity
+```
+
+# list relations
+
+``` example
+MATCH ()-[r]-()
+RETURN DISTINCT type(r) AS relationType
+ORDER BY relationType
+;
+```
+
+Results:
+
+``` example
+{'relationType': 'CONTAINS'}
+{'relationType': 'CREATED'}
+{'relationType': 'IS_THE_SAME_AS'}
+{'relationType': 'PURCHASE_AT'}
+{'relationType': 'RECOMMENDS'}
+```
+
+# WRONG: list relations, not just CONTAINS and show relation properties
+
+Gotcha! This is wrong. Notice we're missing the is-the-same-as relation.
+
+``` example
+MATCH ()-[r]-()
+UNWIND keys(r) AS propertyNames
+RETURN DISTINCT type(r) AS type, propertyNames AS propertyName
+ORDER BY type, propertyName
+;
+```
+
+Results:
+
+``` example
+{'type': 'CONTAINS', 'propertyName': 'quantity'}
+{'type': 'CONTAINS', 'propertyName': 'urls'}
+{'type': 'PURCHASE_AT', 'propertyName': 'aisle'}
+{'type': 'PURCHASE_AT', 'propertyName': 'note'}
+{'type': 'PURCHASE_AT', 'propertyName': 'url'}
+{'type': 'PURCHASE_AT', 'propertyName': 'urls'}
+{'type': 'RECOMMENDS', 'propertyName': 'urls'}
 ```
 
 # for each product, count the number of duplicates that exist for it
@@ -169,7 +253,7 @@ Results:
 {'StoreName': "Trader Joe's", 'Ingredients': ['Garlic']}
 ```
 
-# order products by type
+# list products ordered by type
 
 ``` example
 MATCH (p:Product)-[:PURCHASE_AT]->(s:Store)
@@ -194,7 +278,7 @@ Results:
 # ...truncated to 10 for brevity
 ```
 
-# get products that I've not yet assiged a type to
+# list products that I've not yet assiged a type to
 
 ``` example
 MATCH (p:Product)
@@ -350,7 +434,7 @@ Results:
 {'productCount': 538}
 ```
 
-# hilight the products that don't yet have a brand associated
+# list products that don't yet have a brand associated
 
 ``` example
 MATCH (p:Product)
@@ -393,7 +477,10 @@ Results:
 # ...truncated to 10 for brevity
 ```
 
-# products whose names contain non-alphanum sorted randomly to prevent boredom while cleaning data
+# list products whose names contain non-alphanum chars
+
+List products whose names contain non-alphanum sorted randomly to
+prevent boredom while cleaning data.
 
 ``` example
 MATCH (p:Product)
@@ -406,16 +493,16 @@ ORDER BY RAND()
 Results:
 
 ``` example
-{'ProductName': 'Ramen Noodles - Dry'}
-{'ProductName': 'Sun Dried Tomatoes - sun dried - real big jar'}
-{'ProductName': 'Salmon - Still Frozen in the Shrink Wrap, 2 or 3 lbs'}
-{'ProductName': 'Thai-style Baked Tofu'}
-{'ProductName': 'Chicken Broth - 16 Oz'}
-{'ProductName': 'Unsalted Tops (Unsalted Salteens)'}
-{'ProductName': 'Enchilada Sauce - Red'}
-{'ProductName': 'Marketspice Tea Decaf - 2 Oz for Mommy'}
-{'ProductName': 'Chili Pepper, Ancho, Ground'}
-{'ProductName': 'Rice - Wild'}
+{'ProductName': 'Oil-packed sun-dried tomatoes'}
+{'ProductName': 'WEL-PAC Dashi Kombu Dried Seaweed'}
+{'ProductName': 'Almonds - bulk roasted or raw -- whichever is cheaper'}
+{'ProductName': 'Fresh flat-leaf parsley'}
+{'ProductName': 'Turkey (whole)'}
+{'ProductName': 'Grapes, grape shaped'}
+{'ProductName': "Granola 'cookies'"}
+{'ProductName': 'Barbecue sauce - Baby Rays bbq sauce'}
+{'ProductName': 'Tomato Sauce - 29 oz can'}
+{'ProductName': 'Broth - Beef - low sodium'}
 # ...truncated to 10 for brevity
 ```
 
@@ -467,7 +554,9 @@ Results:
 # ...truncated to 10 for brevity
 ```
 
-# list possible Product properties
+# list Product properties
+
+A product may or may not have any one of these properties.
 
 ``` example
 MATCH (n:Product)
@@ -648,7 +737,7 @@ Results:
 # ...truncated to 10 for brevity
 ```
 
-# products that don't have a store associated with them
+# list products that don't have a store associated with them
 
 Where the hell do I buy this crap?
 
@@ -719,7 +808,7 @@ Results:
 {'ProductName': 'Yellow Curry Paste'}
 ```
 
-# products that don't have a store associated with them, but list only 10
+# list products that don't have a store associated with them, but list only 10
 
 Data cleanup is a pain in the ass and I want to take it in bite size
 pieces, so randomize the list to keep me interested and return just 10
@@ -779,16 +868,16 @@ ORDER BY ProductName
 Results:
 
 ``` example
-{'ProductName': 'Beansprouts'}
-{'ProductName': 'Coconut Oil'}
-{'ProductName': 'Egg yolk'}
-{'ProductName': 'Red Onion'}
-{'ProductName': 'Rice vinegar'}
-{'ProductName': 'Russet potatoes'}
+{'ProductName': 'Dashi'}
+{'ProductName': 'Dried Thai shrimp paste'}
+{'ProductName': 'Feta Cheese'}
+{'ProductName': 'Grape Tomatoes'}
+{'ProductName': 'Kaffir Lime'}
+{'ProductName': 'Mild dried red chilies'}
+{'ProductName': 'Rosemary'}
 {'ProductName': 'Tamarind Paste'}
-{'ProductName': 'Thai chili'}
 {'ProductName': 'Tofu puffs'}
-{'ProductName': 'Turmeric'}
+{'ProductName': 'Yellow Curry Paste'}
 ```
 
 # list the entity type its assocted with
@@ -855,23 +944,6 @@ Results:
 {'label': 'Product', 'propertyName': 'detail'}
 ```
 
-# list uniquely all CONTAINS relations
-
-``` example
-MATCH ()-[r:CONTAINS]-()
-UNWIND keys(r) AS propertyNames
-RETURN DISTINCT type(r) AS type, propertyNames AS propertyName
-ORDER BY type, propertyName
-;
-```
-
-Results:
-
-``` example
-{'type': 'CONTAINS', 'propertyName': 'quantity'}
-{'type': 'CONTAINS', 'propertyName': 'urls'}
-```
-
 # list CONTAINS relations
 
 This doesn't help in the least bit…the properties are identical…find a
@@ -896,7 +968,24 @@ Results:
 # ...truncated to 5 for brevity
 ```
 
-# FIXED: list the products that have urls that are photos in google drive
+# list uniquely all CONTAINS relations
+
+``` example
+MATCH ()-[r:CONTAINS]-()
+UNWIND keys(r) AS propertyNames
+RETURN DISTINCT type(r) AS type, propertyNames AS propertyName
+ORDER BY type, propertyName
+;
+```
+
+Results:
+
+``` example
+{'type': 'CONTAINS', 'propertyName': 'quantity'}
+{'type': 'CONTAINS', 'propertyName': 'urls'}
+```
+
+# FIXED: list products that have urls that are photos in google drive
 
 This fails
 
@@ -938,49 +1027,6 @@ Results:
 {'ProductName': 'Rice vermicelli', 'URLs': ['https://photos.google.com/photo/AF1QipPPETrmRSh8-h9guEbb90DRig4g_njAUvQ50Ol6', 'https://photos.google.com/photo/AF1QipMYLPcT9Oybki3TQGztAT1X5tIxpknKSJ0ZmdlP', 'https://www.amazon.com/Fresh-Stick-Vermicelli-SIMPLY-FOOD/dp/B08NXVTFTP/ref=asc_df_B08NXVTFTP/?tag=hyprod-20&linkCode=df0&hvadid=652498065761&hvpos=&hvnetw=g&hvrand=10598234170837115346&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9061293&hvtargid=pla-2065471401768&psc=1', 'https://www.amazon.com/Fresh-Stick-Vermicelli-SIMPLY-FOOD/dp/B08NXVTFTP/ref=asc_df_B08NXVTFTP/?tag=hyprod-20&linkCode=df0&hvadid=652498065761&hvpos=&hvnetw=g&hvrand=10598234170837115346&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9061293&hvtargid=pla-2065471401768&psc=1']}
 {'ProductName': 'Signature Care Baby Lotion', 'URLs': ['https://www.google.com/search?client=emacs&sca_esv=580645679&sxsrf=AM9HkKmFAe6c5ttC3Glgq4OAYuHfy2tEjw:1699487253983&q=Signature+Care+baby+lotion&tbm=isch&source=lnms&sa=X&ved=2ahUKEwjopsuwy7WCAxWzFTQIHdjcCGIQ0pQJegQIDhAB&biw=1440&bih=754&dpr=2#imgrc=0Cnl_Uyq2nmiBM', 'https://photos.google.com/photo/AF1QipPtyZkpbFq-ZvHy5JD9WYAiDFBvmkPXB_pFNjPL']}
 {'ProductName': 'Tamarind Liquid', 'URLs': ['https://photos.google.com/photo/AF1QipMTNoAmEBIUBgJiziw2Tl16y2KscVqpjfDGlS-q', 'https://photos.google.com/photo/AF1QipPd47xo0JnbBdfR9pbd6FgvPRvxghQoP_wmWxph']}
-```
-
-# list relations
-
-``` example
-MATCH ()-[r]-()
-RETURN DISTINCT type(r) AS relationType
-ORDER BY relationType
-;
-```
-
-Results:
-
-``` example
-{'relationType': 'CONTAINS'}
-{'relationType': 'CREATED'}
-{'relationType': 'IS_THE_SAME_AS'}
-{'relationType': 'PURCHASE_AT'}
-{'relationType': 'RECOMMENDS'}
-```
-
-# WRONG: list relations, not just CONTAINS and show relation properties
-
-Gotcha! This is wrong. Notice we're missing the is-the-same-as relation.
-
-``` example
-MATCH ()-[r]-()
-UNWIND keys(r) AS propertyNames
-RETURN DISTINCT type(r) AS type, propertyNames AS propertyName
-ORDER BY type, propertyName
-;
-```
-
-Results:
-
-``` example
-{'type': 'CONTAINS', 'propertyName': 'quantity'}
-{'type': 'CONTAINS', 'propertyName': 'urls'}
-{'type': 'PURCHASE_AT', 'propertyName': 'aisle'}
-{'type': 'PURCHASE_AT', 'propertyName': 'note'}
-{'type': 'PURCHASE_AT', 'propertyName': 'url'}
-{'type': 'PURCHASE_AT', 'propertyName': 'urls'}
-{'type': 'RECOMMENDS', 'propertyName': 'urls'}
 ```
 
 # FIXED: list relations, not just CONTAINS and show relation properties
