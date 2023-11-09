@@ -10,6 +10,7 @@
 
 #+begin_example
 {{ item.cypher_query | trim }}
+;
 #+end_example
 
 {%- if item.results_commment %}{{ item.results_commment }}{%- endif %}

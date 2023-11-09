@@ -64,8 +64,6 @@ ORDER BY objectType
 MATCH (r:Recipe {name: 'Vegan Thai Red Curry'})-[:CONTAINS]->(p:Product)
 MATCH (p)-[:PURCHASE_AT]->(s:Store)
 RETURN s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients
-;
-
             """
         ),
     },
@@ -78,8 +76,6 @@ RETURN s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients
 MATCH (p:Product)-[:PURCHASE_AT]->(s:Store)
 RETURN p.name AS ProductName, s.name AS StoreName, p.type as Type
 ORDER BY toLower(p.type)
-;
-
             """
         ),
     },
@@ -95,8 +91,6 @@ WITH product
 ORDER BY rand()
 RETURN product.name AS ProductName
 ORDER BY ProductName
-;
-
             """
         ),
     },
@@ -109,8 +103,6 @@ ORDER BY ProductName
 MATCH (p:Product)
 WHERE p.type IS NULL
 RETURN p.name
-;
-
             """
         ),
     },
@@ -123,8 +115,6 @@ RETURN p.name
 MATCH (r:Recipe)-[c:CONTAINS]->(p:Product)
 WHERE id(p) IS NULL
 RETURN r.name AS RecipeName, c.quantity AS Quantity, c.urls AS RecipeUrls
-;
-
             """
         ),
     },
@@ -148,8 +138,6 @@ MATCH (p:Product)
 OPTIONAL MATCH (p)-[:PURCHASE_AT]->(s:Store)
 RETURN p.name AS ProductName, p.type AS Type, COALESCE(p.brand, '') AS Brand, COLLECT(DISTINCT s.name) AS AvailableAtStores
 ORDER BY toLower(Brand)
-;
-
             """
         ),
     },
@@ -165,8 +153,6 @@ WITH count(p) AS TotalProducts,
      sum(CASE WHEN p.brand IS NOT NULL AND p.brand <> '' THEN 1 ELSE 0 END) AS ProductsWithBrand,
      sum(CASE WHEN p.brand IS NULL OR p.brand = '' THEN 1 ELSE 0 END) AS ProductsWithoutBrand
 RETURN TotalProducts, ProductsWithBrand, ProductsWithoutBrand
-;
-
             """
         ),
     },
@@ -180,8 +166,6 @@ MATCH (p:Product)
 OPTIONAL MATCH (p)-[:PURCHASE_AT]->(s:Store)
 RETURN p.name AS ProductName, p.type AS Type, COALESCE(p.brand, '') AS Brand, COLLECT(DISTINCT s.name) AS AvailableAtStores
 ORDER BY toLower(Brand)
-;
-
             """
         ),
     },
@@ -195,8 +179,6 @@ MATCH (p:Product)
 WHERE p.name =~ ".*[^a-zA-Z0-9 ].*"
 RETURN p.name AS ProductName
 ORDER BY RAND()
-;
-
             """
         ),
     },
@@ -270,7 +252,6 @@ ORDER BY type, propertyName
             """
 MATCH (p:Product)-[:PURCHASE_AT]->(s:Store)
 RETURN p.name AS ProductName, s.name AS StoreName, p.type as Type
-;
             """
         ),
     },
@@ -363,7 +344,6 @@ ORDER BY type, propertyName
 MATCH (p:Product)
 WHERE NOT (p)-[:PURCHASE_AT]->(:Store)
 RETURN p.name AS ProductName
-;
             """
         ),
     },
@@ -382,7 +362,6 @@ WITH p, COLLECT(DISTINCT s) AS stores
 RETURN COLLECT(DISTINCT p.name) AS Ingredients,
        [store IN stores | CASE WHEN store IS NOT NULL THEN store.name ELSE 'Unknown' END] AS Stores
 ORDER BY [store IN Stores | toLower(store)]
-;
             """
         ),
     },
@@ -395,7 +374,6 @@ ORDER BY [store IN Stores | toLower(store)]
 MATCH (r:Recipe {name: 'Tomatillo Salsa Verde'})-[:CONTAINS]->(p:Product)
 MATCH (p)-[:PURCHASE_AT]->(s:Store)
 RETURN s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients
-;
             """
         ),
     },
@@ -414,7 +392,6 @@ WITH p, COLLECT(DISTINCT s) AS stores
 RETURN COLLECT(DISTINCT p.name) AS Ingredients,
        [store IN stores | CASE WHEN store IS NOT NULL THEN store.name ELSE 'Unknown' END] AS Stores
 ORDER BY [store IN Stores | toLower(store)]
-;
             """
         ),
     },
@@ -438,8 +415,6 @@ WITH p, COLLECT(DISTINCT s) AS stores
 RETURN COLLECT(DISTINCT p.name) AS Ingredients,
        [store IN stores | CASE WHEN store IS NOT NULL THEN store.name ELSE 'Unknown' END] AS Stores
 ORDER BY [store IN Stores | toLower(store)]
-;
-
             """
         ),
     },
@@ -453,8 +428,6 @@ MATCH (p:Product)-[:CONTAINS]->(i:Ingredient)
 WITH p, COLLECT(i) AS ingredients
 WHERE SIZE(ingredients) > 1
 RETURN p, ingredients
-;
-
             """
         ),
     },
@@ -467,8 +440,6 @@ RETURN p, ingredients
 MATCH (p:Product)
 WHERE toLower(p.type) CONTAINS 'vegetable'
 RETURN p.name AS ProductName, p.type AS Type
-;
-
             """
         ),
     },
@@ -481,7 +452,6 @@ RETURN p.name AS ProductName, p.type AS Type
 MATCH (p:Product)
 WHERE toLower(p.type) CONTAINS 'pea'
 RETURN p.name AS ProductName, p.type AS Type
-;
             """
         ),
     },
