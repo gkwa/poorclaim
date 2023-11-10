@@ -479,3 +479,22 @@
     WHERE toLower(p.type) CONTAINS 'peas'
     RETURN p.name AS ProductName, p.type AS Type
   title: locate products with pea-related types
+- cypher_query: |
+    MATCH (recipe:Recipe)-[:CONTAINS]->(ingredient:Product)
+    WHERE
+      toLower(ingredient.name) CONTAINS 'chicken stock'
+    RETURN recipe, ingredient
+    ORDER BY toLower(recipe.name)
+  title: what recipes call for chicken stock?
+  comment: |
+    I made a recipe that calls for chicken stock but I could only buy
+    1 qt, but recipe didn't call for 1qt. What other recipe can I make
+    with the leftovers?
+- cypher_query: |
+    MATCH (recipe:Recipe)-[:CONTAINS]->(ingredient:Product)
+    WHERE
+      toLower(ingredient.name) CONTAINS 'carrots' OR
+      toLower(ingredient.name) CONTAINS 'beans'
+    RETURN recipe, ingredient
+    ORDER BY toLower(recipe.name)
+  title: find recipes that contain either carrots or beans

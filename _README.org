@@ -484,16 +484,16 @@ ORDER BY RAND()
 
 Results:
 #+begin_example
+{'ProductName': 'Enchilada Sauce - Red'}
+{'ProductName': 'Large Shrimp (not frozen)'}
 {'ProductName': 'chicken - electric - rotisserie'}
-{'ProductName': 'Dino Kale (ugly spinach)'}
-{'ProductName': 'Half-gallon half & half'}
-{'ProductName': 'Aroy-D Coconut Milk'}
-{'ProductName': 'Quick Rolled Oats / Oats PLU 8485'}
-{'ProductName': 'Coffee - T - PLU 8852 T likes it, BB says YUX!'}
-{'ProductName': "Ice cream double-fudge brownie Dreyer's slow-churned"}
-{'ProductName': 'Coffee - MTM - Kivu Dark Espresso Roast'}
-{'ProductName': 'Beans - Kidney (Bulk)'}
-{'ProductName': 'Coffee / MTM / PLU 5820 / Kivu / Kivu Dark French Roast'}
+{'ProductName': 'Chili Pepper, Chipotle, Ground'}
+{'ProductName': 'Coffee - Taylor - PLU 8868'}
+{'ProductName': 'Martianmallows - Large but not gigantic'}
+{'ProductName': 'Pancake Mix - Snoqualmie Falls Lodge'}
+{'ProductName': 'A.1. Sauce'}
+{'ProductName': 'Almonds - bulk roasted or raw -- whichever is cheaper'}
+{'ProductName': 'Grapes, grape shaped'}
 # ...truncated to 10 for brevity
 #+end_example
 
@@ -904,16 +904,16 @@ ORDER BY ProductName
 
 Results:
 #+begin_example
-{'ProductName': 'Beansprouts'}
-{'ProductName': 'Cooking Oil'}
+{'ProductName': 'Coconut Oil'}
+{'ProductName': 'Egg yolk'}
+{'ProductName': 'Extra-virgin olive oil'}
+{'ProductName': 'Fermented shrimp paste'}
 {'ProductName': 'Feta Cheese'}
-{'ProductName': 'Grape Tomatoes'}
-{'ProductName': 'Maple Syrup'}
-{'ProductName': 'Mild dried red chilies'}
+{'ProductName': 'Fried shallots'}
+{'ProductName': 'Mirin'}
 {'ProductName': "Newman's Own Sesame Ginger Dressing"}
-{'ProductName': 'Rosemary'}
-{'ProductName': 'Salted Turnip'}
-{'ProductName': 'Sambal'}
+{'ProductName': 'Russet potatoes'}
+{'ProductName': 'Turmeric'}
 #+end_example
 
 * list the entity type its assocted with
@@ -1297,4 +1297,48 @@ Results:
 {'ProductName': 'Frozen Peas', 'Type': 'Peas'}
 {'ProductName': 'Snow peas', 'Type': 'Snow Peas'}
 {'ProductName': 'Sugar Snap Peas', 'Type': 'Sugar Snap Peas'}
+#+end_example
+
+* what recipes call for chicken stock?
+
+
+I made a recipe that calls for chicken stock but I could only buy
+1 qt, but recipe didn't call for 1qt. What other recipe can I make
+with the leftovers?
+
+#+begin_example
+MATCH (recipe:Recipe)-[:CONTAINS]->(ingredient:Product)
+WHERE
+  toLower(ingredient.name) CONTAINS 'chicken stock'
+RETURN recipe, ingredient
+ORDER BY toLower(recipe.name)
+;
+#+end_example
+
+Results:
+#+begin_example
+{'recipe': {'urls': ['https://theflavoursofkitchen.com/wprm_print/104534'], 'name': 'Chicken Thai Red Curry'}, 'ingredient': {'name': 'Chicken Stock or Water', 'type': 'Chicken Stock'}}
+{'recipe': {'urls': ['https://www.myfoodchannel.com/thai-eggplant-recipe/', 'https://www.youtube.com/watch?v=7a0IAC7pCgA'], 'name': 'Thai Eggplant Recipe'}, 'ingredient': {'name': 'Chicken stock', 'type': 'Stock'}}
+{'recipe': {'urls': ['https://www.joshuaweissman.com/post/easy-authentic-thai-green-curry', 'https://photos.google.com/photo/AF1QipMJV_m1w-qezTjSZAmu6Vam_PKMR6GICW6TJ883'], 'name': 'The Best Green Curry'}, 'ingredient': {'name': 'Chicken stock', 'type': 'Stock'}}
+#+end_example
+
+* find recipes that contain either carrots or beans
+
+
+#+begin_example
+MATCH (recipe:Recipe)-[:CONTAINS]->(ingredient:Product)
+WHERE
+  toLower(ingredient.name) CONTAINS 'carrots' OR
+  toLower(ingredient.name) CONTAINS 'beans'
+RETURN recipe, ingredient
+ORDER BY toLower(recipe.name)
+;
+#+end_example
+
+Results:
+#+begin_example
+{'recipe': {'urls': ['https://youtu.be/HJPRPEJY2WM?t=265', 'https://natashaskitchen.com/fresh-spring-rolls/', 'https://natashaskitchen.com/wprm_print/72895'], 'name': 'Fresh Spring Rolls'}, 'ingredient': {'name': 'Carrots', 'type': 'Carrots'}}
+{'recipe': {'urls': ['https://hot-thai-kitchen.com/singaporean-laksa/print/7645/', 'https://hot-thai-kitchen.com/singaporean-laksa/', 'https://www.youtube.com/watch?v=cWtnFKFiB_0'], 'name': 'Laksa'}, 'ingredient': {'name': 'Beansprouts', 'type': 'Vegetable'}}
+{'recipe': {'urls': ['https://cookieandkate.com/sugar-snap-pea-and-carrot-soba-noodles/print/23556/'], 'name': 'Sugar Snap Pea and Carrot Soba Noodles'}, 'ingredient': {'name': 'Carrots', 'type': 'Carrots'}}
+{'recipe': {'urls': ['https://lifemadesimplebakes.com/wprm_print/25731'], 'name': 'Yellow Coconut Curry Chicken'}, 'ingredient': {'name': 'Carrots', 'type': 'Carrots'}}
 #+end_example
