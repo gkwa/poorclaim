@@ -52,6 +52,10 @@ def process_query_data(query_data):
     )
 
     for item in query_data:
+        if not item["cypher_query"]:
+            logging.warning(f"query is empty for {item['title']}, skipping...")
+            continue
+
         item["results"] = run_cypher_query(
             driver,
             item["cypher_query"],

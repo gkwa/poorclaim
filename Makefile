@@ -7,7 +7,7 @@ README.md: sect1 sect2 sect3
 	cat sect3 >>README.md
 
 _README.org: main.py data.yaml template.org
-	python main.py --run-neo4j $<
+	python main.py --run-neo4j
 
 sect1: header.txt
 	cat $< >$@

@@ -1,4 +1,9 @@
 - cypher_query: |
+    MATCH (p:Product)
+    WHERE p.name = 'Ground Cumin'
+    RETURN p
+  title: find cumin in our database
+- cypher_query: |
     MATCH (n) RETURN n
   limit: 10
   title: list all nodes and relations
@@ -498,3 +503,28 @@
     RETURN recipe, ingredient
     ORDER BY toLower(recipe.name)
   title: find recipes that contain either carrots or beans
+- cypher_query: |
+    MATCH (recipe:Recipe)-[contains:CONTAINS]->(product:Product)
+    WHERE product.name IS NULL
+    RETURN recipe.name, contains.quantity, product.name
+  title: which recipe contains products that we're not aware of?
+- cypher_query: |
+  title: this should fail, but it silently discards
+  comment: |
+
+    How can I get neo4j to fail during data load if the target doesn't
+    exist?
+
+    For example when we do this:
+    cypher-shell -a neo4j://localhost:7687 --file data.cypher
+
+    and the data.cypher contains this:
+
+    CREATE (drunkenNoodles)-[:CONTAINS { quantity: 'Handful' }]->(basil)
+
+    but basil doesn't exist.
+
+    I want this:
+    cypher-shell -a neo4j://localhost:7687 --file data.cypher
+
+    to fail.
