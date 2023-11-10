@@ -544,15 +544,15 @@ Results:
 
 ``` example
 {'ProductName': 'chicken - electric - rotisserie'}
-{'ProductName': "Cornstarch Baby Powder (not Johnson's, they're baddies)"}
+{'ProductName': 'Dino Kale (ugly spinach)'}
+{'ProductName': 'Half-gallon half & half'}
+{'ProductName': 'Aroy-D Coconut Milk'}
+{'ProductName': 'Quick Rolled Oats / Oats PLU 8485'}
 {'ProductName': 'Coffee - T - PLU 8852 T likes it, BB says YUX!'}
-{'ProductName': 'Coffee - T - PLU 8853'}
-{'ProductName': 'Chicken Tenderloins / Rubber Duckies / 1 BAG ONLY'}
-{'ProductName': 'Ramen Noodles - Dry'}
-{'ProductName': 'German Mustard medium hot in jar w/ handle'}
-{'ProductName': 'Baking Cups in cake mix/flour aisle'}
-{'ProductName': 'Rolled Oats / Oats / Old Fashioned / PLU 8490'}
-{'ProductName': 'Pancake Mix - Snoqualmie Falls Lodge'}
+{'ProductName': "Ice cream double-fudge brownie Dreyer's slow-churned"}
+{'ProductName': 'Coffee - MTM - Kivu Dark Espresso Roast'}
+{'ProductName': 'Beans - Kidney (Bulk)'}
+{'ProductName': 'Coffee / MTM / PLU 5820 / Kivu / Kivu Dark French Roast'}
 # ...truncated to 10 for brevity
 ```
 
@@ -963,16 +963,16 @@ ORDER BY ProductName
 Results:
 
 ``` example
-{'ProductName': 'Candlenuts'}
-{'ProductName': 'Corn on cob'}
-{'ProductName': 'Ice-cold water'}
-{'ProductName': 'Japanese Nori'}
-{'ProductName': 'Korean Wild Sesame Oil'}
-{'ProductName': 'Laksa leaves'}
-{'ProductName': 'Miso'}
-{'ProductName': 'Shredded Carrot'}
-{'ProductName': 'Turmeric'}
-{'ProductName': 'Yellow Curry Paste'}
+{'ProductName': 'Beansprouts'}
+{'ProductName': 'Cooking Oil'}
+{'ProductName': 'Feta Cheese'}
+{'ProductName': 'Grape Tomatoes'}
+{'ProductName': 'Maple Syrup'}
+{'ProductName': 'Mild dried red chilies'}
+{'ProductName': "Newman's Own Sesame Ginger Dressing"}
+{'ProductName': 'Rosemary'}
+{'ProductName': 'Salted Turnip'}
+{'ProductName': 'Sambal'}
 ```
 
 # list the entity type its assocted with

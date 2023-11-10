@@ -6,16 +6,16 @@ README.md: sect1 sect2 sect3
 	cat sect2 >>README.md
 	cat sect3 >>README.md
 
-manual.org: main.py data.yaml template.org
+_README.org: main.py data.yaml template.org
 	python $<
 
 sect1: header.txt
 	cat $< >$@
 
-sect2: manual.org gh-md-toc
+sect2: _README.org gh-md-toc
 	cat $< | ./gh-md-toc - >$@
 
-sect3: manual.org
+sect3: _README.org
 	docker run --rm --volume "$$(pwd):/data" --user $$(id -u):$$(id -g) pandoc/extra $< --to=gfm --from=org --output=$@
 
 gh-md-toc:

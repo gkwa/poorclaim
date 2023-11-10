@@ -45,37 +45,11 @@ def update_data_yaml(data):
         yaml.dump(data, file, default_flow_style=False)
 
 
-def main():
-    parser = argparse.ArgumentParser(description="read/write data.yaml")
-    parser.add_argument("--titles", action="store_true", help="titles")
-    parser.add_argument("--fix-titles", action="store_true", help="fix titles")
-    parser.add_argument("--verbose", action="store_true", help="logging")
-    args = parser.parse_args()
-
-    # Enable verbose logging if --verbose is provided
-    if args.verbose:
-        logging.getLogger().setLevel(logging.DEBUG)
-        logging.debug("Verbose logging enabled.")
-
+def process_query_data(query_data):
     driver = neo4j.GraphDatabase.driver(
         "bolt://localhost:7687",
         auth=("", ""),
     )
-
-    # Load data from YAML into query_data
-    with open("data.yaml", "r") as file:
-        query_data = yaml.load(file, Loader=yaml.FullLoader)
-
-    if args.titles:
-        report_titles(query_data)
-        return
-
-    if args.fix_titles:
-        with open("fix.yaml", "r") as fix_file:
-            fix_data = yaml.load(fix_file, Loader=yaml.FullLoader)
-
-        query_data = fix_titles(query_data, fix_data)
-        update_data_yaml(query_data)
 
     for item in query_data:
         item["results"] = run_cypher_query(
@@ -91,10 +65,42 @@ def main():
 
     rendered_manual = template.render(data=query_data)
 
-    with open("manual.org", "w") as manual_file:
+    with open("_README.org", "w") as manual_file:
         manual_file.write(rendered_manual)
 
     driver.close()
+
+    logging.info("Processed query data and updated _README.org.")
+
+
+def main():
+    parser = argparse.ArgumentParser(description="read/write data.yaml")
+    parser.add_argument("--titles", action="store_true", help="titles")
+    parser.add_argument("--fix-titles", action="store_true", help="fix titles")
+    parser.add_argument("--verbose", action="store_true", help="logging")
+    parser.add_argument("--run-neo4j", action="store_true", help="query neo4j")
+    args = parser.parse_args()
+
+    if args.verbose:
+        logging.getLogger().setLevel(logging.DEBUG)
+        logging.debug("Verbose logging enabled.")
+
+    with open("data.yaml", "r") as file:
+        query_data = yaml.load(file, Loader=yaml.FullLoader)
+
+    if args.titles:
+        report_titles(query_data)
+
+    if args.fix_titles:
+        with open("fix.yaml", "r") as fix_file:
+            fix_data = yaml.load(fix_file, Loader=yaml.FullLoader)
+
+        query_data = fix_titles(query_data, fix_data)
+        update_data_yaml(query_data)
+
+    if args.run_neo4j:
+        logging.info("Processing.")
+        process_query_data(query_data)
 
 
 if __name__ == "__main__":
