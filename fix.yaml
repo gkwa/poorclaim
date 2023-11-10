@@ -1,0 +1,203 @@
+- before: list products
+  before_length: 13
+  after: list all products
+  after_length: 12
+
+- before: list relations
+  before_length: 14
+  after: list all relations
+  after_length: 13
+
+- before: list product names
+  before_length: 18
+  after: list all product names
+  after_length: 17
+
+- before: something about urls
+  before_length: 20
+  after: details about product urls
+  after_length: 23
+
+- before: list distinct entities
+  before_length: 22
+  after: list unique entities
+  after_length: 15
+
+- before: list Product properties
+  before_length: 23
+  after: list product properties
+  after_length: 22
+
+- before: list CONTAINS relations
+  before_length: 23
+  after: list CONTAINS relationships
+  after_length: 22
+
+- before: list nodes and relations
+  before_length: 24
+  after: list all nodes and relations
+  after_length: 23
+
+- before: list distinct node types
+  before_length: 24
+  after: list unique node types
+  after_length: 23
+
+- before: list products ordered by type
+  before_length: 29
+  after: list products by type
+  after_length: 22
+
+- before: fetch all urls for all products
+  before_length: 31
+  after: get all product urls
+  after_length: 18
+
+- before: where can I buy these products?
+  before_length: 31
+  after: find product purchasing info
+  after_length: 25
+
+- before: list products with the same name
+  before_length: 32
+  after: find products with identical names
+  after_length: 31
+
+- before: how many products have duplicates
+  before_length: 33
+  after: count products with duplicates
+  after_length: 30
+
+- before: list the brand of the product too
+  before_length: 33
+  after: include product brands
+  after_length: 22
+
+- before: where can I buy these 10 products?
+  before_length: 34
+  after: find purchasing info for 10 products
+  after_length: 29
+
+- before: 'WRONG: remove duplicate ingredients'
+  before_length: 35
+  after: 'FIXED: eliminate ingredient duplicates'
+  after_length: 29
+
+- before: list uniquely all CONTAINS relations
+  before_length: 36
+  after: list unique CONTAINS relationships
+  after_length: 29
+
+- before: save time by buy for multiple recipes
+  before_length: 37
+  after: streamline shopping for recipes
+  after_length: 27
+
+- before: list the entity type its associated with
+  before_length: 38
+  after: list entities with their types
+  after_length: 27
+
+- before: find products whose type contains peas
+  before_length: 38
+  after: locate products with pea-related types
+  after_length: 34
+
+- before: list Product nodes and their properties
+  before_length: 39
+  after: list product nodes with properties
+  after_length: 32
+
+- before: 'WRONG: list properties across all entities'
+  before_length: 42
+  after: 'FIXED: list properties for all entities'
+  after_length: 30
+
+- before: 'WRONG: count the products that have a brand'
+  before_length: 43
+  after: 'FIXED: tally products with associated brands'
+  after_length: 39
+
+- before: what store should I visit to make a recipe?
+  before_length: 43
+  after: identify stores for recipe ingredients
+  after_length: 34
+
+- before: find products whose type contains vegetable
+  before_length: 43
+  after: locate products with vegetable types
+  after_length: 39
+
+- before: fetch all products whose urls list is not empty
+  before_length: 47
+  after: get products with non-empty url lists
+  after_length: 30
+
+- before: list products that I've not yet assigned a type to
+  before_length: 49
+  after: find products without assigned types
+  after_length: 37
+
+- before: 'WRONG: list relation entities and their properties'
+  before_length: 50
+  after: 'FIXED: list relation entities with properties'
+  after_length: 38
+
+- before: list products that don't yet have a brand associated
+  before_length: 52
+  after: find products without associated brands
+  after_length: 42
+
+- before: list products whose names contain non-alphanum chars
+  before_length: 52
+  after: find products with non-alphanumeric names
+  after_length: 44
+
+- before: list properties assigned to the PURCHASE-AT relation
+  before_length: 52
+  after: list PURCHASE-AT relation properties
+  after_length: 36
+
+- before: 'WRONG: fetch all urls for all products except empty urls'
+  before_length: 56
+  after: 'FIXED: get non-empty product urls'
+  after_length: 25
+
+- before: where should I shop for ingredients for Chicken Teriyaki?
+  before_length: 57
+  after: find stores for Chicken Teriyaki ingredients
+  after_length: 41
+
+- before: list all products and for each product list all if its urls
+  before_length: 59
+  after: list all products with their urls
+  after_length: 43
+
+- before: list properties across all entities sorted case insensitively
+  before_length: 61
+  after: list case-insensitive properties for all entities
+  after_length: 51
+
+- before: list products that have at least one store associated with each
+  before_length: 63
+  after: find products with stores for each
+  after_length: 45
+
+- before: I want to make a recipe and travel to the fewest number of stores
+  before_length: 65
+  after: minimize travel for recipe ingredients
+  after_length: 40
+
+- before: for each product, count the number of duplicates that exist for it
+  before_length: 66
+  after: count duplicates for each product
+  after_length: 42
+
+- before: suppose I were to make Thai Curry, then what ingredients do I need?
+  before_length: 67
+  after: find ingredients for making Thai Curry
+  after_length: 46
+
+- before: 'FIXED: list products that have urls that are photos in google drive'
+  after: list products with Google Drive photo urls
+  after_length: 54

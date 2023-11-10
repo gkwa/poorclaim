@@ -1,8 +1,12 @@
 import argparse
+import logging
 
 import jinja2
 import neo4j
 import yaml
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 def run_cypher_query(driver, query, limiter=None):
@@ -27,13 +31,33 @@ def report_titles(data):
         print(f"{title} (Length: {length})")
 
 
+def fix_titles(data, fix_data):
+    for fix_item in fix_data:
+        for item in data:
+            if item["title"] == fix_item["before"]:
+                item["title"] = fix_item["after"]
+
+    return data
+
+
+def update_data_yaml(data):
+    with open("data.yaml", "w") as file:
+        yaml.dump(data, file, default_flow_style=False)
+
+
 def main():
     parser = argparse.ArgumentParser(description="read/write data.yaml")
     parser.add_argument("--titles", action="store_true", help="titles")
+    parser.add_argument("--fix-titles", action="store_true", help="fix titles")
+    parser.add_argument("--verbose", action="store_true", help="logging")
     args = parser.parse_args()
 
+    # Enable verbose logging if --verbose is provided
+    if args.verbose:
+        logging.getLogger().setLevel(logging.DEBUG)
+        logging.debug("Verbose logging enabled.")
+
     driver = neo4j.GraphDatabase.driver(
-        # "bolt://localhost:7687", auth=("username", "password")
         "bolt://localhost:7687",
         auth=("", ""),
     )
@@ -45,6 +69,13 @@ def main():
     if args.titles:
         report_titles(query_data)
         return
+
+    if args.fix_titles:
+        with open("fix.yaml", "r") as fix_file:
+            fix_data = yaml.load(fix_file, Loader=yaml.FullLoader)
+
+        query_data = fix_titles(query_data, fix_data)
+        update_data_yaml(query_data)
 
     for item in query_data:
         item["results"] = run_cypher_query(
