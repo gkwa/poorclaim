@@ -73,6 +73,35 @@ Results:
 {'productName': 'Toasted Sesame Oil', 'products': [{'name': 'Toasted Sesame Oil', 'type': 'Sesame Oil'}, {'name': 'Toasted Sesame Oil', 'type': 'Sesame Oil'}]}
 #+end_example
 
+* for each product, count the number of duplicates that exist for it
+
+
+#+begin_example
+MATCH (p:Product)
+WITH p.name AS productName, COLLECT(p) AS products
+WHERE SIZE(products) > 1
+RETURN productName, COUNT(products) AS duplicateCount
+;
+#+end_example
+
+Results:
+#+begin_example
+{'productName': 'Apple Cider Vinegar', 'duplicateCount': 1}
+{'productName': 'Red Curry Paste', 'duplicateCount': 1}
+{'productName': 'Avocado Oil', 'duplicateCount': 1}
+{'productName': 'Cooking Oil', 'duplicateCount': 1}
+{'productName': 'Heavy Cream', 'duplicateCount': 1}
+{'productName': 'Dried Thai shrimp paste', 'duplicateCount': 1}
+{'productName': 'Thai Eggplant', 'duplicateCount': 1}
+{'productName': 'Extra Firm Tofu', 'duplicateCount': 1}
+{'productName': 'Fish Sauce', 'duplicateCount': 1}
+{'productName': 'Yellow Curry Paste', 'duplicateCount': 1}
+{'productName': 'Maple Syrup', 'duplicateCount': 1}
+{'productName': 'Red Onion', 'duplicateCount': 1}
+{'productName': 'White Onion', 'duplicateCount': 1}
+{'productName': 'Toasted Sesame Oil', 'duplicateCount': 1}
+#+end_example
+
 * list products
 
 
@@ -174,35 +203,6 @@ Results:
 {'type': 'PURCHASE_AT', 'propertyName': 'url'}
 {'type': 'PURCHASE_AT', 'propertyName': 'urls'}
 {'type': 'RECOMMENDS', 'propertyName': 'urls'}
-#+end_example
-
-* for each product, count the number of duplicates that exist for it
-
-
-#+begin_example
-MATCH (p:Product)
-WITH p.name AS productName, COLLECT(p) AS products
-WHERE SIZE(products) > 1
-RETURN productName, COUNT(products) AS duplicateCount
-;
-#+end_example
-
-Results:
-#+begin_example
-{'productName': 'Apple Cider Vinegar', 'duplicateCount': 1}
-{'productName': 'Red Curry Paste', 'duplicateCount': 1}
-{'productName': 'Avocado Oil', 'duplicateCount': 1}
-{'productName': 'Cooking Oil', 'duplicateCount': 1}
-{'productName': 'Heavy Cream', 'duplicateCount': 1}
-{'productName': 'Dried Thai shrimp paste', 'duplicateCount': 1}
-{'productName': 'Thai Eggplant', 'duplicateCount': 1}
-{'productName': 'Extra Firm Tofu', 'duplicateCount': 1}
-{'productName': 'Fish Sauce', 'duplicateCount': 1}
-{'productName': 'Yellow Curry Paste', 'duplicateCount': 1}
-{'productName': 'Maple Syrup', 'duplicateCount': 1}
-{'productName': 'Red Onion', 'duplicateCount': 1}
-{'productName': 'White Onion', 'duplicateCount': 1}
-{'productName': 'Toasted Sesame Oil', 'duplicateCount': 1}
 #+end_example
 
 * how many products have duplicates
@@ -481,16 +481,16 @@ ORDER BY RAND()
 
 Results:
 #+begin_example
+{'ProductName': "Newman's Own Sesame Ginger Dressing"}
+{'ProductName': 'Black Pepper, Bulk'}
+{'ProductName': 'German Mustard medium hot in jar w/ handle'}
 {'ProductName': 'Blueberries - frozen uponina bag'}
-{'ProductName': 'Tortilla - Flour large diameter Don Pancho or Safeway brand'}
-{'ProductName': 'Chili Pepper, Chipotle, Ground'}
-{'ProductName': 'Ramen Noodles - Dry'}
-{'ProductName': 'Chicken Broth - 32 Oz'}
-{'ProductName': 'Grapes, grape shaped'}
-{'ProductName': 'chicken - electric - rotisserie'}
-{'ProductName': 'Pinot Grigio - Dry White Wine'}
-{'ProductName': 'Tomato Sauce - 29 oz can'}
-{'ProductName': 'Chicken Tenderloins / Rubber Duckies / 1 BAG ONLY'}
+{'ProductName': 'Avocados (not in bag stupid)'}
+{'ProductName': 'Almonds - bulk roasted or raw -- whichever is cheaper'}
+{'ProductName': 'Dry-Roasted Peanuts'}
+{'ProductName': 'Potatoes - Baby / Tri Color'}
+{'ProductName': 'Large Shrimp (not frozen)'}
+{'ProductName': 'Red, Green, Yella Peppers'}
 # ...truncated to 10 for brevity
 #+end_example
 
@@ -898,16 +898,16 @@ ORDER BY ProductName
 
 Results:
 #+begin_example
-{'ProductName': 'Coconut Oil'}
-{'ProductName': 'Cooking Oil'}
-{'ProductName': 'Fresh flat-leaf parsley'}
-{'ProductName': 'Fresno chilies'}
-{'ProductName': 'Grape Tomatoes'}
-{'ProductName': 'Korean Wild Sesame Oil'}
+{'ProductName': 'Aroy-D Coconut Milk'}
+{'ProductName': 'Feta Cheese'}
+{'ProductName': 'Kalamata Olives'}
+{'ProductName': 'Makrut lime zest'}
 {'ProductName': 'Red Curry Paste'}
-{'ProductName': 'Red Curry Paste'}
-{'ProductName': 'Spicy dried red chilies'}
-{'ProductName': 'Wasabi'}
+{'ProductName': 'Rice vinegar'}
+{'ProductName': 'Sawtooth Coriander'}
+{'ProductName': 'Shrimp Paste'}
+{'ProductName': 'Toasted sesame flakes'}
+{'ProductName': 'Tofu puffs'}
 #+end_example
 
 * list the entity type its assocted with
@@ -1201,8 +1201,13 @@ Results:
 {'Ingredients': ['Green Onion', 'Red Chilli Peppers'], 'Stores': ['Safeway']}
 #+end_example
 
-* WRONG: some recipes point to the same product multiple times by mistake
+* WRONG: remove duplicate ingredients
 
+
+WRONG: some recipes point to the same product multiple times by
+mistake
+
+This doesn't do what I expect.  Need to spend more time iterating.
 
 #+begin_example
 MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
