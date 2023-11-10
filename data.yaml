@@ -44,8 +44,11 @@
     MATCH ()-[r]-()
     RETURN DISTINCT type(r) AS relationType
     ORDER BY relationType
-- title: 'WRONG: list relations, not just CONTAINS and show relation properties'
+- title: 'WRONG: list relation entities and their properties'
   comment: |
+    WRONG: list relations, not just CONTAINS and show relation
+    properties.
+
     Gotcha!  This is wrong.  Notice we're missing the is-the-same-as relation.
   cypher_query: |
     MATCH ()-[r]-()
@@ -273,7 +276,7 @@
   cypher_query: |
     MATCH (p:Product)-[:PURCHASE_AT]->(s:Store)
     RETURN p.name AS ProductName, s.name AS StoreName, p.type as Type
-- title: list products that don't have a store associated with them
+- title: where can I buy these products?
   comment: |
     Where the hell do I buy this crap?
   cypher_query: |
@@ -281,8 +284,11 @@
     WHERE NOT (p)-[:PURCHASE_AT]->(:Store)
     RETURN p.name AS ProductName
     ORDER BY toLower(ProductName)
-- title: list products that don't have a store associated with them, but limit to 10
+- title: where can I buy these 10 products?
   comment: |
+    list products that don't have a store associated with them, but
+    limit to 10
+
     Data cleanup is a pain in the ass and I want to take it in bite
     size pieces, so randomize the list to keep me interested and
     return just 10 to keep me from being disheartended.
@@ -388,8 +394,11 @@
     MATCH (p:Product)
     WHERE p.urls IS NOT NULL AND ANY(url IN p.urls WHERE url CONTAINS 'photos.google.com')
     RETURN p.name AS ProductName, p.urls AS URLs;
-- title: 'FIXED: list relations, not just CONTAINS and show relation properties'
+- title: 'FIXED: list relation entities and their properties'
   comment: |
+    FIXED: list relations, not just CONTAINS and show relation
+    properties
+
     This fixes the item in section: 'WRONG: list relations, not
     just CONTAINS and show relation properties'
   cypher_query: |
@@ -419,7 +428,10 @@
     MATCH (r:Recipe {name: 'Tomatillo Salsa Verde'})-[:CONTAINS]->(p:Product)
     MATCH (p)-[:PURCHASE_AT]->(s:Store)
     RETURN s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients
-- title: suppose I would like to make 2 recipes, then what stores do I need to visit?
+- title: save time by buy for multiple recipes
+  comment: |
+    suppose I would like to make 2 recipes, then what stores do I need
+    to visit?
   cypher_query: |
     MATCH (r:Recipe)
     WHERE r.name IN ['Vietnamese Spring Rolls (Gỏi Cuốn)','Tom Yum Goong']
