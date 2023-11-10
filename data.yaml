@@ -509,26 +509,23 @@
     RETURN recipe.name, contains.quantity, product.name
   title: which recipe contains products that we're not aware of?
 - cypher_query: |
-  title: this should fail, but it silently discards
+  title: learn how to handle this case
   comment: |
-
-    How can I get neo4j to fail during data load if the target doesn't
-    exist?
-
-    For example when we do this:
-    cypher-shell -a neo4j://localhost:7687 --file data.cypher
-
-    and the data.cypher contains this:
-
+    I need to find a way to make this fail:
     #+begin_example
-    CREATE (drunkenNoodles)-[:CONTAINS { quantity: 'Handful' }]->(basil)
+    // test1.cypher
+    MATCH (n) DETACH DELETE n;
+
+    CREATE (yellowCurry)-[:CONTAINS { quantity: "1 tsp" }]->(cumin)
+
+    MATCH (n) RETURN n
     #+end_example
 
-    but basil doesn't exist.
-
-    I want this:
     #+begin_example
-    cypher-shell -a neo4j://localhost:7687 --file data.cypher
+    cypher-shell -a neo4j://localhost:7687 --file test1.cypher
     #+end_example
 
-    to fail.
+    In other words, if the entities don't yet exist, then don't allow
+    creating relations between them.
+
+    I want referenctial integrity here.
