@@ -424,7 +424,7 @@
     suppose I were to make Chicken Teriyaki, then what stores need I visit
     to get products I'd need for it?
   cypher_query: |
-    MATCH (r:Recipe {name: 'Tomatillo Salsa Verde'})-[:CONTAINS]->(p:Product)
+    MATCH (r:Recipe {name: 'Chicken Teriyaki Recipe'})-[:CONTAINS]->(p:Product)
     MATCH (p)-[:PURCHASE_AT]->(s:Store)
     RETURN s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients
   title: find stores for Chicken Teriyaki ingredients

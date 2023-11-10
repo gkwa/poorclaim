@@ -541,16 +541,16 @@ ORDER BY RAND()
 Results:
 
 ``` example
-{'ProductName': 'Rice Wine Vinegar - Kikkoman Mirin'}
-{'ProductName': 'Apple Cider Vinegar in Glass Bottle (Non-Organic)'}
-{'ProductName': 'Broth - Beef - low sodium'}
-{'ProductName': 'Potatoes - Baby / Tri Color'}
-{'ProductName': 'Kidney Beans - S&W'}
-{'ProductName': "Ice cream double-fudge brownie Dreyer's slow-churned"}
-{'ProductName': 'Flour - White, all-purpose (Unbleached if possible but no bigs)'}
-{'ProductName': 'Nonfat Yogurt (Plain/Blue Bucket)'}
-{'ProductName': 'Lemon Zest (grated lemon rind)'}
-{'ProductName': 'Eggs (Dozen)'}
+{'ProductName': 'chicken - electric - rotisserie'}
+{'ProductName': "Cornstarch Baby Powder (not Johnson's, they're baddies)"}
+{'ProductName': 'Coffee - T - PLU 8852 T likes it, BB says YUX!'}
+{'ProductName': 'Coffee - T - PLU 8853'}
+{'ProductName': 'Chicken Tenderloins / Rubber Duckies / 1 BAG ONLY'}
+{'ProductName': 'Ramen Noodles - Dry'}
+{'ProductName': 'German Mustard medium hot in jar w/ handle'}
+{'ProductName': 'Baking Cups in cake mix/flour aisle'}
+{'ProductName': 'Rolled Oats / Oats / Old Fashioned / PLU 8490'}
+{'ProductName': 'Pancake Mix - Snoqualmie Falls Lodge'}
 # ...truncated to 10 for brevity
 ```
 
@@ -962,15 +962,15 @@ Results:
 
 ``` example
 {'ProductName': 'Candlenuts'}
-{'ProductName': 'Fresno chilies'}
-{'ProductName': 'Grape Tomatoes'}
+{'ProductName': 'Corn on cob'}
 {'ProductName': 'Ice-cold water'}
-{'ProductName': 'Mild dried red chilies'}
-{'ProductName': 'Pressed Tofu'}
-{'ProductName': 'Sawtooth Coriander'}
+{'ProductName': 'Japanese Nori'}
+{'ProductName': 'Korean Wild Sesame Oil'}
+{'ProductName': 'Laksa leaves'}
+{'ProductName': 'Miso'}
 {'ProductName': 'Shredded Carrot'}
-{'ProductName': 'Tofu puffs'}
 {'ProductName': 'Turmeric'}
+{'ProductName': 'Yellow Curry Paste'}
 ```
 
 # list the entity type its assocted with
@@ -1191,7 +1191,7 @@ suppose I were to make Chicken Teriyaki, then what stores need I visit
 to get products I'd need for it?
 
 ``` example
-MATCH (r:Recipe {name: 'Tomatillo Salsa Verde'})-[:CONTAINS]->(p:Product)
+MATCH (r:Recipe {name: 'Chicken Teriyaki Recipe'})-[:CONTAINS]->(p:Product)
 MATCH (p)-[:PURCHASE_AT]->(s:Store)
 RETURN s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients
 ;
@@ -1200,10 +1200,15 @@ RETURN s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients
 Results:
 
 ``` example
-{'StoreName': 'Safeway', 'Ingredients': ['Tomatillos', 'Cilantro', 'White Onion', 'Jalapeno Pepper']}
-{'StoreName': "Trader Joe's", 'Ingredients': ['Garlic']}
-{'StoreName': 'Whole Foods', 'Ingredients': ['Lime juice']}
-{'StoreName': 'QFC', 'Ingredients': ['Salt']}
+{'StoreName': 'Thanh Son Tofu', 'Ingredients': ['Thai-style Baked Tofu']}
+{'StoreName': 'Hau Hau Market', 'Ingredients': ['Thai-style Baked Tofu']}
+{'StoreName': 'Safeway', 'Ingredients': ['Ginger', 'Broccolini', 'Rice Wine Vinegar - Kikkoman Mirin', 'Soy sauce']}
+{'StoreName': 'Uwajimaya', 'Ingredients': ['Rice']}
+{'StoreName': 'dummy place holder', 'Ingredients': ['Water']}
+{'StoreName': 'Madison Co-op', 'Ingredients': ['Chicken Thighs']}
+{'StoreName': "Trader Joe's", 'Ingredients': ['Red Onion', 'Garlic', 'Red Pepper']}
+{'StoreName': 'PCC', 'Ingredients': ['Sesame Seeds']}
+{'StoreName': 'Naked Grocer', 'Ingredients': ['Sesame Seeds']}
 ```
 
 # streamline shopping for recipes
