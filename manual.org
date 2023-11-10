@@ -1,6 +1,6 @@
 # -*- mode: org -*-
 #+STARTUP: overview
-* list nodes and relations
+* list all nodes and relations
 
 
 #+begin_example
@@ -23,7 +23,7 @@ Results:
 # ...truncated to 10 for brevity
 #+end_example
 
-* list distinct node types
+* list unique node types
 
 
 #+begin_example
@@ -42,7 +42,7 @@ Results:
 {'objectType': ['Store']}
 #+end_example
 
-* list products with the same name
+* find products with identical names
 
 
 This reveals that I need to clean up duplicates.
@@ -73,7 +73,7 @@ Results:
 {'productName': 'Toasted Sesame Oil', 'products': [{'name': 'Toasted Sesame Oil', 'type': 'Sesame Oil'}, {'name': 'Toasted Sesame Oil', 'type': 'Sesame Oil'}]}
 #+end_example
 
-* for each product, count the number of duplicates that exist for it
+* count duplicates for each product
 
 
 #+begin_example
@@ -102,7 +102,7 @@ Results:
 {'productName': 'Toasted Sesame Oil', 'duplicateCount': 1}
 #+end_example
 
-* list products
+* list all products
 
 
 #+begin_example
@@ -121,7 +121,7 @@ Results:
 # ...truncated to 5 for brevity
 #+end_example
 
-* list all products and for each product list all if its urls
+* list all products with their urls
 
 
 #+begin_example
@@ -142,7 +142,7 @@ Results:
 # ...truncated to 5 for brevity
 #+end_example
 
-* list product names
+* list all product names
 
 
 #+begin_example
@@ -162,7 +162,7 @@ Results:
 # ...truncated to 5 for brevity
 #+end_example
 
-* list relations
+* list all relations
 
 
 #+begin_example
@@ -181,8 +181,11 @@ Results:
 {'relationType': 'RECOMMENDS'}
 #+end_example
 
-* WRONG: list relations, not just CONTAINS and show relation properties
+* WRONG: list relation entities with properties
 
+
+WRONG: list relations, not just CONTAINS and show relation
+properties.
 
 Gotcha!  This is wrong.  Notice we're missing the is-the-same-as relation.
 
@@ -205,7 +208,7 @@ Results:
 {'type': 'RECOMMENDS', 'propertyName': 'urls'}
 #+end_example
 
-* how many products have duplicates
+* count products with duplicates
 
 
 In other words how much work do I have to do to cleanup my data?
@@ -223,7 +226,7 @@ Results:
 {'totalDuplicateProducts': 14}
 #+end_example
 
-* suppose I were to make Thai Curry, then what ingredients do I need?
+* find ingredients for making Thai Curry
 
 
 #+begin_example
@@ -241,7 +244,7 @@ Results:
 {'StoreName': 'Uwajimaya', 'Ingredients': ['Galangal']}
 #+end_example
 
-* list products ordered by type
+* list products by type
 
 
 #+begin_example
@@ -280,7 +283,7 @@ Results:
 #+begin_example
 #+end_example
 
-* something about urls
+* details about product urls
 
 
 #+begin_example
@@ -294,7 +297,7 @@ Results:
 #+begin_example
 #+end_example
 
-* list Product nodes and their properties
+* list product nodes with properties
 
 
 #+begin_example
@@ -317,7 +320,7 @@ Results:
 # ...truncated to 10 for brevity
 #+end_example
 
-* WRONG: count the products that have a brand
+* WRONG: tally products with associated brands
 
 
 I can't get this to do what I expect.
@@ -422,7 +425,7 @@ Results:
 {'productCount': 553}
 #+end_example
 
-* list products that don't yet have a brand associated
+* find products without associated brands
 
 
 #+begin_example
@@ -439,7 +442,7 @@ Results:
 {'TotalProducts': 553, 'ProductsWithBrand': 6, 'ProductsWithoutBrand': 547}
 #+end_example
 
-* list the brand of the product too
+* include product brands
 
 
 #+begin_example
@@ -465,7 +468,7 @@ Results:
 # ...truncated to 10 for brevity
 #+end_example
 
-* list products whose names contain non-alphanum chars
+* find products with non-alphanumeric names
 
 
 List products whose names contain non-alphanum sorted randomly to
@@ -481,20 +484,20 @@ ORDER BY RAND()
 
 Results:
 #+begin_example
-{'ProductName': "Newman's Own Sesame Ginger Dressing"}
-{'ProductName': 'Black Pepper, Bulk'}
-{'ProductName': 'German Mustard medium hot in jar w/ handle'}
-{'ProductName': 'Blueberries - frozen uponina bag'}
-{'ProductName': 'Avocados (not in bag stupid)'}
-{'ProductName': 'Almonds - bulk roasted or raw -- whichever is cheaper'}
-{'ProductName': 'Dry-Roasted Peanuts'}
+{'ProductName': 'Rice Wine Vinegar - Kikkoman Mirin'}
+{'ProductName': 'Apple Cider Vinegar in Glass Bottle (Non-Organic)'}
+{'ProductName': 'Broth - Beef - low sodium'}
 {'ProductName': 'Potatoes - Baby / Tri Color'}
-{'ProductName': 'Large Shrimp (not frozen)'}
-{'ProductName': 'Red, Green, Yella Peppers'}
+{'ProductName': 'Kidney Beans - S&W'}
+{'ProductName': "Ice cream double-fudge brownie Dreyer's slow-churned"}
+{'ProductName': 'Flour - White, all-purpose (Unbleached if possible but no bigs)'}
+{'ProductName': 'Nonfat Yogurt (Plain/Blue Bucket)'}
+{'ProductName': 'Lemon Zest (grated lemon rind)'}
+{'ProductName': 'Eggs (Dozen)'}
 # ...truncated to 10 for brevity
 #+end_example
 
-* fetch all urls for all products
+* get all product urls
 
 
 #+begin_example
@@ -518,7 +521,7 @@ Results:
 # ...truncated to 10 for brevity
 #+end_example
 
-* WRONG: fetch all urls for all products except empty urls
+* WRONG: get non-empty product urls
 
 
 This is not possible.
@@ -547,7 +550,7 @@ Results:
 # ...truncated to 10 for brevity
 #+end_example
 
-* fetch all products whose urls list is not empty
+* get products with non-empty url lists
 
 
 #+begin_example
@@ -572,7 +575,7 @@ Results:
 # ...truncated to 10 for brevity
 #+end_example
 
-* list Product properties
+* list product properties
 
 
 A product may or may not have any one of these properties.
@@ -602,7 +605,7 @@ Results:
 {'propertyName': 'urls'}
 #+end_example
 
-* list properties assigned to the PURCHASE-AT relation
+* list PURCHASE-AT relation properties
 
 
 #+begin_example
@@ -620,7 +623,7 @@ Results:
 {'propertyNames': 'note'}
 #+end_example
 
-* list properties across all entities sorted case insensitively
+* list case-insensitive properties for all entities
 
 
 #+begin_example
@@ -651,7 +654,7 @@ Results:
 {'propertyName': 'ytb'}
 #+end_example
 
-* WRONG: list properties across all entities
+* WRONG: list properties for all entities
 
 
 Item 'list properties of all entities including relations' fixes this.
@@ -731,7 +734,7 @@ Results:
 {'type': 'RECOMMENDS', 'propertyName': 'urls'}
 #+end_example
 
-* list products that have at least one store associated with each
+* find products with stores for each
 
 
 #+begin_example
@@ -755,7 +758,7 @@ Results:
 # ...truncated to 10 for brevity
 #+end_example
 
-* list products that don't have a store associated with them
+* find product purchasing info
 
 
 Where the hell do I buy this crap?
@@ -838,8 +841,11 @@ Results:
 {'ProductName': 'Yellow Curry Paste'}
 #+end_example
 
-* list products that don't have a store associated with them, but limit to 10
+* find purchasing info for 10 products
 
+
+list products that don't have a store associated with them, but
+limit to 10
 
 Data cleanup is a pain in the ass and I want to take it in bite
 size pieces, so randomize the list to keep me interested and
@@ -898,16 +904,16 @@ ORDER BY ProductName
 
 Results:
 #+begin_example
-{'ProductName': 'Aroy-D Coconut Milk'}
-{'ProductName': 'Feta Cheese'}
-{'ProductName': 'Kalamata Olives'}
-{'ProductName': 'Makrut lime zest'}
-{'ProductName': 'Red Curry Paste'}
-{'ProductName': 'Rice vinegar'}
+{'ProductName': 'Candlenuts'}
+{'ProductName': 'Fresno chilies'}
+{'ProductName': 'Grape Tomatoes'}
+{'ProductName': 'Ice-cold water'}
+{'ProductName': 'Mild dried red chilies'}
+{'ProductName': 'Pressed Tofu'}
 {'ProductName': 'Sawtooth Coriander'}
-{'ProductName': 'Shrimp Paste'}
-{'ProductName': 'Toasted sesame flakes'}
+{'ProductName': 'Shredded Carrot'}
 {'ProductName': 'Tofu puffs'}
+{'ProductName': 'Turmeric'}
 #+end_example
 
 * list the entity type its assocted with
@@ -936,7 +942,7 @@ Results:
 # ...truncated to 10 for brevity
 #+end_example
 
-* list distinct entities
+* list unique entities
 
 
 #+begin_example
@@ -974,7 +980,7 @@ Results:
 {'label': 'Product', 'propertyName': 'detail'}
 #+end_example
 
-* list CONTAINS relations
+* list CONTAINS relationships
 
 
 This doesn't help in the least bit...the properties are
@@ -998,7 +1004,7 @@ Results:
 # ...truncated to 5 for brevity
 #+end_example
 
-* list uniquely all CONTAINS relations
+* list unique CONTAINS relationships
 
 
 #+begin_example
@@ -1015,7 +1021,7 @@ Results:
 {'type': 'CONTAINS', 'propertyName': 'urls'}
 #+end_example
 
-* FIXED: list products that have urls that are photos in google drive
+* list products with Google Drive photo urls
 
 
 This fails
@@ -1057,8 +1063,11 @@ Results:
 {'ProductName': 'Tamarind Liquid', 'URLs': ['https://photos.google.com/photo/AF1QipMTNoAmEBIUBgJiziw2Tl16y2KscVqpjfDGlS-q', 'https://photos.google.com/photo/AF1QipPd47xo0JnbBdfR9pbd6FgvPRvxghQoP_wmWxph']}
 #+end_example
 
-* FIXED: list relations, not just CONTAINS and show relation properties
+* FIXED: list relation entities and their properties
 
+
+FIXED: list relations, not just CONTAINS and show relation
+properties
 
 This fixes the item in section: 'WRONG: list relations, not
 just CONTAINS and show relation properties'
@@ -1086,7 +1095,7 @@ Results:
 {'type': 'RECOMMENDS', 'propertyNames': ['urls']}
 #+end_example
 
-* what store should I visit to make a recipe?
+* identify stores for recipe ingredients
 
 
 suppose I would like to make a particular recipe, then what stores
@@ -1118,7 +1127,7 @@ Results:
 {'Ingredients': ['Rice paper', 'Mint leaves'], 'Stores': ['Uwajimaya']}
 #+end_example
 
-* where should I shop for ingredients for Chicken Teriyaki?
+* find stores for Chicken Teriyaki ingredients
 
 
 suppose I were to make Chicken Teriyaki, then what stores need I visit
@@ -1139,8 +1148,11 @@ Results:
 {'StoreName': 'QFC', 'Ingredients': ['Salt']}
 #+end_example
 
-* suppose I would like to make 2 recipes, then what stores do I need to visit?
+* streamline shopping for recipes
 
+
+suppose I would like to make 2 recipes, then what stores do I need
+to visit?
 
 #+begin_example
 MATCH (r:Recipe)
@@ -1171,7 +1183,7 @@ Results:
 {'Ingredients': ['Lime juice'], 'Stores': ['Whole Foods']}
 #+end_example
 
-* I want to make a recipe and travel to the fewest number of stores
+* minimize travel for recipe ingredients
 
 
 If I would like to make a particular recipe, then what stores do I
@@ -1248,7 +1260,7 @@ Results:
 {'r': {'urls': ['https://www.cookerru.com/wprm_print/7756'], 'name': '10-Minute Zaru Soba (Cold Soba Noodles)'}, 'products': [{'name': 'Green Onion', 'type': 'Onion'}, {'name': 'Soy sauce', 'type': 'Soy sauce'}, {'name': 'Soba Noodles', 'type': 'Soba Noodles'}, {'name': 'SWEET preserved daikon radish', 'type': 'Radish'}, {'name': 'Mirin', 'type': 'Mirin'}, {'name': 'Egg yolk', 'type': 'Egg yolk'}, {'name': 'Toasted sesame flakes', 'type': 'Garnish'}, {'name': 'Toasted Seaweed', 'type': 'Seaweed'}, {'name': 'Wasabi', 'type': 'Wasabi'}, {'name': 'Granulated Sugar', 'type': 'Granulated Sugar'}]}
 #+end_example
 
-* find products whose type contains vegetable
+* locate products with vegetable types
 
 
 #+begin_example
@@ -1264,7 +1276,7 @@ Results:
 {'ProductName': 'Vegetable Oil', 'Type': 'Vegetable Oil'}
 #+end_example
 
-* find products whose type contains peas
+* locate products with pea-related types
 
 
 #+begin_example
