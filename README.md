@@ -1,3 +1,10 @@
+I don't know neo4j but it seems like it might be useful.
+
+Don't make me learn the theory or stare at documenation for hours,
+just give me some examples I can copy/paste...then later if it turns
+out using neo4j seems like the right path, then I can pour laborously
+over the manual.
+
 Please, just give me a shitton of examples that I can
 copy/paste...maybe later I'll read the manual.
 
