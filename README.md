@@ -563,16 +563,16 @@ ORDER BY RAND()
 Results:
 
 ``` example
-{'ProductName': 'WEL-PAC Dashi Kombu Dried Seaweed'}
-{'ProductName': 'Coffee - Taylor - PLU 8868'}
-{'ProductName': "Cornstarch Baby Powder (not Johnson's, they're baddies)"}
-{'ProductName': 'Tomato Paste - 6 oz can'}
-{'ProductName': 'Quick Rolled Oats / Oats PLU 8485'}
-{'ProductName': 'Coffee - MTM - Kivu Dark Espresso Roast'}
-{'ProductName': 'Cocoa Powder, Unsweetened, Hersheys Natural - 8 Oz'}
-{'ProductName': 'German Mustard medium hot in jar w/ handle'}
-{'ProductName': 'Flour - White, all-purpose (Unbleached if possible but no bigs)'}
-{'ProductName': 'Coffee - BB - PLU 8875 (less yums than 8863)'}
+{'ProductName': 'Coffee / MTM / PLU 5820 / Kivu / Kivu Dark French Roast'}
+{'ProductName': 'Thai-style Baked Tofu'}
+{'ProductName': 'Yeast (Active Dry)'}
+{'ProductName': 'Tomato Sauce - 15 oz can'}
+{'ProductName': 'Garlic Chives (alternative: chives)'}
+{'ProductName': 'Oil-packed sun-dried tomatoes'}
+{'ProductName': "Newman's Own Sesame Ginger Dressing"}
+{'ProductName': 'Martianmallows - Large but not gigantic'}
+{'ProductName': 'Unsalted Tops (Unsalted Salteens)'}
+{'ProductName': 'Ramen Noodles - Dry'}
 # ...truncated to 10 for brevity
 ```
 
@@ -983,16 +983,16 @@ ORDER BY ProductName
 Results:
 
 ``` example
-{'ProductName': 'Avocado Oil'}
-{'ProductName': 'Candlenuts'}
-{'ProductName': 'Cooking Oil'}
-{'ProductName': 'Dried Thai shrimp paste'}
-{'ProductName': 'Fresno chilies'}
-{'ProductName': 'Green Bell Pepper'}
-{'ProductName': 'Makrut lime zest'}
-{'ProductName': 'Salt and pepper'}
+{'ProductName': 'Beansprouts'}
+{'ProductName': 'Coconut Aminos'}
+{'ProductName': 'Cornstarch'}
+{'ProductName': 'Feta Cheese'}
+{'ProductName': 'Kosher Salt'}
+{'ProductName': 'Pressed Tofu'}
+{'ProductName': 'Red Curry Paste'}
+{'ProductName': 'Rice vinegar'}
+{'ProductName': 'Shredded Carrot'}
 {'ProductName': 'Shrimp Paste'}
-{'ProductName': 'Tamarind Paste'}
 ```
 
 # list the entity type its assocted with
@@ -1448,11 +1448,17 @@ For example when we do this: cypher-shell -a neo4j://localhost:7687
 
 and the data.cypher contains this:
 
-CREATE (drunkenNoodles)-\[:CONTAINS { quantity: 'Handful' }\]-\>(basil)
+``` example
+CREATE (drunkenNoodles)-[:CONTAINS { quantity: 'Handful' }]->(basil)
+```
 
 but basil doesn't exist.
 
-I want this: cypher-shell -a neo4j://localhost:7687 –file data.cypher
+I want this:
+
+``` example
+cypher-shell -a neo4j://localhost:7687 --file data.cypher
+```
 
 to fail.
 
