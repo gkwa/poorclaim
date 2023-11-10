@@ -78,11 +78,6 @@
   after: find purchasing info for 10 products
   after_length: 29
 
-- before: 'WRONG: remove duplicate ingredients'
-  before_length: 35
-  after: 'FIXED: eliminate ingredient duplicates'
-  after_length: 29
-
 - before: list uniquely all CONTAINS relations
   before_length: 36
   after: list unique CONTAINS relationships
@@ -110,12 +105,12 @@
 
 - before: 'WRONG: list properties across all entities'
   before_length: 42
-  after: 'FIXED: list properties for all entities'
+  after: 'WRONG: list properties for all entities'
   after_length: 30
 
 - before: 'WRONG: count the products that have a brand'
   before_length: 43
-  after: 'FIXED: tally products with associated brands'
+  after: 'WRONG: tally products with associated brands'
   after_length: 39
 
 - before: what store should I visit to make a recipe?
@@ -140,7 +135,7 @@
 
 - before: 'WRONG: list relation entities and their properties'
   before_length: 50
-  after: 'FIXED: list relation entities with properties'
+  after: 'WRONG: list relation entities with properties'
   after_length: 38
 
 - before: list products that don't yet have a brand associated
@@ -160,7 +155,7 @@
 
 - before: 'WRONG: fetch all urls for all products except empty urls'
   before_length: 56
-  after: 'FIXED: get non-empty product urls'
+  after: 'WRONG: get non-empty product urls'
   after_length: 25
 
 - before: where should I shop for ingredients for Chicken Teriyaki?
