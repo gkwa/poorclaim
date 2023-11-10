@@ -15,11 +15,24 @@
     WITH p.name AS productName, COLLECT(p) AS products
     WHERE SIZE(products) > 1
     RETURN productName, products
+- title: for each product, count the number of duplicates that exist for it
+  cypher_query: |
+    MATCH (p:Product)
+    WITH p.name AS productName, COLLECT(p) AS products
+    WHERE SIZE(products) > 1
+    RETURN productName, COUNT(products) AS duplicateCount
 - title: list products
   limit: 5
   cypher_query: |
     MATCH (p:Product)
     RETURN p
+- title: list all products and for each product list all if its urls
+  limit: 5
+  cypher_query: |
+    MATCH (p:Product)
+    WITH p.name AS productName, p.urls AS productUrls
+    UNWIND productUrls AS url
+    RETURN productName, url
 - title: list product names
   limit: 5
   cypher_query: |
@@ -39,12 +52,6 @@
     UNWIND keys(r) AS propertyNames
     RETURN DISTINCT type(r) AS type, propertyNames AS propertyName
     ORDER BY type, propertyName
-- title: for each product, count the number of duplicates that exist for it
-  cypher_query: |
-    MATCH (p:Product)
-    WITH p.name AS productName, COLLECT(p) AS products
-    WHERE SIZE(products) > 1
-    RETURN productName, COUNT(products) AS duplicateCount
 - title: how many products have duplicates
   comment: |
     In other words how much work do I have to do to cleanup my data?
@@ -202,9 +209,12 @@
   cypher_query: |
     MATCH (p:Product)
     RETURN p.name AS ProductName, p.urls AS URLs;
-- title: "WRONG: fetch all urls for all products, but then don't show urls if product doesn't have any"
+- title: "WRONG: fetch all urls for all products except empty urls"
   comment: |
     This is not possible.
+
+    WRONG: fetch all urls for all products, but then don't show urls
+    if product doesn't have any
   limit: 10
   cypher_query: |
     MATCH (p:Product)
@@ -271,7 +281,7 @@
     WHERE NOT (p)-[:PURCHASE_AT]->(:Store)
     RETURN p.name AS ProductName
     ORDER BY toLower(ProductName)
-- title: list products that don't have a store associated with them, but list only 10
+- title: list products that don't have a store associated with them, but limit to 10
   comment: |
     Data cleanup is a pain in the ass and I want to take it in bite
     size pieces, so randomize the list to keep me interested and
@@ -387,7 +397,10 @@
     RETURN DISTINCT type(r) AS type,
                     CASE WHEN size(keys(r)) > 0 THEN keys(r) ELSE [] END AS propertyNames
     ORDER BY type, propertyNames
-- title: suppose I would like to make a particular recipe, then what stores do I need to visit?
+- title: what store should I visit to make a recipe?
+  comment: |
+    suppose I would like to make a particular recipe, then what stores
+    do I need to visit?
   cypher_query: |
     MATCH (r:Recipe)
     WHERE r.name IN ['Vietnamese Spring Rolls (Gỏi Cuốn)']
@@ -398,7 +411,10 @@
     RETURN COLLECT(DISTINCT p.name) AS Ingredients,
            [store IN stores | CASE WHEN store IS NOT NULL THEN store.name ELSE 'Unknown' END] AS Stores
     ORDER BY [store IN Stores | toLower(store)]
-- title: suppose I were to make Chicken Teriyaki, then what stores need I visit to get products I'd need for it?
+- title: where should I shop for ingredients for Chicken Teriyaki?
+  comment: |
+    suppose I were to make Chicken Teriyaki, then what stores need I visit
+    to get products I'd need for it?
   cypher_query: |
     MATCH (r:Recipe {name: 'Tomatillo Salsa Verde'})-[:CONTAINS]->(p:Product)
     MATCH (p)-[:PURCHASE_AT]->(s:Store)
@@ -430,7 +446,12 @@
     RETURN COLLECT(DISTINCT p.name) AS Ingredients,
            [store IN stores | CASE WHEN store IS NOT NULL THEN store.name ELSE 'Unknown' END] AS Stores
     ORDER BY [store IN Stores | toLower(store)]
-- title: 'WRONG: some recipes point to the same product multiple times by mistake'
+- title: 'WRONG: remove duplicate ingredients'
+  comment: |
+    WRONG: some recipes point to the same product multiple times by
+    mistake
+
+    This doesn't do what I expect.  Need to spend more time iterating.
   cypher_query: |
     MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
     WITH r, COLLECT(p) AS products
