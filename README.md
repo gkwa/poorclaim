@@ -63,10 +63,10 @@ https://github.com/taylormonacelli/anythingflorida
 * [locate products with pea-related types](#locate-products-with-pea-related-types)
 * [what recipes call for chicken stock?](#what-recipes-call-for-chicken-stock)
 * [find recipes that contain either carrots or beans](#find-recipes-that-contain-either-carrots-or-beans)
-* [which recipe contains products that we’re not aware of?](#which-recipe-contains-products-that-were-not-aware-of)
-* [which recipe contains products that we’re not aware of?  Don’t repeat please.](#which-recipe-contains-products-that-were-not-aware-of--dont-repeat-please)
+* [detecting unknown products in a recipe](#detecting-unknown-products-in-a-recipe)
+* [recipe with unknown products](#recipe-with-unknown-products)
 * [cleanup data, find recipes with null prouct names](#cleanup-data-find-recipes-with-null-prouct-names)
-* [focus on fixing data just for a single recipe for now](#focus-on-fixing-data-just-for-a-single-recipe-for-now)
+* [fixing data for a single recipe](#fixing-data-for-a-single-recipe)
 # find cumin in our database
 
 ``` example
@@ -565,16 +565,16 @@ ORDER BY RAND()
 Results:
 
 ``` example
-{'ProductName': 'Chicken Broth - Swanson, 14.5 Oz'}
-{'ProductName': 'Beans - Kidney (Bulk)'}
-{'ProductName': 'WEL-PAC Dashi Kombu Dried Seaweed'}
-{'ProductName': 'Lemon Zest (grated lemon rind)'}
-{'ProductName': 'Coffee - MTM - Kivu Dark Espresso Roast'}
-{'ProductName': 'Coffee - MTM - PLU 1859 - Fidalgo Bay Organic Fair Trade French Roast - Extra Dark'}
-{'ProductName': 'Coffee / MTM / PLU 5820 / Kivu / Kivu Dark French Roast'}
-{'ProductName': 'Red, Green, Yella Peppers'}
-{'ProductName': 'Whole wheat Flour, all-purpose'}
-{'ProductName': 'Nonfat Yogurt (Plain/Blue Bucket)'}
+{'ProductName': 'Dino Kale (ugly spinach)'}
+{'ProductName': 'Coffee - T - PLU 8853'}
+{'ProductName': 'Oil-packed sun-dried tomatoes'}
+{'ProductName': 'Quick Rolled Oats / Oats PLU 8485'}
+{'ProductName': 'Almonds - bulk roasted or raw -- whichever is cheaper'}
+{'ProductName': 'Soy Sauce - Liquid Aminos'}
+{'ProductName': 'Pancake Mix - Snoqualmie Falls Lodge'}
+{'ProductName': 'Fresh flat-leaf parsley'}
+{'ProductName': 'Chicken Broth - 32 Oz'}
+{'ProductName': 'Kidney Beans - S&W'}
 # ...truncated to 10 for brevity
 ```
 
@@ -984,16 +984,16 @@ ORDER BY ProductName
 Results:
 
 ``` example
-{'ProductName': 'Coconut Oil'}
-{'ProductName': 'Egg yolk'}
+{'ProductName': 'Avocado Oil'}
+{'ProductName': 'Beansprouts'}
+{'ProductName': 'Fermented shrimp paste'}
 {'ProductName': 'Fresh flat-leaf parsley'}
+{'ProductName': 'Green lettuce'}
 {'ProductName': 'Japanese Nori'}
-{'ProductName': 'Laksa leaves'}
-{'ProductName': 'Makrut lime zest'}
-{'ProductName': 'Mild dried red chilies'}
+{'ProductName': 'Pressed Tofu'}
 {'ProductName': 'Red Curry Paste'}
-{'ProductName': 'Shrimp Paste'}
-{'ProductName': 'Toasted sesame flakes'}
+{'ProductName': 'Spicy dried red chilies'}
+{'ProductName': 'Three Crabs Fish Sauce'}
 ```
 
 # list the entity type its assocted with
@@ -1425,7 +1425,7 @@ Results:
 {'recipe': {'urls': ['https://lifemadesimplebakes.com/wprm_print/25731'], 'name': 'Yellow Coconut Curry Chicken'}, 'ingredient': {'name': 'Carrots', 'type': 'Carrots'}}
 ```
 
-# which recipe contains products that we're not aware of?
+# detecting unknown products in a recipe
 
 Black Beans has cumin, but we don't have cumin listed in the
 database…for example.
@@ -1448,7 +1448,7 @@ Results:
 {'recipe.name': 'Easy Black Bean Soup'}
 ```
 
-# which recipe contains products that we're not aware of? Don't repeat please.
+# recipe with unknown products
 
 ``` example
 MATCH (recipe)-[r:CONTAINS]->(product)
@@ -1577,7 +1577,7 @@ Results:
 {'recipe.name': 'Easy Black Bean Soup', 'allProducts.name': 'Salt'}
 ```
 
-# focus on fixing data just for a single recipe for now
+# fixing data for a single recipe
 
 ``` example
 MATCH (recipe)-[:CONTAINS]->(product)

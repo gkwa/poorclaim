@@ -507,7 +507,7 @@
     MATCH (recipe)-[:CONTAINS]->(product)
     WHERE product.name IS NULL
     RETURN recipe.name
-  title: which recipe contains products that we're not aware of?
+  title: detecting unknown products in a recipe
   comment: |
     Black Beans has cumin, but we don't have cumin listed in the
     database...for example.
@@ -515,7 +515,7 @@
     MATCH (recipe)-[r:CONTAINS]->(product)
     WHERE product.name IS NULL
     RETURN DISTINCT recipe.name, r.quantity;
-  title: which recipe contains products that we're not aware of?  Don't repeat please.
+  title: recipe with unknown products
 - cypher_query: |
     MATCH (recipe)-[:CONTAINS]->(product)
     WHERE product.name IS NULL
@@ -537,4 +537,4 @@
     WITH recipe
     MATCH (recipe)-[:CONTAINS]->(allProducts)
     RETURN recipe, allProducts;
-  title: focus on fixing data just for a single recipe for now
+  title: fixing data for a single recipe
