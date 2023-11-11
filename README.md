@@ -65,6 +65,7 @@ https://github.com/taylormonacelli/anythingflorida
 * [find recipes that contain either carrots or beans](#find-recipes-that-contain-either-carrots-or-beans)
 * [which recipe contains products that we’re not aware of?](#which-recipe-contains-products-that-were-not-aware-of)
 * [learn how to handle this case](#learn-how-to-handle-this-case)
+* [maybe this fixes it](#maybe-this-fixes-it)
 # find cumin in our database
 
 ``` example
@@ -89,7 +90,7 @@ MATCH (n) RETURN n
 Results:
 
 ``` example
-{'n': {}}
+{'n': {'name': 'Yellow Curry with Chicken'}}
 {'n': {}}
 # ...truncated to 10 for brevity
 ```
@@ -106,7 +107,8 @@ ORDER BY objectType
 Results:
 
 ``` example
-{'objectType': []}
+{'objectType': ['Product']}
+{'objectType': ['Recipe']}
 ```
 
 # find products with identical names
@@ -152,6 +154,7 @@ RETURN p
 Results:
 
 ``` example
+{'p': {}}
 # ...truncated to 5 for brevity
 ```
 
@@ -183,6 +186,7 @@ ORDER BY toLower(p.name)
 Results:
 
 ``` example
+{'p.name': None}
 # ...truncated to 5 for brevity
 ```
 
@@ -280,6 +284,7 @@ RETURN p.name
 Results:
 
 ``` example
+{'p.name': None}
 ```
 
 # details about product urls
@@ -306,6 +311,7 @@ MATCH (n:Product) RETURN n
 Results:
 
 ``` example
+{'n': {}}
 # ...truncated to 10 for brevity
 ```
 
@@ -411,7 +417,7 @@ RETURN COUNT(p) AS productCount
 Results:
 
 ``` example
-{'productCount': 0}
+{'productCount': 1}
 ```
 
 # find products without associated brands
@@ -428,7 +434,7 @@ RETURN TotalProducts, ProductsWithBrand, ProductsWithoutBrand
 Results:
 
 ``` example
-{'TotalProducts': 0, 'ProductsWithBrand': 0, 'ProductsWithoutBrand': 0}
+{'TotalProducts': 1, 'ProductsWithBrand': 0, 'ProductsWithoutBrand': 1}
 ```
 
 # include product brands
@@ -444,6 +450,7 @@ ORDER BY toLower(Brand)
 Results:
 
 ``` example
+{'ProductName': None, 'Type': None, 'Brand': '', 'AvailableAtStores': []}
 # ...truncated to 10 for brevity
 ```
 
@@ -477,6 +484,7 @@ RETURN p.name AS ProductName, p.urls AS URLs
 Results:
 
 ``` example
+{'ProductName': None, 'URLs': None}
 # ...truncated to 10 for brevity
 ```
 
@@ -496,6 +504,7 @@ RETURN p.name AS ProductName, p.urls AS URLs
 Results:
 
 ``` example
+{'ProductName': None, 'URLs': None}
 # ...truncated to 10 for brevity
 ```
 
@@ -559,6 +568,7 @@ ORDER BY toLower(propertyName)
 Results:
 
 ``` example
+{'propertyName': 'name'}
 ```
 
 # WRONG: list properties for all entities
@@ -575,6 +585,7 @@ RETURN DISTINCT propertyName
 Results:
 
 ``` example
+{'propertyName': 'name'}
 ```
 
 # FIXED: list properties across all entities
@@ -600,6 +611,7 @@ ORDER BY type, propertyName
 Results:
 
 ``` example
+{'type': 'Node', 'propertyName': 'name'}
 {'type': 'CONTAINS', 'propertyName': 'quantity'}
 ```
 
@@ -632,6 +644,7 @@ ORDER BY toLower(ProductName)
 Results:
 
 ``` example
+{'ProductName': None}
 ```
 
 # find purchasing info for 10 products
@@ -697,6 +710,7 @@ ORDER BY ProductName
 Results:
 
 ``` example
+{'ProductName': None}
 ```
 
 # list the entity type its assocted with
@@ -712,6 +726,7 @@ RETURN label, propertyName
 Results:
 
 ``` example
+{'label': 'Recipe', 'propertyName': 'name'}
 # ...truncated to 10 for brevity
 ```
 
@@ -729,6 +744,7 @@ RETURN DISTINCT label, propertyName
 Results:
 
 ``` example
+{'label': 'Recipe', 'propertyName': 'name'}
 ```
 
 # list CONTAINS relationships
@@ -1007,6 +1023,7 @@ RETURN recipe.name, contains.quantity, product.name
 Results:
 
 ``` example
+{'recipe.name': 'Yellow Curry with Chicken', 'contains.quantity': '1 tsp', 'product.name': None}
 ```
 
 # learn how to handle this case
@@ -1030,6 +1047,34 @@ In other words, if the entities don't yet exist, then don't allow
 creating relations between them.
 
 I want referenctial integrity here.
+
+``` example
+
+;
+```
+
+Results:
+
+``` example
+```
+
+# maybe this fixes it
+
+``` example
+MATCH (n) DETACH DELETE n
+;
+
+CREATE (yellowCurry:Recipe {name: "Yellow Curry with Chicken"})-[:CONTAINS { quantity: "1 tsp" }]->(cumin:Product)
+;
+
+MATCH (n) RETURN n
+;
+
+MATCH (recipe:Recipe)-[contains:CONTAINS]->(product:Product)
+WHERE product.name IS NULL
+RETURN recipe.name
+;
+```
 
 ``` example
 

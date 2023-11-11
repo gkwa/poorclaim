@@ -24,7 +24,7 @@ MATCH (n) RETURN n
 
 Results:
 #+begin_example
-{'n': {}}
+{'n': {'name': 'Yellow Curry with Chicken'}}
 {'n': {}}
 # ...truncated to 10 for brevity
 #+end_example
@@ -41,7 +41,8 @@ ORDER BY objectType
 
 Results:
 #+begin_example
-{'objectType': []}
+{'objectType': ['Product']}
+{'objectType': ['Recipe']}
 #+end_example
 
 * find products with identical names
@@ -87,6 +88,7 @@ RETURN p
 
 Results:
 #+begin_example
+{'p': {}}
 # ...truncated to 5 for brevity
 #+end_example
 
@@ -118,6 +120,7 @@ ORDER BY toLower(p.name)
 
 Results:
 #+begin_example
+{'p.name': None}
 # ...truncated to 5 for brevity
 #+end_example
 
@@ -216,6 +219,7 @@ RETURN p.name
 
 Results:
 #+begin_example
+{'p.name': None}
 #+end_example
 
 * details about product urls
@@ -242,6 +246,7 @@ MATCH (n:Product) RETURN n
 
 Results:
 #+begin_example
+{'n': {}}
 # ...truncated to 10 for brevity
 #+end_example
 
@@ -347,7 +352,7 @@ RETURN COUNT(p) AS productCount
 
 Results:
 #+begin_example
-{'productCount': 0}
+{'productCount': 1}
 #+end_example
 
 * find products without associated brands
@@ -364,7 +369,7 @@ RETURN TotalProducts, ProductsWithBrand, ProductsWithoutBrand
 
 Results:
 #+begin_example
-{'TotalProducts': 0, 'ProductsWithBrand': 0, 'ProductsWithoutBrand': 0}
+{'TotalProducts': 1, 'ProductsWithBrand': 0, 'ProductsWithoutBrand': 1}
 #+end_example
 
 * include product brands
@@ -380,6 +385,7 @@ ORDER BY toLower(Brand)
 
 Results:
 #+begin_example
+{'ProductName': None, 'Type': None, 'Brand': '', 'AvailableAtStores': []}
 # ...truncated to 10 for brevity
 #+end_example
 
@@ -413,6 +419,7 @@ RETURN p.name AS ProductName, p.urls AS URLs
 
 Results:
 #+begin_example
+{'ProductName': None, 'URLs': None}
 # ...truncated to 10 for brevity
 #+end_example
 
@@ -432,6 +439,7 @@ RETURN p.name AS ProductName, p.urls AS URLs
 
 Results:
 #+begin_example
+{'ProductName': None, 'URLs': None}
 # ...truncated to 10 for brevity
 #+end_example
 
@@ -495,6 +503,7 @@ ORDER BY toLower(propertyName)
 
 Results:
 #+begin_example
+{'propertyName': 'name'}
 #+end_example
 
 * WRONG: list properties for all entities
@@ -511,6 +520,7 @@ RETURN DISTINCT propertyName
 
 Results:
 #+begin_example
+{'propertyName': 'name'}
 #+end_example
 
 * FIXED: list properties across all entities
@@ -536,6 +546,7 @@ ORDER BY type, propertyName
 
 Results:
 #+begin_example
+{'type': 'Node', 'propertyName': 'name'}
 {'type': 'CONTAINS', 'propertyName': 'quantity'}
 #+end_example
 
@@ -568,6 +579,7 @@ ORDER BY toLower(ProductName)
 
 Results:
 #+begin_example
+{'ProductName': None}
 #+end_example
 
 * find purchasing info for 10 products
@@ -633,6 +645,7 @@ ORDER BY ProductName
 
 Results:
 #+begin_example
+{'ProductName': None}
 #+end_example
 
 * list the entity type its assocted with
@@ -648,6 +661,7 @@ RETURN label, propertyName
 
 Results:
 #+begin_example
+{'label': 'Recipe', 'propertyName': 'name'}
 # ...truncated to 10 for brevity
 #+end_example
 
@@ -665,6 +679,7 @@ RETURN DISTINCT label, propertyName
 
 Results:
 #+begin_example
+{'label': 'Recipe', 'propertyName': 'name'}
 #+end_example
 
 * list CONTAINS relationships
@@ -943,6 +958,7 @@ RETURN recipe.name, contains.quantity, product.name
 
 Results:
 #+begin_example
+{'recipe.name': 'Yellow Curry with Chicken', 'contains.quantity': '1 tsp', 'product.name': None}
 #+end_example
 
 * learn how to handle this case
@@ -966,6 +982,34 @@ In other words, if the entities don't yet exist, then don't allow
 creating relations between them.
 
 I want referenctial integrity here.
+
+#+begin_example
+
+;
+#+end_example
+
+Results:
+#+begin_example
+#+end_example
+
+* maybe this fixes it
+
+
+#+begin_example
+MATCH (n) DETACH DELETE n
+;
+
+CREATE (yellowCurry:Recipe {name: "Yellow Curry with Chicken"})-[:CONTAINS { quantity: "1 tsp" }]->(cumin:Product)
+;
+
+MATCH (n) RETURN n
+;
+
+MATCH (recipe:Recipe)-[contains:CONTAINS]->(product:Product)
+WHERE product.name IS NULL
+RETURN recipe.name
+;
+#+end_example
 
 #+begin_example
 

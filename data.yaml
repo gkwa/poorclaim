@@ -529,3 +529,22 @@
     creating relations between them.
 
     I want referenctial integrity here.
+
+- cypher_query: |
+  title: maybe this fixes it
+  comment: |
+    #+begin_example
+    MATCH (n) DETACH DELETE n
+    ;
+
+    CREATE (yellowCurry:Recipe {name: "Yellow Curry with Chicken"})-[:CONTAINS { quantity: "1 tsp" }]->(cumin:Product)
+    ;
+
+    MATCH (n) RETURN n
+    ;
+
+    MATCH (recipe:Recipe)-[contains:CONTAINS]->(product:Product)
+    WHERE product.name IS NULL
+    RETURN recipe.name
+    ;
+    #+end_example
