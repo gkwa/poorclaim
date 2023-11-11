@@ -565,16 +565,16 @@ ORDER BY RAND()
 Results:
 
 ``` example
-{'ProductName': 'Dino Kale (ugly spinach)'}
-{'ProductName': 'Coffee - T - PLU 8853'}
-{'ProductName': 'Oil-packed sun-dried tomatoes'}
-{'ProductName': 'Quick Rolled Oats / Oats PLU 8485'}
-{'ProductName': 'Almonds - bulk roasted or raw -- whichever is cheaper'}
+{'ProductName': 'Semi-pearled Farro'}
+{'ProductName': 'Rolled Oats / Oats / Old Fashioned / PLU 8490'}
 {'ProductName': 'Soy Sauce - Liquid Aminos'}
-{'ProductName': 'Pancake Mix - Snoqualmie Falls Lodge'}
-{'ProductName': 'Fresh flat-leaf parsley'}
+{'ProductName': 'One Percent or 2 Percent Milk in Glass Jar (Not Red Cap Whole Milk)'}
+{'ProductName': 'Honey in glass jar?'}
+{'ProductName': 'Coconut Milk - 13.5 oz can'}
+{'ProductName': 'Black Beans (15 oz can)'}
+{'ProductName': 'Dino Kale (ugly spinach)'}
 {'ProductName': 'Chicken Broth - 32 Oz'}
-{'ProductName': 'Kidney Beans - S&W'}
+{'ProductName': 'Eggs (Dozen)'}
 # ...truncated to 10 for brevity
 ```
 
@@ -984,16 +984,16 @@ ORDER BY ProductName
 Results:
 
 ``` example
-{'ProductName': 'Avocado Oil'}
-{'ProductName': 'Beansprouts'}
+{'ProductName': 'Cooking Oil'}
 {'ProductName': 'Fermented shrimp paste'}
 {'ProductName': 'Fresh flat-leaf parsley'}
+{'ProductName': 'Fried shallots'}
 {'ProductName': 'Green lettuce'}
-{'ProductName': 'Japanese Nori'}
-{'ProductName': 'Pressed Tofu'}
+{'ProductName': 'Kaffir Lime'}
+{'ProductName': 'Makrut lime zest'}
 {'ProductName': 'Red Curry Paste'}
-{'ProductName': 'Spicy dried red chilies'}
-{'ProductName': 'Three Crabs Fish Sauce'}
+{'ProductName': 'Sea Salt'}
+{'ProductName': 'Toasted sesame flakes'}
 ```
 
 # list the entity type its assocted with
@@ -1472,8 +1472,8 @@ Results:
 
 This is data cleanup task.
 
-Find all recipes that have products whose product names are null. Its an
-error in the data.
+Find all recipes that have products whose product names are empty or
+that the product by mistake doesn't yet exist. Its an error in the data.
 
 Once you've found the recipes, then list all the products associated
 with this recipe. We will need to compare that list.

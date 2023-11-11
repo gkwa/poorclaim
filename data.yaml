@@ -525,8 +525,9 @@
   comment: |
     This is data cleanup task.
 
-    Find all recipes that have products whose product names are null.
-    Its an error in the data.
+    Find all recipes that have products whose product names are empty
+    or that the product by mistake doesn't yet exist. Its an error in
+    the data.
 
     Once you've found the recipes, then list all the products
     associated with this recipe.  We will need to compare that list.
