@@ -64,8 +64,6 @@ https://github.com/taylormonacelli/anythingflorida
 * [what recipes call for chicken stock?](#what-recipes-call-for-chicken-stock)
 * [find recipes that contain either carrots or beans](#find-recipes-that-contain-either-carrots-or-beans)
 * [which recipe contains products that we’re not aware of?](#which-recipe-contains-products-that-were-not-aware-of)
-* [learn how to handle this case](#learn-how-to-handle-this-case)
-* [maybe this fixes it](#maybe-this-fixes-it)
 # find cumin in our database
 
 ``` example
@@ -1024,64 +1022,4 @@ Results:
 
 ``` example
 {'recipe.name': 'Yellow Curry with Chicken', 'contains.quantity': '1 tsp', 'product.name': None}
-```
-
-# learn how to handle this case
-
-I need to find a way to make this fail:
-
-``` example
-// test1.cypher
-MATCH (n) DETACH DELETE n;
-
-CREATE (yellowCurry)-[:CONTAINS { quantity: "1 tsp" }]->(cumin)
-
-MATCH (n) RETURN n
-```
-
-``` example
-cypher-shell -a neo4j://localhost:7687 --file test1.cypher
-```
-
-In other words, if the entities don't yet exist, then don't allow
-creating relations between them.
-
-I want referenctial integrity here.
-
-``` example
-
-;
-```
-
-Results:
-
-``` example
-```
-
-# maybe this fixes it
-
-``` example
-MATCH (n) DETACH DELETE n
-;
-
-CREATE (yellowCurry:Recipe {name: "Yellow Curry with Chicken"})-[:CONTAINS { quantity: "1 tsp" }]->(cumin:Product)
-;
-
-MATCH (n) RETURN n
-;
-
-MATCH (recipe:Recipe)-[contains:CONTAINS]->(product:Product)
-WHERE product.name IS NULL
-RETURN recipe.name
-;
-```
-
-``` example
-
-;
-```
-
-Results:
-
-``` example
 ```
