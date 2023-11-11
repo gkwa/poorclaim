@@ -504,7 +504,37 @@
     ORDER BY toLower(recipe.name)
   title: find recipes that contain either carrots or beans
 - cypher_query: |
-    MATCH (recipe:Recipe)-[contains:CONTAINS]->(product:Product)
+    MATCH (recipe)-[:CONTAINS]->(product)
     WHERE product.name IS NULL
-    RETURN recipe.name, contains.quantity, product.name
+    RETURN recipe.name
   title: which recipe contains products that we're not aware of?
+  comment: |
+    Black Beans has cumin, but we don't have cumin listed in the
+    database...for example.
+- cypher_query: |
+    MATCH (recipe)-[r:CONTAINS]->(product)
+    WHERE product.name IS NULL
+    RETURN DISTINCT recipe.name, r.quantity;
+  title: which recipe contains products that we're not aware of?  Don't repeat please.
+- cypher_query: |
+    MATCH (recipe)-[:CONTAINS]->(product)
+    WHERE product.name IS NULL
+    WITH recipe
+    MATCH (recipe)-[:CONTAINS]->(allProducts)
+    RETURN recipe.name, allProducts.name;
+  comment: |
+    This is data cleanup task.
+
+    Find all recipes that have products whose product names are null.
+    Its an error in the data.
+
+    Once you've found the recipes, then list all the products
+    associated with this recipe.  We will need to compare that list.
+  title: cleanup data, find recipes with null prouct names
+- cypher_query: |
+    MATCH (recipe)-[:CONTAINS]->(product)
+    WHERE product.name IS NULL AND recipe.name = 'Chicken Thai Red Curry'
+    WITH recipe
+    MATCH (recipe)-[:CONTAINS]->(allProducts)
+    RETURN recipe, allProducts;
+  title: focus on fixing data just for a single recipe for now
