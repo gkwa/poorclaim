@@ -112,12 +112,6 @@
     Curry here.
 - cypher_query: |
     MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
-    WHERE 'Thai' IN r.name AND 'Curry' IN r.name
-    MATCH (p)-[:PURCHASE_AT]->(s:Store)
-    RETURN r.name as RecipeName, s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients;
-  title: find Thai Curry with multiple substings
-- cypher_query: |
-    MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
     WHERE r.name =~ '.*Thai.*Curry.*'
     MATCH (p)-[:PURCHASE_AT]->(s:Store)
     RETURN r.name as RecipeName, s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients;
@@ -142,6 +136,14 @@
   title: find Thai Curry using cypher IN [] query format
   comment: |
     This returns empty...thats unexpected...
+- cypher_query: |
+    MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
+    WHERE 'Thai' IN r.name AND 'Curry' IN r.name
+    MATCH (p)-[:PURCHASE_AT]->(s:Store)
+    RETURN r.name as RecipeName, s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients;
+  title: find Thai Curry with multiple substings
+  comment: |
+    Why does this return no results?
 - cypher_query: |
     MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
     WHERE r.name =~ '(?i).*thai.*curry.*'

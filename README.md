@@ -41,10 +41,10 @@ https://www.google.com/search?q=cypher+cheat+sheet
 * [list all relations](#list-all-relations)
 * [find Thai Curry](#find-thai-curry)
 * [find Thai Curry without specifying exact title](#find-thai-curry-without-specifying-exact-title)
-* [find Thai Curry with multiple substings](#find-thai-curry-with-multiple-substings)
 * [find Thai Curry with regex](#find-thai-curry-with-regex)
 * [find recipes with either Thai or Curry](#find-recipes-with-either-thai-or-curry)
 * [find Thai Curry using cypher IN [] query format](#find-thai-curry-using-cypher-in--query-format)
+* [find Thai Curry with multiple substings](#find-thai-curry-with-multiple-substings)
 * [find Thai Curry with regex case insensitively](#find-thai-curry-with-regex-case-insensitively)
 * [list products by type](#list-products-by-type)
 * [list products that I’ve not yet assiged a type to](#list-products-that-ive-not-yet-assiged-a-type-to)
@@ -410,20 +410,6 @@ Results:
 {'RecipeName': 'Vegan Thai Red Curry', 'StoreName': 'Uwajimaya', 'Ingredients': ['Galangal']}
 ```
 
-# find Thai Curry with multiple substings
-
-``` example
-MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
-WHERE 'Thai' IN r.name AND 'Curry' IN r.name
-MATCH (p)-[:PURCHASE_AT]->(s:Store)
-RETURN r.name as RecipeName, s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients;
-```
-
-Results:
-
-``` example
-```
-
 # find Thai Curry with regex
 
 ``` example
@@ -524,6 +510,22 @@ This returns empty…thats unexpected…
 MATCH (r:Recipe)
 WHERE 'Thai' IN [r.name] AND 'Curry' IN [r.name]
 RETURN r.name AS RecipeName;
+```
+
+Results:
+
+``` example
+```
+
+# find Thai Curry with multiple substings
+
+Why does this return no results?
+
+``` example
+MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
+WHERE 'Thai' IN r.name AND 'Curry' IN r.name
+MATCH (p)-[:PURCHASE_AT]->(s:Store)
+RETURN r.name as RecipeName, s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients;
 ```
 
 Results:
@@ -769,16 +771,16 @@ ORDER BY RAND();
 Results:
 
 ``` example
-{'ProductName': 'Rice - Wild'}
-{'ProductName': 'Coffee - MTM - Kivu Dark Espresso Roast'}
-{'ProductName': 'Reynolds Parchment Paper Genuine Non-Stick 45 Sq. Ft.'}
-{'ProductName': 'Barbecue sauce - Baby Rays bbq sauce'}
-{'ProductName': 'Coffee / MTM / PLU 8368 / Decaf / Decaf / Decaf Kind Unknown'}
-{'ProductName': 'Chicken Tenderloins / Rubber Duckies / 1 BAG ONLY'}
-{'ProductName': "Newman's Own Sesame Ginger Dressing"}
-{'ProductName': 'Coconut Milk - 13.5 oz can'}
-{'ProductName': 'Blueberries - frozen uponina bag'}
-{'ProductName': 'Thai-style Baked Tofu'}
+{'ProductName': 'Red, Green, Yella Peppers'}
+{'ProductName': 'Chicken Broth - 16 Oz'}
+{'ProductName': 'Broth - Beef - low sodium'}
+{'ProductName': 'Aroy-D Coconut Milk'}
+{'ProductName': 'Almonds - bulk roasted or raw -- whichever is cheaper'}
+{'ProductName': 'Coffee / MTM / PLU 5820 / Kivu / Kivu Dark French Roast'}
+{'ProductName': 'Chicken (3-4 lb)'}
+{'ProductName': 'Chili Pepper, Ancho, Ground'}
+{'ProductName': 'Lemon Zest (grated lemon rind)'}
+{'ProductName': 'Rolled Oats / Oats / Old Fashioned / PLU 8490'}
 # ...truncated to 10 for brevity
 ```
 
@@ -1201,16 +1203,16 @@ ORDER BY ProductName;
 Results:
 
 ``` example
-{'ProductName': 'Egg yolk'}
+{'ProductName': 'Cornstarch'}
+{'ProductName': 'Dashi'}
 {'ProductName': 'Fermented shrimp paste'}
-{'ProductName': 'Fish Sauce'}
-{'ProductName': 'Fried shallots'}
-{'ProductName': 'Green lettuce'}
-{'ProductName': 'Kalamata Olives'}
-{'ProductName': 'Mae Ploy Red Curry Paste'}
-{'ProductName': 'Mirin'}
-{'ProductName': 'Russet potatoes'}
-{'ProductName': 'Tamarind Paste'}
+{'ProductName': "Newman's Own Sesame Ginger Dressing"}
+{'ProductName': 'Oil-packed sun-dried tomatoes'}
+{'ProductName': 'Pressed Tofu'}
+{'ProductName': 'Salt and pepper'}
+{'ProductName': 'Spicy dried red chilies'}
+{'ProductName': 'Three Crabs Fish Sauce'}
+{'ProductName': 'Unsweetened Nut Butter'}
 ```
 
 # BAD: list the entity type the property is assocted with
