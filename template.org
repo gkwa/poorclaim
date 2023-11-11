@@ -5,18 +5,15 @@
 * {{ item.title }}
 
 {# jinja2 - keep newline #}
-{%- if item.comment %}
-{{ item.comment }}
-{%- endif -%}
+{%- if item.comment %}{{ item.comment }}{%- endif -%}
 
 {# jinja2 - keep newline #}
 #+begin_example
 {%- set q=item.cypher_query | trim %}
-{{ q.rstrip(';') }}
-;
+{{ q.rstrip(';') }};
 #+end_example
 
-{%- if item.results_commment %}{{ item.results_commment }}{%- endif %}
+{% if item.query_comment %}{{ item.query_comment }}{%- endif -%}
 
 Results:
 #+begin_example
@@ -28,4 +25,6 @@ Results:
 {%- endif %}
 #+end_example
 {# jinja2 - keep newline #}
+{%- if item.result_comment %}{{ item.result_comment }}{%- endif %}
+{%- if item.footer %}{{ item.footer }}{%- endif -%}
 {%- endfor %}

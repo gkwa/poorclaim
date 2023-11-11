@@ -74,8 +74,6 @@ def process_query_data(query_data):
 
     driver.close()
 
-    logging.info("Processed query data and updated _README.org.")
-
 
 def main():
     parser = argparse.ArgumentParser(description="read/write data.yaml")
@@ -103,7 +101,6 @@ def main():
         update_data_yaml(query_data)
 
     if args.run_neo4j:
-        logging.info("Processing.")
         process_query_data(query_data)
 
 

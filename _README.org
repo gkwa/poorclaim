@@ -1,13 +1,12 @@
 # -*- mode: org -*-
 #+STARTUP: overview
-* find cumin in our database
+* find cumin in my list of proucts
 
 
 #+begin_example
 MATCH (p:Product)
 WHERE p.name = 'Ground Cumin'
-RETURN p
-;
+RETURN p;
 #+end_example
 
 Results:
@@ -15,12 +14,38 @@ Results:
 {'p': {'name': 'Ground Cumin', 'type': 'Cumin'}}
 #+end_example
 
-* list all nodes and relations
+* list product entities with properties
 
 
 #+begin_example
-MATCH (n) RETURN n
-;
+MATCH (n:Product) RETURN n;
+#+end_example
+
+Results:
+#+begin_example
+{'n': {'name': 'A.1. Sauce', 'type': 'A.1. Sauce'}}
+{'n': {'name': 'Allspice', 'type': 'Allspice'}}
+{'n': {'name': 'Almond Milk', 'type': 'Almond Milk'}}
+{'n': {'name': 'Almonds - bulk roasted or raw -- whichever is cheaper', 'type': 'Almonds'}}
+{'n': {'name': 'Angkor Cambodian Food Paste Lemongrass', 'type': 'Food Paste'}}
+{'n': {'name': 'Apple Cider Vinegar', 'type': 'Apple Cider Vinegar'}}
+{'n': {'name': 'Apples', 'type': 'Fruit'}}
+{'n': {'urls': ['https://www.google.com/search?sca_esv=581110607&sxsrf=AM9HkKlvxPZkhbmImtTjzpzoOo0bggx5gA:1699596383961&q=aroy-d+coconut+milk&tbm=isch&source=lnms&sa=X&sqi=2&ved=2ahUKEwjq0uj14biCAxW7GTQIHT6CDx0Q0pQJegQIDRAB&biw=1440&bih=754&dpr=2', 'https://www.templeofthai.com/food/coconut-milk/aroy-d-large', 'https://www.zhicayfoods.com/products/aroy-d-coconut-milk-original'], 'name': 'Aroy-D Coconut Milk', 'type': 'Coconut Milk'}}
+{'n': {'urls': ['https://www.google.com/search?sca_esv=579549787&sxsrf=AM9HkKlJ1akktSB6XfxzBxrRxM_VM-9vxA:1699158988679&q=aroy-d+red+curry+paste', 'https://www.youtube.com/watch?v=GC7ccNKatVU'], 'name': 'Aroy-D Red Curry Paste', 'type': 'Curry Paste', 'brand': 'Aroy D'}}
+{'n': {'name': 'Artichoke Hearts', 'type': 'Artichokes'}}
+# ...truncated to 10 for brevity
+#+end_example
+
+* list all nodes and relations
+
+Not sure what a 'node' means other than that its not a
+'relation'...I think.
+
+Either way, i have products, stores...things and 'relations
+entities' to connect them.
+
+#+begin_example
+MATCH (n) RETURN n;
 #+end_example
 
 Results:
@@ -38,14 +63,55 @@ Results:
 # ...truncated to 10 for brevity
 #+end_example
 
+* list all product names
+
+
+#+begin_example
+MATCH (p:Product)
+RETURN p.name
+ORDER BY toLower(p.name);
+#+end_example
+
+Results:
+#+begin_example
+{'p.name': 'A.1. Sauce'}
+{'p.name': 'ACT Restoring Mouthwash'}
+{'p.name': 'Adams Peanut Butter'}
+{'p.name': 'Allspice'}
+{'p.name': 'Almond Milk'}
+# ...truncated to 5 for brevity
+#+end_example
+
+* get all product urls
+
+
+#+begin_example
+MATCH (p:Product)
+RETURN p.name AS ProductName, p.urls AS URLs;
+#+end_example
+
+Results:
+#+begin_example
+{'ProductName': 'A.1. Sauce', 'URLs': None}
+{'ProductName': 'Allspice', 'URLs': None}
+{'ProductName': 'Almond Milk', 'URLs': None}
+{'ProductName': 'Almonds - bulk roasted or raw -- whichever is cheaper', 'URLs': None}
+{'ProductName': 'Angkor Cambodian Food Paste Lemongrass', 'URLs': None}
+{'ProductName': 'Apple Cider Vinegar', 'URLs': None}
+{'ProductName': 'Apples', 'URLs': None}
+{'ProductName': 'Aroy-D Coconut Milk', 'URLs': ['https://www.google.com/search?sca_esv=581110607&sxsrf=AM9HkKlvxPZkhbmImtTjzpzoOo0bggx5gA:1699596383961&q=aroy-d+coconut+milk&tbm=isch&source=lnms&sa=X&sqi=2&ved=2ahUKEwjq0uj14biCAxW7GTQIHT6CDx0Q0pQJegQIDRAB&biw=1440&bih=754&dpr=2', 'https://www.templeofthai.com/food/coconut-milk/aroy-d-large', 'https://www.zhicayfoods.com/products/aroy-d-coconut-milk-original']}
+{'ProductName': 'Aroy-D Red Curry Paste', 'URLs': ['https://www.google.com/search?sca_esv=579549787&sxsrf=AM9HkKlJ1akktSB6XfxzBxrRxM_VM-9vxA:1699158988679&q=aroy-d+red+curry+paste', 'https://www.youtube.com/watch?v=GC7ccNKatVU']}
+{'ProductName': 'Artichoke Hearts', 'URLs': None}
+# ...truncated to 10 for brevity
+#+end_example
+
 * list unique node types
 
 
 #+begin_example
 MATCH (n)
 RETURN DISTINCT labels(n) AS objectType
-ORDER BY objectType
-;
+ORDER BY objectType;
 #+end_example
 
 Results:
@@ -59,33 +125,27 @@ Results:
 
 * find products with identical names
 
-
-This reveals that I need to clean up duplicates.
+This reveals that I need to clean up duplicates. Listing two
+instances of the same product name is harmful.
 
 #+begin_example
 MATCH (p:Product)
 WITH p.name AS productName, COLLECT(p) AS products
 WHERE SIZE(products) > 1
-RETURN productName, products
-;
+RETURN productName, products;
 #+end_example
 
 Results:
 #+begin_example
-{'productName': 'Apple Cider Vinegar', 'products': [{'name': 'Apple Cider Vinegar', 'type': 'Apple Cider Vinegar'}, {'name': 'Apple Cider Vinegar', 'type': 'Vinegar'}]}
-{'productName': 'Red Curry Paste', 'products': [{'urls': ['https://www.google.com/search?sca_esv=579549787&sxsrf=AM9HkKlJ1akktSB6XfxzBxrRxM_VM-9vxA:1699158988679&q=aroy-d+red+curry+paste', 'https://www.youtube.com/watch?v=GC7ccNKatVU'], 'name': 'Red Curry Paste', 'type': 'Curry Paste', 'brand': 'Aroy D'}, {'urls': ['https://www.youtube.com/watch?v=d6YbVqqcR4w', 'https://www.google.com/search?sca_esv=579549787&sxsrf=AM9HkKn2yZQ4RvsQT3gvUhOknWGy59VJhQ:1699159240924&q=mae+ploy+red+curry+paste&tbm=isch&source=lnms&sa=X&sqi=2&ved=2ahUKEwiwjuO3hayCAxVdHzQIHSe3B3oQ0pQJegQICRAB&biw=1440&bih=758&dpr=2'], 'name': 'Red Curry Paste', 'type': 'Curry Paste', 'brand': 'Mae Ploy'}, {'name': 'Red Curry Paste', 'type': 'Curry Paste'}]}
 {'productName': 'Avocado Oil', 'products': [{'name': 'Avocado Oil', 'type': 'Avocado Oil'}, {'name': 'Avocado Oil', 'type': 'Avocado Oil'}]}
 {'productName': 'Cooking Oil', 'products': [{'name': 'Cooking Oil', 'type': 'Cooking Oil'}, {'name': 'Cooking Oil', 'type': 'Oil'}]}
-{'productName': 'Heavy Cream', 'products': [{'name': 'Heavy Cream', 'type': 'Cream'}, {'name': 'Heavy Cream', 'type': 'Cream'}]}
-{'productName': 'Dried Thai shrimp paste', 'products': [{'name': 'Dried Thai shrimp paste', 'type': 'Shrimp Paste'}, {'urls': ['https://www.eatingthaifood.com/thai-nam-prik-kapi-recipe/'], 'comments': ['thaiShrimpPasteComment1', 'thaiShrimpPasteComment2'], 'name': 'Dried Thai shrimp paste', 'google': ['shrimp paste kapi OR gabi OR gkabi'], 'type': 'Condiment'}]}
-{'productName': 'Thai Eggplant', 'products': [{'name': 'Thai Eggplant', 'type': 'Thai Eggplant'}, {'name': 'Thai Eggplant', 'type': 'Thai Eggplant'}]}
-{'productName': 'Extra Firm Tofu', 'products': [{'name': 'Extra Firm Tofu', 'type': 'Tofu'}, {'name': 'Extra Firm Tofu', 'type': 'Tofu'}]}
 {'productName': 'Fish Sauce', 'products': [{'name': 'Fish Sauce', 'type': 'Fish Sauce', 'brand': 'Red Boat Premium'}, {'urls': ['https://www.google.com/search?client=emacs&sca_esv=579549787&sxsrf=AM9HkKm8epAD3ytpi0GWZEym4PGKNYwfHA:1699157904119&q=Squid+Fish+Sauce&tbm=isch&source=lnms&sa=X&ved=2ahUKEwiY96q6gKyCAxXiJzQIHVrbD78Q0pQJegQIChAB&biw=1440&bih=758&dpr=2'], 'name': 'Fish Sauce', 'type': 'Fish Sauce', 'brand': 'Squid'}]}
 {'productName': 'Yellow Curry Paste', 'products': [{'urls': ['https://www.safeway.com/shop/product-details.960076294.html', 'https://youtu.be/GC7ccNKatVU?t=696'], 'name': 'Yellow Curry Paste', 'type': 'Curry Paste', 'brand': 'Mae Ploy'}, {'urls': ['https://www.safeway.com/shop/product-details.960076294.html'], 'name': 'Yellow Curry Paste', 'type': 'Curry Paste'}]}
 {'productName': 'Maple Syrup', 'products': [{'name': 'Maple Syrup', 'type': 'Maple Syrup'}, {'name': 'Maple Syrup', 'type': 'Maple Syrup'}]}
 {'productName': 'White Onion', 'products': [{'name': 'White Onion', 'type': 'Onion'}, {'name': 'White Onion', 'type': 'Onion'}]}
 {'productName': 'Toasted Sesame Oil', 'products': [{'name': 'Toasted Sesame Oil', 'type': 'Sesame Oil'}, {'name': 'Toasted Sesame Oil', 'type': 'Sesame Oil'}]}
 #+end_example
+[[https://www.google.com/search?q=neo4j+collect+subquery][COLLECT]]
 
 * count duplicates for each product
 
@@ -94,20 +154,13 @@ Results:
 MATCH (p:Product)
 WITH p.name AS productName, COLLECT(p) AS products
 WHERE SIZE(products) > 1
-RETURN productName, COUNT(products) AS duplicateCount
-;
+RETURN productName, COUNT(products) AS duplicateCount;
 #+end_example
 
 Results:
 #+begin_example
-{'productName': 'Apple Cider Vinegar', 'duplicateCount': 1}
-{'productName': 'Red Curry Paste', 'duplicateCount': 1}
 {'productName': 'Avocado Oil', 'duplicateCount': 1}
 {'productName': 'Cooking Oil', 'duplicateCount': 1}
-{'productName': 'Heavy Cream', 'duplicateCount': 1}
-{'productName': 'Dried Thai shrimp paste', 'duplicateCount': 1}
-{'productName': 'Thai Eggplant', 'duplicateCount': 1}
-{'productName': 'Extra Firm Tofu', 'duplicateCount': 1}
 {'productName': 'Fish Sauce', 'duplicateCount': 1}
 {'productName': 'Yellow Curry Paste', 'duplicateCount': 1}
 {'productName': 'Maple Syrup', 'duplicateCount': 1}
@@ -115,13 +168,28 @@ Results:
 {'productName': 'Toasted Sesame Oil', 'duplicateCount': 1}
 #+end_example
 
+* count entities with the same product name
+
+In other words how much work do I have to do to cleanup my data?
+
+#+begin_example
+MATCH (p:Product)
+WITH p.name AS productName, COUNT(p) AS productCount
+WHERE productCount > 1
+RETURN COUNT(productCount) AS totalDuplicateProducts;
+#+end_example
+
+Results:
+#+begin_example
+{'totalDuplicateProducts': 7}
+#+end_example
+
 * list all products
 
 
 #+begin_example
 MATCH (p:Product)
-RETURN p
-;
+RETURN p;
 #+end_example
 
 Results:
@@ -136,13 +204,21 @@ Results:
 
 * list all products with their urls
 
+Each product can have 0 or more urls.
+
+#+begin_example
+    for each product
+       for each url
+          ...
+#+end_example
+
+Unwind https://www.google.com/search?q=neo4j+unwind&oq=neo4j+unw&gs_lcrp=EgZjaHJvbWUqBwgAEAAYgAQyBwgAEAAYgAQyBggBEEUYOTIHCAIQABiABDIHCAMQABiABDIHCAQQABiABDIICAUQABgWGB4yCAgGEAAYFhgeMggIBxAAGBYYHjIICAgQABgWGB4yCAgJEAAYFhge0gEJMjc1MjZqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8
 
 #+begin_example
 MATCH (p:Product)
 WITH p.name AS productName, p.urls AS productUrls
 UNWIND productUrls AS url
-RETURN productName, url
-;
+RETURN productName, url;
 #+end_example
 
 Results:
@@ -150,29 +226,33 @@ Results:
 {'productName': 'Aroy-D Coconut Milk', 'url': 'https://www.google.com/search?sca_esv=581110607&sxsrf=AM9HkKlvxPZkhbmImtTjzpzoOo0bggx5gA:1699596383961&q=aroy-d+coconut+milk&tbm=isch&source=lnms&sa=X&sqi=2&ved=2ahUKEwjq0uj14biCAxW7GTQIHT6CDx0Q0pQJegQIDRAB&biw=1440&bih=754&dpr=2'}
 {'productName': 'Aroy-D Coconut Milk', 'url': 'https://www.templeofthai.com/food/coconut-milk/aroy-d-large'}
 {'productName': 'Aroy-D Coconut Milk', 'url': 'https://www.zhicayfoods.com/products/aroy-d-coconut-milk-original'}
-{'productName': 'Red Curry Paste', 'url': 'https://www.google.com/search?sca_esv=579549787&sxsrf=AM9HkKlJ1akktSB6XfxzBxrRxM_VM-9vxA:1699158988679&q=aroy-d+red+curry+paste'}
-{'productName': 'Red Curry Paste', 'url': 'https://www.youtube.com/watch?v=GC7ccNKatVU'}
+{'productName': 'Aroy-D Red Curry Paste', 'url': 'https://www.google.com/search?sca_esv=579549787&sxsrf=AM9HkKlJ1akktSB6XfxzBxrRxM_VM-9vxA:1699158988679&q=aroy-d+red+curry+paste'}
+{'productName': 'Aroy-D Red Curry Paste', 'url': 'https://www.youtube.com/watch?v=GC7ccNKatVU'}
 # ...truncated to 5 for brevity
 #+end_example
 
-* list all product names
+* BAD: list relation entities with properties
 
+BAD: list relations, not just CONTAINS and show relation
+properties.
+
+Gotcha!  This is wrong.  Notice we're missing the is-the-same-as relation.
 
 #+begin_example
-MATCH (p:Product)
-RETURN p.name
-ORDER BY toLower(p.name)
-;
+MATCH ()-[r]-()
+UNWIND keys(r) AS propertyNames
+RETURN DISTINCT type(r) AS type, propertyNames AS propertyName
+ORDER BY type, propertyName;
 #+end_example
 
 Results:
 #+begin_example
-{'p.name': 'A.1. Sauce'}
-{'p.name': 'ACT Restoring Mouthwash'}
-{'p.name': 'Adams Peanut Butter'}
-{'p.name': 'Allspice'}
-{'p.name': 'Almond Milk'}
-# ...truncated to 5 for brevity
+{'type': 'CONTAINS', 'propertyName': 'quantity'}
+{'type': 'CONTAINS', 'propertyName': 'urls'}
+{'type': 'PURCHASE_AT', 'propertyName': 'aisle'}
+{'type': 'PURCHASE_AT', 'propertyName': 'url'}
+{'type': 'PURCHASE_AT', 'propertyName': 'urls'}
+{'type': 'RECOMMENDS', 'propertyName': 'urls'}
 #+end_example
 
 * list all relations
@@ -181,8 +261,7 @@ Results:
 #+begin_example
 MATCH ()-[r]-()
 RETURN DISTINCT type(r) AS relationType
-ORDER BY relationType
-;
+ORDER BY relationType;
 #+end_example
 
 Results:
@@ -194,67 +273,191 @@ Results:
 {'relationType': 'RECOMMENDS'}
 #+end_example
 
-* WRONG: list relation entities with properties
-
-
-WRONG: list relations, not just CONTAINS and show relation
-properties.
-
-Gotcha!  This is wrong.  Notice we're missing the is-the-same-as relation.
-
-#+begin_example
-MATCH ()-[r]-()
-UNWIND keys(r) AS propertyNames
-RETURN DISTINCT type(r) AS type, propertyNames AS propertyName
-ORDER BY type, propertyName
-;
-#+end_example
-
-Results:
-#+begin_example
-{'type': 'CONTAINS', 'propertyName': 'quantity'}
-{'type': 'CONTAINS', 'propertyName': 'urls'}
-{'type': 'PURCHASE_AT', 'propertyName': 'aisle'}
-{'type': 'PURCHASE_AT', 'propertyName': 'note'}
-{'type': 'PURCHASE_AT', 'propertyName': 'url'}
-{'type': 'PURCHASE_AT', 'propertyName': 'urls'}
-{'type': 'RECOMMENDS', 'propertyName': 'urls'}
-#+end_example
-
-* count products with duplicates
-
-
-In other words how much work do I have to do to cleanup my data?
-
-#+begin_example
-MATCH (p:Product)
-WITH p.name AS productName, COUNT(p) AS productCount
-WHERE productCount > 1
-RETURN COUNT(productCount) AS totalDuplicateProducts
-;
-#+end_example
-
-Results:
-#+begin_example
-{'totalDuplicateProducts': 13}
-#+end_example
-
-* find ingredients for making Thai Curry
+* find Thai Curry
 
 
 #+begin_example
 MATCH (r:Recipe {name: 'Vegan Thai Red Curry'})-[:CONTAINS]->(p:Product)
 MATCH (p)-[:PURCHASE_AT]->(s:Store)
-RETURN s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients
-;
+RETURN r.name as RecipeName, s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients;
 #+end_example
 
 Results:
 #+begin_example
-{'StoreName': "Trader Joe's", 'Ingredients': ['Garlic']}
-{'StoreName': 'Uwajimaya', 'Ingredients': ['Galangal']}
-{'StoreName': 'Safeway', 'Ingredients': ['Cilantro roots', 'Shallots', 'Lemongrass']}
-{'StoreName': 'Madison Co-op', 'Ingredients': ['White Peppercorns', 'Coriander seeds', 'Cumin seeds']}
+{'RecipeName': 'Vegan Thai Red Curry', 'StoreName': 'Madison Co-op', 'Ingredients': ['Cumin seeds', 'Coriander seeds', 'White Peppercorns']}
+{'RecipeName': 'Vegan Thai Red Curry', 'StoreName': 'Safeway', 'Ingredients': ['Shallots', 'Cilantro roots', 'Lemongrass']}
+{'RecipeName': 'Vegan Thai Red Curry', 'StoreName': "Trader Joe's", 'Ingredients': ['Garlic']}
+{'RecipeName': 'Vegan Thai Red Curry', 'StoreName': 'Uwajimaya', 'Ingredients': ['Galangal']}
+#+end_example
+
+* find Thai Curry without specifying exact title
+
+Substring matching with CONTAINS. We didn't specify Vegan Thai Red
+Curry here.
+
+#+begin_example
+MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
+WHERE r.name CONTAINS 'Thai Red Curry'
+MATCH (p)-[:PURCHASE_AT]->(s:Store)
+RETURN r.name as RecipeName, s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients;
+#+end_example
+
+Results:
+#+begin_example
+{'RecipeName': 'Chicken Thai Red Curry', 'StoreName': 'Safeway', 'Ingredients': ['Full fat coconut milk', 'Light Brown Sugar', 'Ginger', 'Chicken Stock or Water', 'Lemongrass', 'Zucchini']}
+{'RecipeName': 'Chicken Thai Red Curry', 'StoreName': "Trader Joe's", 'Ingredients': ['Onion', 'Red Bell Pepper', 'Garlic']}
+{'RecipeName': 'Chicken Thai Red Curry', 'StoreName': 'Uwajimaya', 'Ingredients': ['Thai basil']}
+{'RecipeName': 'Chicken Thai Red Curry', 'StoreName': 'Madison Co-op', 'Ingredients': ['Boneless Chicken Thighs']}
+{'RecipeName': 'Chicken Thai Red Curry', 'StoreName': 'Hau Hau Market', 'Ingredients': ['Fish sauce']}
+{'RecipeName': 'Chicken Thai Red Curry', 'StoreName': 'Whole Foods', 'Ingredients': ['Lemon Juice']}
+{'RecipeName': 'Vegan Thai Red Curry', 'StoreName': 'Madison Co-op', 'Ingredients': ['Cumin seeds', 'Coriander seeds', 'White Peppercorns']}
+{'RecipeName': 'Vegan Thai Red Curry', 'StoreName': 'Safeway', 'Ingredients': ['Shallots', 'Cilantro roots', 'Lemongrass']}
+{'RecipeName': 'Vegan Thai Red Curry', 'StoreName': "Trader Joe's", 'Ingredients': ['Garlic']}
+{'RecipeName': 'Vegan Thai Red Curry', 'StoreName': 'Uwajimaya', 'Ingredients': ['Galangal']}
+#+end_example
+
+* find Thai Curry with multiple substings
+
+
+#+begin_example
+MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
+WHERE 'Thai' IN r.name AND 'Curry' IN r.name
+MATCH (p)-[:PURCHASE_AT]->(s:Store)
+RETURN r.name as RecipeName, s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients;
+#+end_example
+
+Results:
+#+begin_example
+#+end_example
+
+* find Thai Curry with regex
+
+
+#+begin_example
+MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
+WHERE r.name =~ '.*Thai.*Curry.*'
+MATCH (p)-[:PURCHASE_AT]->(s:Store)
+RETURN r.name as RecipeName, s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients;
+#+end_example
+
+Results:
+#+begin_example
+{'RecipeName': 'Chicken Thai Red Curry', 'StoreName': 'Safeway', 'Ingredients': ['Full fat coconut milk', 'Light Brown Sugar', 'Ginger', 'Chicken Stock or Water', 'Lemongrass', 'Zucchini']}
+{'RecipeName': 'Chicken Thai Red Curry', 'StoreName': "Trader Joe's", 'Ingredients': ['Onion', 'Red Bell Pepper', 'Garlic']}
+{'RecipeName': 'Chicken Thai Red Curry', 'StoreName': 'Uwajimaya', 'Ingredients': ['Thai basil']}
+{'RecipeName': 'Chicken Thai Red Curry', 'StoreName': 'Madison Co-op', 'Ingredients': ['Boneless Chicken Thighs']}
+{'RecipeName': 'Chicken Thai Red Curry', 'StoreName': 'Hau Hau Market', 'Ingredients': ['Fish sauce']}
+{'RecipeName': 'Chicken Thai Red Curry', 'StoreName': 'Whole Foods', 'Ingredients': ['Lemon Juice']}
+{'RecipeName': 'Vegan Thai Red Curry', 'StoreName': 'Madison Co-op', 'Ingredients': ['Cumin seeds', 'Coriander seeds', 'White Peppercorns']}
+{'RecipeName': 'Vegan Thai Red Curry', 'StoreName': 'Safeway', 'Ingredients': ['Shallots', 'Cilantro roots', 'Lemongrass']}
+{'RecipeName': 'Vegan Thai Red Curry', 'StoreName': "Trader Joe's", 'Ingredients': ['Garlic']}
+{'RecipeName': 'Vegan Thai Red Curry', 'StoreName': 'Uwajimaya', 'Ingredients': ['Galangal']}
+#+end_example
+
+* find recipes with either Thai or Curry
+
+
+#+begin_example
+// ok:
+// MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
+// WHERE r.name =~ '(?i).*Thai.*|(?i).*Curry.*'
+// MATCH (p)-[:PURCHASE_AT]->(s:Store)
+// RETURN r.name as RecipeName, s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients;
+
+// better:
+MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
+WHERE r.name =~ '(?i).*(Thai|Curry).*'
+MATCH (p)-[:PURCHASE_AT]->(s:Store)
+RETURN r.name as RecipeName, s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients;
+#+end_example
+
+Results:
+#+begin_example
+{'RecipeName': 'Chicken Thai Red Curry', 'StoreName': 'Safeway', 'Ingredients': ['Full fat coconut milk', 'Light Brown Sugar', 'Ginger', 'Chicken Stock or Water', 'Lemongrass', 'Zucchini']}
+{'RecipeName': 'Chicken Thai Red Curry', 'StoreName': "Trader Joe's", 'Ingredients': ['Onion', 'Red Bell Pepper', 'Garlic']}
+{'RecipeName': 'Chicken Thai Red Curry', 'StoreName': 'Uwajimaya', 'Ingredients': ['Thai basil']}
+{'RecipeName': 'Chicken Thai Red Curry', 'StoreName': 'Madison Co-op', 'Ingredients': ['Boneless Chicken Thighs']}
+{'RecipeName': 'Chicken Thai Red Curry', 'StoreName': 'Hau Hau Market', 'Ingredients': ['Fish sauce']}
+{'RecipeName': 'Chicken Thai Red Curry', 'StoreName': 'Whole Foods', 'Ingredients': ['Lemon Juice']}
+{'RecipeName': 'Pad Thai', 'StoreName': 'Hau Hau Market', 'Ingredients': ['Shrimp', 'Fish sauce', 'Garlic Chives', 'Bean Sprouts', 'Rice Sticks', 'Thai-style Baked Tofu', 'Rice Stick Noodles', 'Roasted Chili Flakes']}
+{'RecipeName': 'Pad Thai', 'StoreName': 'PCC', 'Ingredients': ['Dry-Roasted Peanuts', 'Sweet Paprika', 'Grounded Roasted Peanuts']}
+{'RecipeName': 'Pad Thai', 'StoreName': "Trader Joe's", 'Ingredients': ['Garlic', 'Lime', 'Chicken', 'Eggs']}
+{'RecipeName': 'Pad Thai', 'StoreName': 'Safeway', 'Ingredients': ['Granulated Sugar', 'Dried Shrimp', 'Vegetable Oil', 'Shallots']}
+{'RecipeName': 'Pad Thai', 'StoreName': 'Viet-Wah Asian Food Market', 'Ingredients': ['Banana Leaf']}
+{'RecipeName': 'Pad Thai', 'StoreName': 'Whole Foods', 'Ingredients': ['Lime juice']}
+{'RecipeName': 'Pad Thai', 'StoreName': "Lam's Seafood Asian Market", 'Ingredients': ['Dried Shrimp']}
+{'RecipeName': 'Pad Thai', 'StoreName': 'Spice SPC', 'Ingredients': ['Chili Sauce', 'Tamarind Liquid']}
+{'RecipeName': 'Pad Thai', 'StoreName': 'Uwajimaya', 'Ingredients': ['Rice Wine Vinegar', 'Palm Sugar', 'Tamarind Liquid', 'Sweetened Radish']}
+{'RecipeName': 'Pad Thai', 'StoreName': 'Thanh Son Tofu', 'Ingredients': ['Thai-style Baked Tofu']}
+{'RecipeName': 'Phad Thai', 'StoreName': 'PCC', 'Ingredients': ['Roasted Unsalted Peanuts']}
+{'RecipeName': 'Vegan Thai Red Curry', 'StoreName': 'Madison Co-op', 'Ingredients': ['Cumin seeds', 'Coriander seeds', 'White Peppercorns']}
+{'RecipeName': 'Vegan Thai Red Curry', 'StoreName': 'Safeway', 'Ingredients': ['Shallots', 'Cilantro roots', 'Lemongrass']}
+{'RecipeName': 'Vegan Thai Red Curry', 'StoreName': "Trader Joe's", 'Ingredients': ['Garlic']}
+{'RecipeName': 'Vegan Thai Red Curry', 'StoreName': 'Uwajimaya', 'Ingredients': ['Galangal']}
+{'RecipeName': 'The Best Green Curry', 'StoreName': "Trader Joe's", 'Ingredients': ['Garlic cloves', 'Lime']}
+{'RecipeName': 'The Best Green Curry', 'StoreName': 'Uwajimaya', 'Ingredients': ['Thai basil', 'Kaffir lime leaves', 'Galangal', 'Thai Eggplant', 'Palm Sugar', 'Snow peas']}
+{'RecipeName': 'The Best Green Curry', 'StoreName': 'Madison Co-op', 'Ingredients': ['White Peppercorns', 'Chicken Thighs', 'Cumin seeds', 'Coriander seeds']}
+{'RecipeName': 'The Best Green Curry', 'StoreName': 'Hau Hau Market', 'Ingredients': ['Kaffir lime leaves', 'Fish sauce']}
+{'RecipeName': 'The Best Green Curry', 'StoreName': 'Safeway', 'Ingredients': ['Serranos', 'Lemongrass', 'Shallots', 'Cilantro', 'Full fat coconut milk', 'Chicken stock']}
+{'RecipeName': 'Thai Eggplant Recipe', 'StoreName': 'Madison Co-op', 'Ingredients': ['Coriander powder', 'Chili powder']}
+{'RecipeName': 'Thai Eggplant Recipe', 'StoreName': "Trader Joe's", 'Ingredients': ['Red Bell Pepper', 'Onion', 'Garlic cloves']}
+{'RecipeName': 'Thai Eggplant Recipe', 'StoreName': 'Whole Foods', 'Ingredients': ['Lime juice']}
+{'RecipeName': 'Thai Eggplant Recipe', 'StoreName': 'QFC', 'Ingredients': ['Salt']}
+{'RecipeName': 'Thai Eggplant Recipe', 'StoreName': 'Safeway', 'Ingredients': ['Ginger', 'Lemongrass', 'Full fat coconut milk', 'Chicken stock']}
+{'RecipeName': 'Thai Eggplant Recipe', 'StoreName': 'Uwajimaya', 'Ingredients': ['Thai basil', 'Thai Eggplant', 'Thai chilies']}
+{'RecipeName': 'Thai Eggplant Recipe', 'StoreName': 'Central Co-op', 'Ingredients': ['Chili powder']}
+{'RecipeName': 'Thai Eggplant Recipe', 'StoreName': "Lam's Seafood Asian Market", 'Ingredients': ['Thai chilies']}
+{'RecipeName': 'Yellow Coconut Curry Chicken', 'StoreName': 'Madison Co-op', 'Ingredients': ['Yellow Curry Powder']}
+{'RecipeName': 'Yellow Coconut Curry Chicken', 'StoreName': 'Safeway', 'Ingredients': ['Carrots', 'Russet Potatoes', 'Brown Sugar', 'Full fat coconut milk', 'Chicken Broth', 'Cilantro']}
+{'RecipeName': 'Yellow Coconut Curry Chicken', 'StoreName': 'Whole Foods', 'Ingredients': ['Maesri Thai Red Curry Paste']}
+{'RecipeName': 'Yellow Coconut Curry Chicken', 'StoreName': "Trader Joe's", 'Ingredients': ['Garlic', 'Yellow Onion']}
+{'RecipeName': 'Yellow Coconut Curry Chicken', 'StoreName': 'QFC', 'Ingredients': ['Chicken Breast']}
+{'RecipeName': 'Yellow Coconut Curry Chicken', 'StoreName': 'Uwajimaya', 'Ingredients': ['Rice']}
+{'RecipeName': 'Yellow Coconut Curry Chicken', 'StoreName': 'Hau Hau Market', 'Ingredients': ['Fish sauce']}
+{'RecipeName': 'Yellow Curry with Chicken', 'StoreName': 'Central Co-op', 'Ingredients': ['Curry Powder']}
+{'RecipeName': 'Yellow Curry with Chicken', 'StoreName': "Trader Joe's", 'Ingredients': ['Chicken', 'Garlic']}
+{'RecipeName': 'Yellow Curry with Chicken', 'StoreName': 'Safeway', 'Ingredients': ['Shallots', 'Potatoes', 'Full fat coconut milk', 'Ginger', 'Lemongrass', 'Yellow Curry Paste']}
+{'RecipeName': 'Yellow Curry with Chicken', 'StoreName': 'Madison Co-op', 'Ingredients': ['Cumin seeds', 'Coriander seeds']}
+{'RecipeName': 'Yellow Curry with Chicken', 'StoreName': 'Hau Hau Market', 'Ingredients': ['Fish sauce']}
+{'RecipeName': 'Yellow Curry with Chicken', 'StoreName': 'Uwajimaya', 'Ingredients': ['Galangal']}
+#+end_example
+
+* find Thai Curry using cypher IN [] query format
+
+This returns empty...thats unexpected...
+
+#+begin_example
+MATCH (r:Recipe)
+WHERE 'Thai' IN [r.name] AND 'Curry' IN [r.name]
+RETURN r.name AS RecipeName;
+#+end_example
+
+Results:
+#+begin_example
+#+end_example
+
+* find Thai Curry with regex case insensitively
+
+
+#+begin_example
+MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
+WHERE r.name =~ '(?i).*thai.*curry.*'
+MATCH (p)-[:PURCHASE_AT]->(s:Store)
+RETURN r.name as RecipeName, s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients;
+#+end_example
+
+Results:
+#+begin_example
+{'RecipeName': 'Chicken Thai Red Curry', 'StoreName': 'Safeway', 'Ingredients': ['Full fat coconut milk', 'Light Brown Sugar', 'Ginger', 'Chicken Stock or Water', 'Lemongrass', 'Zucchini']}
+{'RecipeName': 'Chicken Thai Red Curry', 'StoreName': "Trader Joe's", 'Ingredients': ['Onion', 'Red Bell Pepper', 'Garlic']}
+{'RecipeName': 'Chicken Thai Red Curry', 'StoreName': 'Uwajimaya', 'Ingredients': ['Thai basil']}
+{'RecipeName': 'Chicken Thai Red Curry', 'StoreName': 'Madison Co-op', 'Ingredients': ['Boneless Chicken Thighs']}
+{'RecipeName': 'Chicken Thai Red Curry', 'StoreName': 'Hau Hau Market', 'Ingredients': ['Fish sauce']}
+{'RecipeName': 'Chicken Thai Red Curry', 'StoreName': 'Whole Foods', 'Ingredients': ['Lemon Juice']}
+{'RecipeName': 'Vegan Thai Red Curry', 'StoreName': 'Madison Co-op', 'Ingredients': ['Cumin seeds', 'Coriander seeds', 'White Peppercorns']}
+{'RecipeName': 'Vegan Thai Red Curry', 'StoreName': 'Safeway', 'Ingredients': ['Shallots', 'Cilantro roots', 'Lemongrass']}
+{'RecipeName': 'Vegan Thai Red Curry', 'StoreName': "Trader Joe's", 'Ingredients': ['Garlic']}
+{'RecipeName': 'Vegan Thai Red Curry', 'StoreName': 'Uwajimaya', 'Ingredients': ['Galangal']}
 #+end_example
 
 * list products by type
@@ -263,8 +466,7 @@ Results:
 #+begin_example
 MATCH (p:Product)-[:PURCHASE_AT]->(s:Store)
 RETURN p.name AS ProductName, s.name AS StoreName, p.type as Type
-ORDER BY toLower(p.type)
-;
+ORDER BY toLower(p.type);
 #+end_example
 
 Results:
@@ -273,12 +475,12 @@ Results:
 {'ProductName': 'Allspice', 'StoreName': 'Central Co-op', 'Type': 'Allspice'}
 {'ProductName': 'Almond Milk', 'StoreName': "Trader Joe's", 'Type': 'Almond Milk'}
 {'ProductName': 'Almonds - bulk roasted or raw -- whichever is cheaper', 'StoreName': "Trader Joe's", 'Type': 'Almonds'}
+{'ProductName': 'Apple Cider Vinegar', 'StoreName': 'PCC', 'Type': 'Apple Cider Vinegar'}
+{'ProductName': 'Apple Cider Vinegar', 'StoreName': 'Safeway', 'Type': 'Apple Cider Vinegar'}
 {'ProductName': 'Artichoke Hearts', 'StoreName': 'Safeway', 'Type': 'Artichokes'}
 {'ProductName': 'Asparagus', 'StoreName': 'dummy place holder', 'Type': 'Asparagus'}
 {'ProductName': 'Asparagus', 'StoreName': "Trader Joe's", 'Type': 'Asparagus'}
 {'ProductName': 'Avocado Oil', 'StoreName': 'Whole Foods', 'Type': 'Avocado Oil'}
-{'ProductName': 'Avocados (not in bag stupid)', 'StoreName': "Trader Joe's", 'Type': 'Avocados'}
-{'ProductName': 'Johnsons Creamy Baby Oil', 'StoreName': 'dummy place holder', 'Type': 'Baby Oil'}
 # ...truncated to 10 for brevity
 #+end_example
 
@@ -288,8 +490,7 @@ Results:
 #+begin_example
 MATCH (p:Product)
 WHERE p.type IS NULL
-RETURN p.name
-;
+RETURN p.name;
 #+end_example
 
 Results:
@@ -300,43 +501,19 @@ Results:
 
 * details about product urls
 
+What the hell is this one...I've forgotten.
 
 #+begin_example
 MATCH (r:Recipe)-[c:CONTAINS]->(p:Product)
 WHERE id(p) IS NULL
-RETURN r.name AS RecipeName, c.quantity AS Quantity, c.urls AS RecipeUrls
-;
+RETURN r.name AS RecipeName, c.quantity AS Quantity, c.urls AS RecipeUrls;
 #+end_example
 
 Results:
 #+begin_example
 #+end_example
 
-* list product nodes with properties
-
-
-#+begin_example
-MATCH (n:Product) RETURN n
-;
-#+end_example
-
-Results:
-#+begin_example
-{'n': {'name': 'A.1. Sauce', 'type': 'A.1. Sauce'}}
-{'n': {'name': 'Allspice', 'type': 'Allspice'}}
-{'n': {'name': 'Almond Milk', 'type': 'Almond Milk'}}
-{'n': {'name': 'Almonds - bulk roasted or raw -- whichever is cheaper', 'type': 'Almonds'}}
-{'n': {'name': 'Angkor Cambodian Food Paste Lemongrass', 'type': 'Food Paste'}}
-{'n': {'name': 'Apple Cider Vinegar', 'type': 'Apple Cider Vinegar'}}
-{'n': {'name': 'Apples', 'type': 'Fruit'}}
-{'n': {'urls': ['https://www.google.com/search?sca_esv=581110607&sxsrf=AM9HkKlvxPZkhbmImtTjzpzoOo0bggx5gA:1699596383961&q=aroy-d+coconut+milk&tbm=isch&source=lnms&sa=X&sqi=2&ved=2ahUKEwjq0uj14biCAxW7GTQIHT6CDx0Q0pQJegQIDRAB&biw=1440&bih=754&dpr=2', 'https://www.templeofthai.com/food/coconut-milk/aroy-d-large', 'https://www.zhicayfoods.com/products/aroy-d-coconut-milk-original'], 'name': 'Aroy-D Coconut Milk', 'type': 'Coconut Milk'}}
-{'n': {'urls': ['https://www.google.com/search?sca_esv=579549787&sxsrf=AM9HkKlJ1akktSB6XfxzBxrRxM_VM-9vxA:1699158988679&q=aroy-d+red+curry+paste', 'https://www.youtube.com/watch?v=GC7ccNKatVU'], 'name': 'Red Curry Paste', 'type': 'Curry Paste', 'brand': 'Aroy D'}}
-{'n': {'name': 'Artichoke Hearts', 'type': 'Artichokes'}}
-# ...truncated to 10 for brevity
-#+end_example
-
-* WRONG: tally products with associated brands
-
+* BAD: tally products with associated brands
 
 I can't get this to do what I expect.
 
@@ -431,13 +608,12 @@ I can't get this to do what I expect.
 
 MATCH (p:Product)
 WHERE p.Brand IS NULL OR p.Brand = ""
-RETURN COUNT(p) AS productCount
-;
+RETURN COUNT(p) AS productCount;
 #+end_example
 
 Results:
 #+begin_example
-{'productCount': 553}
+{'productCount': 549}
 #+end_example
 
 * find products without associated brands
@@ -448,13 +624,12 @@ MATCH (p:Product)
 WITH count(p) AS TotalProducts,
      sum(CASE WHEN p.brand IS NOT NULL AND p.brand <> '' THEN 1 ELSE 0 END) AS ProductsWithBrand,
      sum(CASE WHEN p.brand IS NULL OR p.brand = '' THEN 1 ELSE 0 END) AS ProductsWithoutBrand
-RETURN TotalProducts, ProductsWithBrand, ProductsWithoutBrand
-;
+RETURN TotalProducts, ProductsWithBrand, ProductsWithoutBrand;
 #+end_example
 
 Results:
 #+begin_example
-{'TotalProducts': 553, 'ProductsWithBrand': 6, 'ProductsWithoutBrand': 547}
+{'TotalProducts': 549, 'ProductsWithBrand': 7, 'ProductsWithoutBrand': 542}
 #+end_example
 
 * include product brands
@@ -464,8 +639,7 @@ Results:
 MATCH (p:Product)
 OPTIONAL MATCH (p)-[:PURCHASE_AT]->(s:Store)
 RETURN p.name AS ProductName, p.type AS Type, COALESCE(p.brand, '') AS Brand, COLLECT(DISTINCT s.name) AS AvailableAtStores
-ORDER BY toLower(Brand)
-;
+ORDER BY toLower(Brand);
 #+end_example
 
 Results:
@@ -475,16 +649,15 @@ Results:
 {'ProductName': 'Almond Milk', 'Type': 'Almond Milk', 'Brand': '', 'AvailableAtStores': ["Trader Joe's"]}
 {'ProductName': 'Almonds - bulk roasted or raw -- whichever is cheaper', 'Type': 'Almonds', 'Brand': '', 'AvailableAtStores': ["Trader Joe's"]}
 {'ProductName': 'Angkor Cambodian Food Paste Lemongrass', 'Type': 'Food Paste', 'Brand': '', 'AvailableAtStores': ['QFC']}
-{'ProductName': 'Apple Cider Vinegar', 'Type': 'Apple Cider Vinegar', 'Brand': '', 'AvailableAtStores': []}
+{'ProductName': 'Apple Cider Vinegar', 'Type': 'Apple Cider Vinegar', 'Brand': '', 'AvailableAtStores': ['PCC', 'Safeway']}
 {'ProductName': 'Apples', 'Type': 'Fruit', 'Brand': '', 'AvailableAtStores': ['Safeway']}
 {'ProductName': 'Aroy-D Coconut Milk', 'Type': 'Coconut Milk', 'Brand': '', 'AvailableAtStores': []}
 {'ProductName': 'Artichoke Hearts', 'Type': 'Artichokes', 'Brand': '', 'AvailableAtStores': ['Safeway']}
-{'ProductName': 'Asparagus', 'Type': 'Asparagus', 'Brand': '', 'AvailableAtStores': ['dummy place holder', "Trader Joe's"]}
+{'ProductName': 'Asparagus', 'Type': 'Asparagus', 'Brand': '', 'AvailableAtStores': ["Trader Joe's", 'dummy place holder']}
 # ...truncated to 10 for brevity
 #+end_example
 
 * find products with non-alphanumeric names
-
 
 List products whose names contain non-alphanum sorted randomly to
 prevent boredom while cleaning data.
@@ -493,61 +666,37 @@ prevent boredom while cleaning data.
 MATCH (p:Product)
 WHERE p.name =~ ".*[^a-zA-Z0-9 ].*"
 RETURN p.name AS ProductName
-ORDER BY RAND()
-;
+ORDER BY RAND();
 #+end_example
 
 Results:
 #+begin_example
-{'ProductName': 'Semi-pearled Farro'}
-{'ProductName': 'Rolled Oats / Oats / Old Fashioned / PLU 8490'}
-{'ProductName': 'Soy Sauce - Liquid Aminos'}
-{'ProductName': 'One Percent or 2 Percent Milk in Glass Jar (Not Red Cap Whole Milk)'}
-{'ProductName': 'Honey in glass jar?'}
+{'ProductName': 'Rice - Wild'}
+{'ProductName': 'Coffee - MTM - Kivu Dark Espresso Roast'}
+{'ProductName': 'Reynolds Parchment Paper Genuine Non-Stick 45 Sq. Ft.'}
+{'ProductName': 'Barbecue sauce - Baby Rays bbq sauce'}
+{'ProductName': 'Coffee / MTM / PLU 8368 / Decaf / Decaf / Decaf Kind Unknown'}
+{'ProductName': 'Chicken Tenderloins / Rubber Duckies / 1 BAG ONLY'}
+{'ProductName': "Newman's Own Sesame Ginger Dressing"}
 {'ProductName': 'Coconut Milk - 13.5 oz can'}
-{'ProductName': 'Black Beans (15 oz can)'}
-{'ProductName': 'Dino Kale (ugly spinach)'}
-{'ProductName': 'Chicken Broth - 32 Oz'}
-{'ProductName': 'Eggs (Dozen)'}
+{'ProductName': 'Blueberries - frozen uponina bag'}
+{'ProductName': 'Thai-style Baked Tofu'}
 # ...truncated to 10 for brevity
 #+end_example
 
-* get all product urls
-
-
-#+begin_example
-MATCH (p:Product)
-RETURN p.name AS ProductName, p.urls AS URLs
-;
-#+end_example
-
-Results:
-#+begin_example
-{'ProductName': 'A.1. Sauce', 'URLs': None}
-{'ProductName': 'Allspice', 'URLs': None}
-{'ProductName': 'Almond Milk', 'URLs': None}
-{'ProductName': 'Almonds - bulk roasted or raw -- whichever is cheaper', 'URLs': None}
-{'ProductName': 'Angkor Cambodian Food Paste Lemongrass', 'URLs': None}
-{'ProductName': 'Apple Cider Vinegar', 'URLs': None}
-{'ProductName': 'Apples', 'URLs': None}
-{'ProductName': 'Aroy-D Coconut Milk', 'URLs': ['https://www.google.com/search?sca_esv=581110607&sxsrf=AM9HkKlvxPZkhbmImtTjzpzoOo0bggx5gA:1699596383961&q=aroy-d+coconut+milk&tbm=isch&source=lnms&sa=X&sqi=2&ved=2ahUKEwjq0uj14biCAxW7GTQIHT6CDx0Q0pQJegQIDRAB&biw=1440&bih=754&dpr=2', 'https://www.templeofthai.com/food/coconut-milk/aroy-d-large', 'https://www.zhicayfoods.com/products/aroy-d-coconut-milk-original']}
-{'ProductName': 'Red Curry Paste', 'URLs': ['https://www.google.com/search?sca_esv=579549787&sxsrf=AM9HkKlJ1akktSB6XfxzBxrRxM_VM-9vxA:1699158988679&q=aroy-d+red+curry+paste', 'https://www.youtube.com/watch?v=GC7ccNKatVU']}
-{'ProductName': 'Artichoke Hearts', 'URLs': None}
-# ...truncated to 10 for brevity
-#+end_example
-
-* WRONG: get non-empty product urls
-
+* BAD: get non-empty product urls
 
 This is not possible.
 
-WRONG: fetch all urls for all products, but then don't show urls
-if product doesn't have any
+BAD: fetch all urls for all products, but then don't show urls
+if product doesn't have any.
+
+Don't try to coerece cypher into formatting output, use
+golang/python/...to pretty-print as you like.
 
 #+begin_example
 MATCH (p:Product)
-RETURN p.name AS ProductName, p.urls AS URLs
-;
+RETURN p.name AS ProductName, p.urls AS URLs;
 #+end_example
 
 Results:
@@ -560,7 +709,7 @@ Results:
 {'ProductName': 'Apple Cider Vinegar', 'URLs': None}
 {'ProductName': 'Apples', 'URLs': None}
 {'ProductName': 'Aroy-D Coconut Milk', 'URLs': ['https://www.google.com/search?sca_esv=581110607&sxsrf=AM9HkKlvxPZkhbmImtTjzpzoOo0bggx5gA:1699596383961&q=aroy-d+coconut+milk&tbm=isch&source=lnms&sa=X&sqi=2&ved=2ahUKEwjq0uj14biCAxW7GTQIHT6CDx0Q0pQJegQIDRAB&biw=1440&bih=754&dpr=2', 'https://www.templeofthai.com/food/coconut-milk/aroy-d-large', 'https://www.zhicayfoods.com/products/aroy-d-coconut-milk-original']}
-{'ProductName': 'Red Curry Paste', 'URLs': ['https://www.google.com/search?sca_esv=579549787&sxsrf=AM9HkKlJ1akktSB6XfxzBxrRxM_VM-9vxA:1699158988679&q=aroy-d+red+curry+paste', 'https://www.youtube.com/watch?v=GC7ccNKatVU']}
+{'ProductName': 'Aroy-D Red Curry Paste', 'URLs': ['https://www.google.com/search?sca_esv=579549787&sxsrf=AM9HkKlJ1akktSB6XfxzBxrRxM_VM-9vxA:1699158988679&q=aroy-d+red+curry+paste', 'https://www.youtube.com/watch?v=GC7ccNKatVU']}
 {'ProductName': 'Artichoke Hearts', 'URLs': None}
 # ...truncated to 10 for brevity
 #+end_example
@@ -571,14 +720,13 @@ Results:
 #+begin_example
 MATCH (p:Product)
 WHERE p.urls IS NOT NULL AND SIZE(p.urls) > 0
-RETURN p.name AS ProductName, p.urls AS URLs
-;
+RETURN p.name AS ProductName, p.urls AS URLs;
 #+end_example
 
 Results:
 #+begin_example
 {'ProductName': 'Aroy-D Coconut Milk', 'URLs': ['https://www.google.com/search?sca_esv=581110607&sxsrf=AM9HkKlvxPZkhbmImtTjzpzoOo0bggx5gA:1699596383961&q=aroy-d+coconut+milk&tbm=isch&source=lnms&sa=X&sqi=2&ved=2ahUKEwjq0uj14biCAxW7GTQIHT6CDx0Q0pQJegQIDRAB&biw=1440&bih=754&dpr=2', 'https://www.templeofthai.com/food/coconut-milk/aroy-d-large', 'https://www.zhicayfoods.com/products/aroy-d-coconut-milk-original']}
-{'ProductName': 'Red Curry Paste', 'URLs': ['https://www.google.com/search?sca_esv=579549787&sxsrf=AM9HkKlJ1akktSB6XfxzBxrRxM_VM-9vxA:1699158988679&q=aroy-d+red+curry+paste', 'https://www.youtube.com/watch?v=GC7ccNKatVU']}
+{'ProductName': 'Aroy-D Red Curry Paste', 'URLs': ['https://www.google.com/search?sca_esv=579549787&sxsrf=AM9HkKlJ1akktSB6XfxzBxrRxM_VM-9vxA:1699158988679&q=aroy-d+red+curry+paste', 'https://www.youtube.com/watch?v=GC7ccNKatVU']}
 {'ProductName': 'Baked Tofu', 'URLs': ['https://www.google.com/search?sca_esv=579179295&sxsrf=AM9HkKnAjZCHvxR_pYrcL19p0l0Qjk1Zjg:1699032994034&q=Baked+Tofu&tbm=isch&source=lnms&sa=X&ved=2ahUKEwiwrsiQr6iCAxXHHjQIHVGWDjkQ0pQJegQIDRAB&biw=1440&bih=758&dpr=2']}
 {'ProductName': 'Bonito Flakes', 'URLs': ['https://chefjacooks.com/en/wprm_print/7506', 'https://www.amazon.com/Kaneso-Tokuyou-Hanakatsuo-Bonito-Flakes/dp/B0052BGLMS', 'https://www.google.com/search?sca_esv=577907868&sxsrf=AM9HkKmChgo0Ktu9IlnGTSWuzmK5YqQsiQ:1698696041201&q=Bonito+Flakes&tbm=isch&source=lnms&sa=X&ved=2ahUKEwjy0Pfwx56CAxUBODQIHey0BwcQ0pQJegQIDhAB&biw=1440&bih=758&dpr=2']}
 {'ProductName': 'brownie clif bar', 'URLs': ['https://shop.clifbar.com/collections/clif-bar']}
@@ -586,12 +734,54 @@ Results:
 {'ProductName': 'Candlenuts', 'URLs': ['https://www.google.com/search?client=emacs&sca_esv=580758711&sxsrf=AM9HkKmwGL8OAnRZ8-PJqCLp_VU9-SlJfg:1699507479310&q=Candlenuts&tbm=isch&source=lnms&sa=X&ved=2ahUKEwiwsOPclraCAxVVETQIHabkCi0Q0pQJegQIDRAB&biw=1440&bih=754&dpr=2#imgrc=7uHbBToP7aPjSM']}
 {'ProductName': 'Chili Sauce', 'URLs': ['https://thewoksoflife.com/wp-content/uploads/2020/07/chili-oil-recipe-18.jpg', 'https://www.amazon.com/%E8%80%81%E5%B9%B2%E5%A6%88%E9%A6%99%E8%BE%A3%E8%84%86%E6%B2%B9%E8%BE%A3%E6%A4%92-Spicy-Chili-Crisp-7-41/dp/B07VHKTTR3/ref=asc_df_B07VHKTTR3/?tag=hyprod-20&linkCode=df0&hvadid=642112947349&hvpos=&hvnetw=g&hvrand=12580253979732381700&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9061293&hvtargid=pla-1951193779579&psc=1', 'https://www.google.com/search?sca_esv=580857096&sxsrf=AM9HkKmLh9FDQ0x5jNY12kJCSSbwO6Q3FA:1699539552211&q=thai+and+true+hot+chili&tbm=isch&source=lnms&sa=X&ved=2ahUKEwiJ8KiajreCAxWqAjQIHaMBDKYQ0pQJegQIDBAB&biw=1440&bih=754&dpr=2#imgrc=KDhcVOHe9yNjkM', 'https://photos.google.com/photo/AF1QipMQPtIdU1_m3SkgBWs5RcE2QXFs2OnbbJAdaG9M']}
 {'ProductName': 'Dashi', 'URLs': ['https://en.wikipedia.org/wiki/Dashi']}
-{'ProductName': 'Eucerin Creme Daily Moisturizing Skin Calming', 'URLs': ['https://photos.google.com/photo/AF1QipM2_uDtc-2Uc7XriFP3k4H0L_DxcvxVeYvgUlpG', 'https://photos.google.com/photo/AF1QipM2_uDtc-2Uc7XriFP3k4H0L_DxcvxVeYvgUlpG']}
+{'ProductName': 'Dried Shrimp', 'URLs': ['https://photos.google.com/photo/AF1QipMJV_m1w-qezTjSZAmu6Vam_PKMR6GICW6TJ883', 'https://www.google.com/search?sca_esv=579651652&sxsrf=AM9HkKlBKUS5rDWtKoKSgxss4PSHC4u0jA:1699211859653&q=bdmp+dried+shrimp&tbm=isch&source=lnms&sa=X&sqi=2&ved=2ahUKEwiUtKu6ya2CAxVFIjQIHXeICOQQ0pQJegQIDRAB&biw=1440&bih=758&dpr=2#imgrc=_WqiWb3wPqLdYM', 'https://www.youtube.com/watch?v=dBSmCwUXZF0']}
+# ...truncated to 10 for brevity
+#+end_example
+
+* Candlenuts...really?  What recipe calls for that?
+
+
+#+begin_example
+// ok:
+// MATCH (r:Recipe)-[:CONTAINS]->(p:Product {name: 'Candlenuts'})
+// RETURN r.name AS RecipeName;
+
+// better:
+MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
+WHERE p.name =~ '(?i)Candlenuts'
+RETURN r.name AS RecipeName;
+#+end_example
+
+Results:
+#+begin_example
+{'RecipeName': 'Laksa'}
+#+end_example
+
+* list products with at least one url
+
+
+#+begin_example
+MATCH (p:Product)
+WHERE size(p.urls) > 0
+RETURN p.name AS ProductName, p.urls AS URLs;
+#+end_example
+
+Results:
+#+begin_example
+{'ProductName': 'Aroy-D Coconut Milk', 'URLs': ['https://www.google.com/search?sca_esv=581110607&sxsrf=AM9HkKlvxPZkhbmImtTjzpzoOo0bggx5gA:1699596383961&q=aroy-d+coconut+milk&tbm=isch&source=lnms&sa=X&sqi=2&ved=2ahUKEwjq0uj14biCAxW7GTQIHT6CDx0Q0pQJegQIDRAB&biw=1440&bih=754&dpr=2', 'https://www.templeofthai.com/food/coconut-milk/aroy-d-large', 'https://www.zhicayfoods.com/products/aroy-d-coconut-milk-original']}
+{'ProductName': 'Aroy-D Red Curry Paste', 'URLs': ['https://www.google.com/search?sca_esv=579549787&sxsrf=AM9HkKlJ1akktSB6XfxzBxrRxM_VM-9vxA:1699158988679&q=aroy-d+red+curry+paste', 'https://www.youtube.com/watch?v=GC7ccNKatVU']}
+{'ProductName': 'Baked Tofu', 'URLs': ['https://www.google.com/search?sca_esv=579179295&sxsrf=AM9HkKnAjZCHvxR_pYrcL19p0l0Qjk1Zjg:1699032994034&q=Baked+Tofu&tbm=isch&source=lnms&sa=X&ved=2ahUKEwiwrsiQr6iCAxXHHjQIHVGWDjkQ0pQJegQIDRAB&biw=1440&bih=758&dpr=2']}
+{'ProductName': 'Bonito Flakes', 'URLs': ['https://chefjacooks.com/en/wprm_print/7506', 'https://www.amazon.com/Kaneso-Tokuyou-Hanakatsuo-Bonito-Flakes/dp/B0052BGLMS', 'https://www.google.com/search?sca_esv=577907868&sxsrf=AM9HkKmChgo0Ktu9IlnGTSWuzmK5YqQsiQ:1698696041201&q=Bonito+Flakes&tbm=isch&source=lnms&sa=X&ved=2ahUKEwjy0Pfwx56CAxUBODQIHey0BwcQ0pQJegQIDhAB&biw=1440&bih=758&dpr=2']}
+{'ProductName': 'brownie clif bar', 'URLs': ['https://shop.clifbar.com/collections/clif-bar']}
+{'ProductName': 'Buckwheat Soba Nodles', 'URLs': ['https://www.amazon.com/gp/product/B00101YEBO', 'https://veggiekinsblog.com/2020/01/13/vegan-zaru-soba/']}
+{'ProductName': 'Candlenuts', 'URLs': ['https://www.google.com/search?client=emacs&sca_esv=580758711&sxsrf=AM9HkKmwGL8OAnRZ8-PJqCLp_VU9-SlJfg:1699507479310&q=Candlenuts&tbm=isch&source=lnms&sa=X&ved=2ahUKEwiwsOPclraCAxVVETQIHabkCi0Q0pQJegQIDRAB&biw=1440&bih=754&dpr=2#imgrc=7uHbBToP7aPjSM']}
+{'ProductName': 'Chili Sauce', 'URLs': ['https://thewoksoflife.com/wp-content/uploads/2020/07/chili-oil-recipe-18.jpg', 'https://www.amazon.com/%E8%80%81%E5%B9%B2%E5%A6%88%E9%A6%99%E8%BE%A3%E8%84%86%E6%B2%B9%E8%BE%A3%E6%A4%92-Spicy-Chili-Crisp-7-41/dp/B07VHKTTR3/ref=asc_df_B07VHKTTR3/?tag=hyprod-20&linkCode=df0&hvadid=642112947349&hvpos=&hvnetw=g&hvrand=12580253979732381700&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9061293&hvtargid=pla-1951193779579&psc=1', 'https://www.google.com/search?sca_esv=580857096&sxsrf=AM9HkKmLh9FDQ0x5jNY12kJCSSbwO6Q3FA:1699539552211&q=thai+and+true+hot+chili&tbm=isch&source=lnms&sa=X&ved=2ahUKEwiJ8KiajreCAxWqAjQIHaMBDKYQ0pQJegQIDBAB&biw=1440&bih=754&dpr=2#imgrc=KDhcVOHe9yNjkM', 'https://photos.google.com/photo/AF1QipMQPtIdU1_m3SkgBWs5RcE2QXFs2OnbbJAdaG9M']}
+{'ProductName': 'Dashi', 'URLs': ['https://en.wikipedia.org/wiki/Dashi']}
+{'ProductName': 'Dried Shrimp', 'URLs': ['https://photos.google.com/photo/AF1QipMJV_m1w-qezTjSZAmu6Vam_PKMR6GICW6TJ883', 'https://www.google.com/search?sca_esv=579651652&sxsrf=AM9HkKlBKUS5rDWtKoKSgxss4PSHC4u0jA:1699211859653&q=bdmp+dried+shrimp&tbm=isch&source=lnms&sa=X&sqi=2&ved=2ahUKEwiUtKu6ya2CAxVFIjQIHXeICOQQ0pQJegQIDRAB&biw=1440&bih=758&dpr=2#imgrc=_WqiWb3wPqLdYM', 'https://www.youtube.com/watch?v=dBSmCwUXZF0']}
 # ...truncated to 10 for brevity
 #+end_example
 
 * list product properties
-
 
 A product may or may not have any one of these properties.
 
@@ -600,34 +790,30 @@ MATCH (n:Product)
 WITH DISTINCT keys(n) AS propertyNamesList
 UNWIND propertyNamesList AS propertyName
 RETURN DISTINCT propertyName
-ORDER BY toLower(propertyName)
-;
+ORDER BY toLower(propertyName);
 #+end_example
 
 Results:
 #+begin_example
-{'propertyName': 'bb_says'}
 {'propertyName': 'brand'}
 {'propertyName': 'comments'}
 {'propertyName': 'detail'}
-{'propertyName': 'google'}
-{'propertyName': 'googleSearch'}
-{'propertyName': 'manufacturer'}
 {'propertyName': 'name'}
-{'propertyName': 'note'}
-{'propertyName': 'photos'}
+{'propertyName': 'notes'}
+{'propertyName': 'search'}
 {'propertyName': 'type'}
 {'propertyName': 'urls'}
 #+end_example
 
 * list PURCHASE-AT relation properties
 
+Find all the PURCHASE-AT relations and aggreget the list of
+properties seen.
 
 #+begin_example
 MATCH ()-[r:PURCHASE_AT]->()
 UNWIND keys(r) AS propertyNames
-RETURN DISTINCT propertyNames
-;
+RETURN DISTINCT propertyNames;
 #+end_example
 
 Results:
@@ -635,7 +821,6 @@ Results:
 {'propertyNames': 'urls'}
 {'propertyNames': 'aisle'}
 {'propertyNames': 'url'}
-{'propertyNames': 'note'}
 #+end_example
 
 * list case-insensitive properties for all entities
@@ -645,64 +830,54 @@ Results:
 MATCH (n)
 UNWIND keys(n) AS propertyName
 RETURN DISTINCT propertyName
-ORDER BY toLower(propertyName)
-;
+ORDER BY toLower(propertyName);
 #+end_example
 
 Results:
 #+begin_example
-{'propertyName': 'bb_says'}
 {'propertyName': 'brand'}
 {'propertyName': 'comments'}
 {'propertyName': 'detail'}
-{'propertyName': 'google'}
-{'propertyName': 'google_maps'}
-{'propertyName': 'googleSearch'}
-{'propertyName': 'manufacturer'}
 {'propertyName': 'name'}
-{'propertyName': 'note'}
 {'propertyName': 'notes'}
 {'propertyName': 'origin'}
-{'propertyName': 'photos'}
+{'propertyName': 'search'}
 {'propertyName': 'type'}
 {'propertyName': 'urls'}
 {'propertyName': 'ytb'}
 #+end_example
 
-* WRONG: list properties for all entities
+* BAD: list properties for all entities
 
+It's good becaues it lists properties for node entities
 
-Item 'list properties of all entities including relations' fixes this.
+but
+
+Its bad because it doesn't list properties for relation entities.
+
+[[GOOD: list properties across all entities]] fixes this problem.
 
 #+begin_example
 MATCH (n)
 UNWIND keys(n) AS propertyName
-RETURN DISTINCT propertyName
-;
+RETURN DISTINCT propertyName;
 #+end_example
 
 Results:
 #+begin_example
-{'propertyName': 'urls'}
 {'propertyName': 'name'}
+{'propertyName': 'urls'}
 {'propertyName': 'ytb'}
 {'propertyName': 'origin'}
 {'propertyName': 'notes'}
-{'propertyName': 'google_maps'}
 {'propertyName': 'type'}
 {'propertyName': 'brand'}
-{'propertyName': 'bb_says'}
-{'propertyName': 'photos'}
-{'propertyName': 'manufacturer'}
-{'propertyName': 'note'}
-{'propertyName': 'google'}
 {'propertyName': 'comments'}
-{'propertyName': 'googleSearch'}
+{'propertyName': 'search'}
 {'propertyName': 'detail'}
 #+end_example
 
-* FIXED: list properties across all entities
-
+* GOOD: list properties across all entities
 
 Get properties of nodes and then get properties of relation
 entities and then aggregate them into one list.
@@ -718,32 +893,24 @@ UNION
 MATCH ()-[r]-()
 UNWIND keys(r) AS propertyNames
 RETURN DISTINCT type(r) AS type, propertyNames AS propertyName
-ORDER BY type, propertyName
-;
+ORDER BY type, propertyName;
 #+end_example
 
 Results:
 #+begin_example
-{'type': 'Node', 'propertyName': 'bb_says'}
 {'type': 'Node', 'propertyName': 'brand'}
 {'type': 'Node', 'propertyName': 'comments'}
 {'type': 'Node', 'propertyName': 'detail'}
-{'type': 'Node', 'propertyName': 'google'}
-{'type': 'Node', 'propertyName': 'googleSearch'}
-{'type': 'Node', 'propertyName': 'google_maps'}
-{'type': 'Node', 'propertyName': 'manufacturer'}
 {'type': 'Node', 'propertyName': 'name'}
-{'type': 'Node', 'propertyName': 'note'}
 {'type': 'Node', 'propertyName': 'notes'}
 {'type': 'Node', 'propertyName': 'origin'}
-{'type': 'Node', 'propertyName': 'photos'}
+{'type': 'Node', 'propertyName': 'search'}
 {'type': 'Node', 'propertyName': 'type'}
 {'type': 'Node', 'propertyName': 'urls'}
 {'type': 'Node', 'propertyName': 'ytb'}
 {'type': 'CONTAINS', 'propertyName': 'quantity'}
 {'type': 'CONTAINS', 'propertyName': 'urls'}
 {'type': 'PURCHASE_AT', 'propertyName': 'aisle'}
-{'type': 'PURCHASE_AT', 'propertyName': 'note'}
 {'type': 'PURCHASE_AT', 'propertyName': 'url'}
 {'type': 'PURCHASE_AT', 'propertyName': 'urls'}
 {'type': 'RECOMMENDS', 'propertyName': 'urls'}
@@ -754,42 +921,38 @@ Results:
 
 #+begin_example
 MATCH (p:Product)-[:PURCHASE_AT]->(s:Store)
-RETURN p.name AS ProductName, s.name AS StoreName, p.type as Type
-;
+RETURN p.name AS ProductName, s.name AS StoreName, p.type as Type;
 #+end_example
 
 Results:
 #+begin_example
 {'ProductName': 'Gochugaru', 'StoreName': 'Amazon', 'Type': 'Gochugaru'}
 {'ProductName': 'Cleanser - Bon Ami', 'StoreName': 'Bartell', 'Type': 'Cleanser'}
-{'ProductName': 'Sonicare soft bristles', 'StoreName': 'Bartell', 'Type': 'Sonicare Bristles'}
-{'ProductName': 'ACT Restoring Mouthwash', 'StoreName': 'Bartell', 'Type': 'Mouthwash'}
 {'ProductName': 'Crest', 'StoreName': 'Bartell', 'Type': 'Toothpaste'}
+{'ProductName': 'ACT Restoring Mouthwash', 'StoreName': 'Bartell', 'Type': 'Mouthwash'}
 {'ProductName': 'Marketspice Tea Decaf - 2 Oz for Mommy', 'StoreName': 'Bartell', 'Type': 'Marketspice Tea'}
-{'ProductName': 'Salted Pumpkin seeds', 'StoreName': 'Central Co-op', 'Type': 'Pumpkin seed'}
-{'ProductName': "Granola 'cookies'", 'StoreName': 'Central Co-op', 'Type': 'Granola'}
-{'ProductName': 'Rice - Wild', 'StoreName': 'Central Co-op', 'Type': 'Rice'}
-{'ProductName': 'Toasted Sesame Seeds', 'StoreName': 'Central Co-op', 'Type': 'Sesame Seeds'}
+{'ProductName': 'Sonicare soft bristles', 'StoreName': 'Bartell', 'Type': 'Sonicare Bristles'}
+{'ProductName': 'Curry Powder', 'StoreName': 'Central Co-op', 'Type': 'Curry Powder'}
+{'ProductName': 'Ginger Powder', 'StoreName': 'Central Co-op', 'Type': 'Ginger Powder'}
+{'ProductName': 'Beans - Kidney (Bulk)', 'StoreName': 'Central Co-op', 'Type': 'Beans'}
+{'ProductName': 'Herbs or super greens lettuce', 'StoreName': 'Central Co-op', 'Type': 'Lettuce'}
 # ...truncated to 10 for brevity
 #+end_example
 
 * find product purchasing info
 
-
-Where the hell do I buy this crap?
+Where the hell do I buy this crap? This is list of products that
+I've not yet assiged a store with the PURCHASE-AT relation.
 
 #+begin_example
 MATCH (p:Product)
 WHERE NOT (p)-[:PURCHASE_AT]->(:Store)
 RETURN p.name AS ProductName
-ORDER BY toLower(ProductName)
-;
+ORDER BY toLower(ProductName);
 #+end_example
 
 Results:
 #+begin_example
-{'ProductName': 'Apple Cider Vinegar'}
-{'ProductName': 'Apple Cider Vinegar in Glass Bottle (Non-Organic)'}
 {'ProductName': 'Aroy-D Coconut Milk'}
 {'ProductName': 'Avocado Oil'}
 {'ProductName': 'Beansprouts'}
@@ -803,10 +966,8 @@ Results:
 {'ProductName': 'Cornstarch'}
 {'ProductName': 'Dashi'}
 {'ProductName': 'Dried Thai Chilis'}
-{'ProductName': 'Dried Thai shrimp paste'}
 {'ProductName': 'Egg yolk'}
 {'ProductName': 'Fermented shrimp paste'}
-{'ProductName': 'Feta Cheese'}
 {'ProductName': 'Fish Sauce'}
 {'ProductName': 'Fresh flat-leaf parsley'}
 {'ProductName': 'Fresno chilies'}
@@ -815,11 +976,11 @@ Results:
 {'ProductName': 'Green Bell Pepper'}
 {'ProductName': 'Green lettuce'}
 {'ProductName': 'Ice-cold water'}
-{'ProductName': 'Japanese Nori'}
 {'ProductName': 'Kaffir Lime'}
 {'ProductName': 'Kalamata Olives'}
 {'ProductName': 'Korean Wild Sesame Oil'}
 {'ProductName': 'Laksa leaves'}
+{'ProductName': 'Mae Ploy Red Curry Paste'}
 {'ProductName': 'Makrut lime zest'}
 {'ProductName': 'Maple Syrup'}
 {'ProductName': 'Mild dried red chilies'}
@@ -828,7 +989,6 @@ Results:
 {'ProductName': "Newman's Own Sesame Ginger Dressing"}
 {'ProductName': 'Oil-packed sun-dried tomatoes'}
 {'ProductName': 'Pressed Tofu'}
-{'ProductName': 'Red Curry Paste'}
 {'ProductName': 'Red Curry Paste'}
 {'ProductName': 'Rice vinegar'}
 {'ProductName': 'Rosemary'}
@@ -845,6 +1005,7 @@ Results:
 {'ProductName': 'Straw Mushrooms'}
 {'ProductName': 'Tamarind Paste'}
 {'ProductName': 'Thai chili'}
+{'ProductName': 'Thai shrimp paste'}
 {'ProductName': 'Three Crabs Fish Sauce'}
 {'ProductName': 'Toasted sesame flakes'}
 {'ProductName': 'Tofu puffs'}
@@ -855,8 +1016,24 @@ Results:
 {'ProductName': 'Yellow Curry Paste'}
 #+end_example
 
-* find purchasing info for 10 products
+* dammit this is tedious, how much cleanup remains?
 
+When I check out where to buy stuff, I find lots of things I have
+no clue where to get. Count how many of those mystery product locations I
+need to figure out.
+
+#+begin_example
+MATCH (p:Product)
+WHERE NOT (p)-[:PURCHASE_AT]->(:Store)
+RETURN COUNT(p) AS ProductCount;
+#+end_example
+
+Results:
+#+begin_example
+{'ProductCount': 61}
+#+end_example
+
+* find purchasing info for 10 products
 
 list products that don't have a store associated with them, but
 limit to 10
@@ -912,48 +1089,80 @@ WITH product
 ORDER BY RAND()
 LIMIT 10
 RETURN product.name AS ProductName
-ORDER BY ProductName
-;
+ORDER BY ProductName;
 #+end_example
 
 Results:
 #+begin_example
-{'ProductName': 'Cooking Oil'}
+{'ProductName': 'Egg yolk'}
 {'ProductName': 'Fermented shrimp paste'}
-{'ProductName': 'Fresh flat-leaf parsley'}
+{'ProductName': 'Fish Sauce'}
 {'ProductName': 'Fried shallots'}
 {'ProductName': 'Green lettuce'}
-{'ProductName': 'Kaffir Lime'}
-{'ProductName': 'Makrut lime zest'}
-{'ProductName': 'Red Curry Paste'}
-{'ProductName': 'Sea Salt'}
-{'ProductName': 'Toasted sesame flakes'}
+{'ProductName': 'Kalamata Olives'}
+{'ProductName': 'Mae Ploy Red Curry Paste'}
+{'ProductName': 'Mirin'}
+{'ProductName': 'Russet potatoes'}
+{'ProductName': 'Tamarind Paste'}
 #+end_example
 
-* list the entity type its assocted with
+* BAD: list the entity type the property is assocted with
 
+This is crap.  Results are duplicated.
 
 #+begin_example
 MATCH (n)
 UNWIND labels(n) AS label
 UNWIND keys(n) AS propertyName
-RETURN label, propertyName
-;
+RETURN label, propertyName;
 #+end_example
 
 Results:
 #+begin_example
-{'label': 'Person', 'propertyName': 'urls'}
 {'label': 'Person', 'propertyName': 'name'}
 {'label': 'Person', 'propertyName': 'urls'}
 {'label': 'Person', 'propertyName': 'name'}
 {'label': 'Person', 'propertyName': 'urls'}
 {'label': 'Person', 'propertyName': 'name'}
+{'label': 'Person', 'propertyName': 'urls'}
 {'label': 'Person', 'propertyName': 'name'}
 {'label': 'Person', 'propertyName': 'ytb'}
-{'label': 'Person', 'propertyName': 'urls'}
 {'label': 'Person', 'propertyName': 'name'}
+{'label': 'Person', 'propertyName': 'urls'}
 # ...truncated to 10 for brevity
+#+end_example
+
+* GOOD: list the entity type the property is assocted with
+
+Here's how we can add distinct to eliminates duplicates...makes it
+not crap.
+
+#+begin_example
+MATCH (n)
+UNWIND labels(n) AS label
+UNWIND keys(n) AS propertyName
+RETURN DISTINCT label, propertyName;
+#+end_example
+
+Results:
+#+begin_example
+{'label': 'Person', 'propertyName': 'name'}
+{'label': 'Person', 'propertyName': 'urls'}
+{'label': 'Person', 'propertyName': 'ytb'}
+{'label': 'Recipe', 'propertyName': 'name'}
+{'label': 'Recipe', 'propertyName': 'urls'}
+{'label': 'Store', 'propertyName': 'name'}
+{'label': 'Store', 'propertyName': 'urls'}
+{'label': 'Store', 'propertyName': 'origin'}
+{'label': 'Store', 'propertyName': 'notes'}
+{'label': 'Product', 'propertyName': 'type'}
+{'label': 'Product', 'propertyName': 'name'}
+{'label': 'Product', 'propertyName': 'urls'}
+{'label': 'Product', 'propertyName': 'brand'}
+{'label': 'Product', 'propertyName': 'comments'}
+{'label': 'Product', 'propertyName': 'notes'}
+{'label': 'Product', 'propertyName': 'search'}
+{'label': 'Product', 'propertyName': 'detail'}
 #+end_example
 
 * list unique entities
@@ -964,38 +1173,31 @@ MATCH (n)
 WITH DISTINCT labels(n) AS distinctLabels, keys(n) AS propertyNames
 UNWIND distinctLabels AS label
 UNWIND propertyNames AS propertyName
-RETURN DISTINCT label, propertyName
-;
+RETURN DISTINCT label, propertyName;
 #+end_example
 
 Results:
 #+begin_example
-{'label': 'Person', 'propertyName': 'urls'}
 {'label': 'Person', 'propertyName': 'name'}
+{'label': 'Person', 'propertyName': 'urls'}
 {'label': 'Person', 'propertyName': 'ytb'}
-{'label': 'Recipe', 'propertyName': 'urls'}
 {'label': 'Recipe', 'propertyName': 'name'}
+{'label': 'Recipe', 'propertyName': 'urls'}
 {'label': 'Store', 'propertyName': 'name'}
 {'label': 'Store', 'propertyName': 'urls'}
 {'label': 'Store', 'propertyName': 'origin'}
 {'label': 'Store', 'propertyName': 'notes'}
-{'label': 'Store', 'propertyName': 'google_maps'}
 {'label': 'Product', 'propertyName': 'type'}
 {'label': 'Product', 'propertyName': 'name'}
 {'label': 'Product', 'propertyName': 'urls'}
 {'label': 'Product', 'propertyName': 'brand'}
-{'label': 'Product', 'propertyName': 'bb_says'}
-{'label': 'Product', 'propertyName': 'photos'}
-{'label': 'Product', 'propertyName': 'manufacturer'}
-{'label': 'Product', 'propertyName': 'note'}
-{'label': 'Product', 'propertyName': 'google'}
 {'label': 'Product', 'propertyName': 'comments'}
-{'label': 'Product', 'propertyName': 'googleSearch'}
+{'label': 'Product', 'propertyName': 'notes'}
+{'label': 'Product', 'propertyName': 'search'}
 {'label': 'Product', 'propertyName': 'detail'}
 #+end_example
 
 * list CONTAINS relationships
-
 
 This doesn't help in the least bit...the properties are
 identical...find a better way.
@@ -1004,8 +1206,7 @@ identical...find a better way.
 MATCH ()-[r:CONTAINS]-()
 UNWIND keys(r) AS propertyNames
 RETURN type(r) AS type, propertyNames AS propertyName
-ORDER BY type, propertyName
-;
+ORDER BY type, propertyName;
 #+end_example
 
 Results:
@@ -1025,8 +1226,7 @@ Results:
 MATCH ()-[r:CONTAINS]-()
 UNWIND keys(r) AS propertyNames
 RETURN DISTINCT type(r) AS type, propertyNames AS propertyName
-ORDER BY type, propertyName
-;
+ORDER BY type, propertyName;
 #+end_example
 
 Results:
@@ -1036,7 +1236,6 @@ Results:
 #+end_example
 
 * list products with Google Drive photo urls
-
 
 This fails
 #+begin_example
@@ -1059,13 +1258,13 @@ The property existence syntax `... exists(variable.property)` is no longer suppo
 
 MATCH (p:Product)
 WHERE p.urls IS NOT NULL AND ANY(url IN p.urls WHERE url CONTAINS 'photos.google.com')
-RETURN p.name AS ProductName, p.urls AS URLs
-;
+RETURN p.name AS ProductName, p.urls AS URLs;
 #+end_example
 
 Results:
 #+begin_example
 {'ProductName': 'Chili Sauce', 'URLs': ['https://thewoksoflife.com/wp-content/uploads/2020/07/chili-oil-recipe-18.jpg', 'https://www.amazon.com/%E8%80%81%E5%B9%B2%E5%A6%88%E9%A6%99%E8%BE%A3%E8%84%86%E6%B2%B9%E8%BE%A3%E6%A4%92-Spicy-Chili-Crisp-7-41/dp/B07VHKTTR3/ref=asc_df_B07VHKTTR3/?tag=hyprod-20&linkCode=df0&hvadid=642112947349&hvpos=&hvnetw=g&hvrand=12580253979732381700&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9061293&hvtargid=pla-1951193779579&psc=1', 'https://www.google.com/search?sca_esv=580857096&sxsrf=AM9HkKmLh9FDQ0x5jNY12kJCSSbwO6Q3FA:1699539552211&q=thai+and+true+hot+chili&tbm=isch&source=lnms&sa=X&ved=2ahUKEwiJ8KiajreCAxWqAjQIHaMBDKYQ0pQJegQIDBAB&biw=1440&bih=754&dpr=2#imgrc=KDhcVOHe9yNjkM', 'https://photos.google.com/photo/AF1QipMQPtIdU1_m3SkgBWs5RcE2QXFs2OnbbJAdaG9M']}
+{'ProductName': 'Dried Shrimp', 'URLs': ['https://photos.google.com/photo/AF1QipMJV_m1w-qezTjSZAmu6Vam_PKMR6GICW6TJ883', 'https://www.google.com/search?sca_esv=579651652&sxsrf=AM9HkKlBKUS5rDWtKoKSgxss4PSHC4u0jA:1699211859653&q=bdmp+dried+shrimp&tbm=isch&source=lnms&sa=X&sqi=2&ved=2ahUKEwiUtKu6ya2CAxVFIjQIHXeICOQQ0pQJegQIDRAB&biw=1440&bih=758&dpr=2#imgrc=_WqiWb3wPqLdYM', 'https://www.youtube.com/watch?v=dBSmCwUXZF0']}
 {'ProductName': 'Eucerin Creme Daily Moisturizing Skin Calming', 'URLs': ['https://photos.google.com/photo/AF1QipM2_uDtc-2Uc7XriFP3k4H0L_DxcvxVeYvgUlpG', 'https://photos.google.com/photo/AF1QipM2_uDtc-2Uc7XriFP3k4H0L_DxcvxVeYvgUlpG']}
 {'ProductName': 'Jasmine Rice', 'URLs': ['https://photos.google.com/photo/AF1QipM0ragYoS8EjrRngQukQJH_U1hnen_ACdJyMqEV']}
 {'ProductName': 'Kaffir lime leaves', 'URLs': ['https://www.wholefoodsmarket.com/product/kaffir-lime%20leaves-b07q8ldbvj', 'https://www.youtube.com/watch?v=4Qz5nC-DcKk', 'https://www.safeway.com/shop/marketplace/product-details.970537048.html', 'https://photos.google.com/photo/AF1QipPI_6_YxYIuCSAvP93sDoRcyFDjekCQjNSb3Ln0', 'https://photos.google.com/photo/AF1QipPd_yNuI9VcQAFOwMSuvBx40o_sl4gAmCgBYNIQ', 'https://www.youtube.com/watch?v=SB3AV7oHKiE']}
@@ -1075,23 +1274,22 @@ Results:
 {'ProductName': 'Rice vermicelli', 'URLs': ['https://photos.google.com/photo/AF1QipPPETrmRSh8-h9guEbb90DRig4g_njAUvQ50Ol6', 'https://photos.google.com/photo/AF1QipMYLPcT9Oybki3TQGztAT1X5tIxpknKSJ0ZmdlP', 'https://www.amazon.com/Fresh-Stick-Vermicelli-SIMPLY-FOOD/dp/B08NXVTFTP/ref=asc_df_B08NXVTFTP/?tag=hyprod-20&linkCode=df0&hvadid=652498065761&hvpos=&hvnetw=g&hvrand=10598234170837115346&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9061293&hvtargid=pla-2065471401768&psc=1', 'https://www.amazon.com/Fresh-Stick-Vermicelli-SIMPLY-FOOD/dp/B08NXVTFTP/ref=asc_df_B08NXVTFTP/?tag=hyprod-20&linkCode=df0&hvadid=652498065761&hvpos=&hvnetw=g&hvrand=10598234170837115346&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9061293&hvtargid=pla-2065471401768&psc=1']}
 {'ProductName': 'Signature Care Baby Lotion', 'URLs': ['https://www.google.com/search?client=emacs&sca_esv=580645679&sxsrf=AM9HkKmFAe6c5ttC3Glgq4OAYuHfy2tEjw:1699487253983&q=Signature+Care+baby+lotion&tbm=isch&source=lnms&sa=X&ved=2ahUKEwjopsuwy7WCAxWzFTQIHdjcCGIQ0pQJegQIDhAB&biw=1440&bih=754&dpr=2#imgrc=0Cnl_Uyq2nmiBM', 'https://photos.google.com/photo/AF1QipPtyZkpbFq-ZvHy5JD9WYAiDFBvmkPXB_pFNjPL']}
 {'ProductName': 'Tamarind Liquid', 'URLs': ['https://photos.google.com/photo/AF1QipMTNoAmEBIUBgJiziw2Tl16y2KscVqpjfDGlS-q', 'https://photos.google.com/photo/AF1QipPd47xo0JnbBdfR9pbd6FgvPRvxghQoP_wmWxph']}
+{'ProductName': 'Mae Ploy Thai Chili Paste in Oil', 'URLs': ['https://youtu.be/hhcYNjeQ_XY?list=PLaS2Ffd8cyD7SL49uWtqbfuUBmLi9nVup&t=433', 'https://photos.google.com/photo/AF1QipNWHU8huzjTXkKBm0l9ehnPAJFm5J_jea8kU5KL']}
 #+end_example
 
-* FIXED: list relation entities and their properties
+* GOOD: list relation entities and their properties
 
-
-FIXED: list relations, not just CONTAINS and show relation
+GOOD: list relations, not just CONTAINS and show relation
 properties
 
-This fixes the item in section: 'WRONG: list relations, not
+This fixes the item in section: 'BAD: list relations, not
 just CONTAINS and show relation properties'
 
 #+begin_example
 MATCH ()-[r]-()
 RETURN DISTINCT type(r) AS type,
                 CASE WHEN size(keys(r)) > 0 THEN keys(r) ELSE [] END AS propertyNames
-ORDER BY type, propertyNames
-;
+ORDER BY type, propertyNames;
 #+end_example
 
 Results:
@@ -1102,7 +1300,6 @@ Results:
 {'type': 'CREATED', 'propertyNames': []}
 {'type': 'IS_THE_SAME_AS', 'propertyNames': []}
 {'type': 'PURCHASE_AT', 'propertyNames': []}
-{'type': 'PURCHASE_AT', 'propertyNames': ['note']}
 {'type': 'PURCHASE_AT', 'propertyNames': ['url']}
 {'type': 'PURCHASE_AT', 'propertyNames': ['urls']}
 {'type': 'PURCHASE_AT', 'propertyNames': ['urls', 'aisle']}
@@ -1110,7 +1307,6 @@ Results:
 #+end_example
 
 * identify stores for recipe ingredients
-
 
 suppose I would like to make a particular recipe, then what stores
 do I need to visit?
@@ -1124,8 +1320,7 @@ OPTIONAL MATCH (p)-[:PURCHASE_AT]->(s:Store)
 WITH p, COLLECT(DISTINCT s) AS stores
 RETURN COLLECT(DISTINCT p.name) AS Ingredients,
        [store IN stores | CASE WHEN store IS NOT NULL THEN store.name ELSE 'Unknown' END] AS Stores
-ORDER BY [store IN Stores | toLower(store)]
-;
+ORDER BY [store IN Stores | toLower(store)];
 #+end_example
 
 Results:
@@ -1136,13 +1331,12 @@ Results:
 {'Ingredients': ['Rice vermicelli'], 'Stores': ["Lam's Seafood Asian Market"]}
 {'Ingredients': ['Dry-Roasted Peanuts'], 'Stores': ['PCC']}
 {'Ingredients': ['Lee Kum Kee Sauce Hoisin'], 'Stores': ['QFC']}
-{'Ingredients': ['Adams Peanut Butter', 'Vegetable Oil', 'Ginger'], 'Stores': ['Safeway']}
+{'Ingredients': ['Ginger', 'Adams Peanut Butter', 'Shallots', 'Vegetable Oil'], 'Stores': ['Safeway']}
 {'Ingredients': ['Garlic'], 'Stores': ["Trader Joe's"]}
-{'Ingredients': ['Mint leaves', 'Rice paper'], 'Stores': ['Uwajimaya']}
+{'Ingredients': ['Rice paper', 'Mint leaves'], 'Stores': ['Uwajimaya']}
 #+end_example
 
 * find stores for Chicken Teriyaki ingredients
-
 
 suppose I were to make Chicken Teriyaki, then what stores need I visit
 to get products I'd need for it?
@@ -1150,25 +1344,24 @@ to get products I'd need for it?
 #+begin_example
 MATCH (r:Recipe {name: 'Chicken Teriyaki Recipe'})-[:CONTAINS]->(p:Product)
 MATCH (p)-[:PURCHASE_AT]->(s:Store)
-RETURN s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients
-;
+RETURN s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients;
 #+end_example
 
 Results:
 #+begin_example
-{'StoreName': "Trader Joe's", 'Ingredients': ['Red Onion', 'Red Pepper', 'Garlic']}
-{'StoreName': 'PCC', 'Ingredients': ['Sesame Seeds']}
-{'StoreName': 'Naked Grocer', 'Ingredients': ['Sesame Seeds']}
-{'StoreName': 'Safeway', 'Ingredients': ['Soy sauce', 'Rice Wine Vinegar - Kikkoman Mirin', 'Broccolini', 'Ginger']}
-{'StoreName': 'Hau Hau Market', 'Ingredients': ['Thai-style Baked Tofu']}
 {'StoreName': 'Thanh Son Tofu', 'Ingredients': ['Thai-style Baked Tofu']}
-{'StoreName': 'Madison Co-op', 'Ingredients': ['Chicken Thighs']}
+{'StoreName': 'Hau Hau Market', 'Ingredients': ['Thai-style Baked Tofu']}
+{'StoreName': 'Safeway', 'Ingredients': ['Ginger', 'Broccolini', 'Rice Wine Vinegar - Kikkoman Mirin', 'Soy sauce']}
 {'StoreName': 'Uwajimaya', 'Ingredients': ['Rice']}
 {'StoreName': 'dummy place holder', 'Ingredients': ['Water']}
+{'StoreName': 'Madison Co-op', 'Ingredients': ['Chicken Thighs']}
+{'StoreName': "Trader Joe's", 'Ingredients': ['Red Onion', 'Garlic', 'Red Pepper']}
+{'StoreName': 'PCC', 'Ingredients': ['Sesame Seeds']}
+{'StoreName': 'Naked Grocer', 'Ingredients': ['Sesame Seeds']}
+{'StoreName': 'M2M Mart', 'Ingredients': ['Sake Wine']}
 #+end_example
 
 * streamline shopping for recipes
-
 
 suppose I would like to make 2 recipes, then what stores do I need
 to visit?
@@ -1182,28 +1375,27 @@ OPTIONAL MATCH (p)-[:PURCHASE_AT]->(s:Store)
 WITH p, COLLECT(DISTINCT s) AS stores
 RETURN COLLECT(DISTINCT p.name) AS Ingredients,
        [store IN stores | CASE WHEN store IS NOT NULL THEN store.name ELSE 'Unknown' END] AS Stores
-ORDER BY [store IN Stores | toLower(store)]
-;
+ORDER BY [store IN Stores | toLower(store)];
 #+end_example
 
 Results:
 #+begin_example
 {'Ingredients': ['Sawtooth Coriander', 'Green lettuce'], 'Stores': []}
 {'Ingredients': ['Water'], 'Stores': ['dummy place holder']}
-{'Ingredients': ['Shrimp', 'Fish sauce'], 'Stores': ['Hau Hau Market']}
-{'Ingredients': ['Kaffir lime leaves'], 'Stores': ['Hau Hau Market', 'Uwajimaya']}
+{'Ingredients': ['Fish sauce', 'Shrimp'], 'Stores': ['Hau Hau Market']}
 {'Ingredients': ['Rice vermicelli'], 'Stores': ["Lam's Seafood Asian Market"]}
+{'Ingredients': ['Mae Ploy Thai Chili Paste in Oil'], 'Stores': ['M2M Mart']}
 {'Ingredients': ['Jasmine Rice', 'Dry-Roasted Peanuts'], 'Stores': ['PCC']}
 {'Ingredients': ['Lee Kum Kee Sauce Hoisin'], 'Stores': ['QFC']}
-{'Ingredients': ['Lemongrass', 'Evaporated Milk', 'Oyster Mushrooms', 'Adams Peanut Butter', 'Vegetable Oil', 'Ginger'], 'Stores': ['Safeway']}
+{'Ingredients': ['Lemongrass', 'Evaporated Milk', 'Oyster Mushrooms', 'Ginger', 'Adams Peanut Butter', 'Shallots', 'Vegetable Oil'], 'Stores': ['Safeway']}
 {'Ingredients': ['Garlic'], 'Stores': ["Trader Joe's"]}
-{'Ingredients': ['Mae Ploy Thai Chili Paste in Oil', 'Galangal', 'Mint leaves', 'Rice paper'], 'Stores': ['Uwajimaya']}
+{'Ingredients': ['Galangal', 'Rice paper', 'Mint leaves'], 'Stores': ['Uwajimaya']}
+{'Ingredients': ['Kaffir lime leaves'], 'Stores': ['Uwajimaya', 'Hau Hau Market']}
 {'Ingredients': ['Thai chilies'], 'Stores': ['Uwajimaya', "Lam's Seafood Asian Market"]}
 {'Ingredients': ['Lime juice'], 'Stores': ['Whole Foods']}
 #+end_example
 
 * minimize travel for recipe ingredients
-
 
 If I would like to make a particular recipe, then what stores do I
 need to visit and sort products by stores so I don't have to leave
@@ -1219,23 +1411,21 @@ OPTIONAL MATCH (p)-[:PURCHASE_AT]->(s:Store)
 WITH p, COLLECT(DISTINCT s) AS stores
 RETURN COLLECT(DISTINCT p.name) AS Ingredients,
        [store IN stores | CASE WHEN store IS NOT NULL THEN store.name ELSE 'Unknown' END] AS Stores
-ORDER BY [store IN Stores | toLower(store)]
-;
+ORDER BY [store IN Stores | toLower(store)];
 #+end_example
 
 Results:
 #+begin_example
 {'Ingredients': ['Korean Wild Sesame Oil'], 'Stores': []}
 {'Ingredients': ['Toasted Sesame Seeds'], 'Stores': ['Central Co-op']}
-{'Ingredients': ['Tsuyu', 'Chili Oil', 'Soba Noodles', 'Toasted Seaweed'], 'Stores': ['M2M Mart']}
+{'Ingredients': ['Chili Oil', 'Tsuyu', 'Soba Noodles', 'Toasted Seaweed'], 'Stores': ['M2M Mart']}
 {'Ingredients': ['Sesame Seeds'], 'Stores': ['PCC', 'Naked Grocer']}
 {'Ingredients': ['Green Onion', 'Red Chilli Peppers'], 'Stores': ['Safeway']}
 #+end_example
 
-* WRONG: remove duplicate ingredients
+* BAD: remove duplicate ingredients
 
-
-WRONG: some recipes point to the same product multiple times by
+BAD: some recipes point to the same product multiple times by
 mistake
 
 This doesn't do what I expect.  Need to spend more time iterating.
@@ -1244,40 +1434,39 @@ This doesn't do what I expect.  Need to spend more time iterating.
 MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
 WITH r, COLLECT(p) AS products
 WHERE SIZE(products) > 1
-RETURN r, products
-;
+RETURN r, products;
 #+end_example
 
 Results:
 #+begin_example
-{'r': {'urls': ['https://www.food.com/recipe/easy-black-bean-soup-59796?ftab=reviews#activity-feed'], 'name': 'Easy Black Bean Soup'}, 'products': [{'name': 'Red Onion', 'type': 'Red Onion'}, {'name': 'Salt', 'type': 'Salt'}, {'name': 'Onion', 'type': 'Onion'}, {'name': 'Chicken Broth', 'type': 'Broth'}, {'name': 'Cilantro', 'type': 'Cilantro'}, {'name': 'Black Beans', 'type': 'Black Beans'}, {'name': 'Extra Virgin Olive Oil', 'type': 'Olive Oil'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Black Pepper', 'type': 'Black Pepper'}]}
-{'r': {'urls': ['https://theflavoursofkitchen.com/wprm_print/104534'], 'name': 'Chicken Thai Red Curry'}, 'products': [{'name': 'Lemon Juice', 'type': 'Lemon Juice'}, {'name': 'Lemongrass', 'type': 'Lemongrass'}, {'name': 'Red Curry Paste', 'type': 'Curry Paste'}, {'name': 'Red Bell Pepper', 'type': 'Bell Pepper'}, {'name': 'Light Brown Sugar', 'type': 'Brown Sugar'}, {'name': 'Zucchini', 'type': 'Zucchini'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'name': 'Ginger', 'type': 'Ginger'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Chicken Stock or Water', 'type': 'Chicken Stock'}, {'name': 'Boneless Chicken Thighs', 'type': 'Chicken'}, {'name': 'Cooking Oil', 'type': 'Oil'}, {'name': 'Full fat coconut milk', 'type': 'Coconut Milk'}, {'name': 'Onion', 'type': 'Onion'}, {'urls': ['https://www.fredmeyer.com/p/simple-truth-organic-thai-basil/0001111001922'], 'name': 'Thai basil', 'type': 'Herb'}]}
-{'r': {'urls': ['https://food52.com/recipes/print/86501', 'https://www.youtube.com/watch?v=VpAS3RarPi8'], 'name': 'Cold Soba With Periall Oil dresssing'}, 'products': [{'urls': ['https://www.youtube.com/watch?v=VpAS3RarPi8', 'https://megakfood.com/products/8801045448503', 'https://photos.google.com/photo/AF1QipNe7d-KXSpC90FJ1uJNMnH1fMFZ6E8Qlzr_j3Q0', 'https://photos.google.com/photo/AF1QipOLrXnJ8Bj20xFh5lg5yhm71ApUoRlT1z6_ZqnB', 'https://photos.google.com/photo/AF1QipP8OZZvarZPkNnnaOOv3k_ng9doQzMeVZgONlxK'], 'name': 'Perilla Oil', 'type': 'Oil'}, {'urls': ['https://www.amazon.com/gp/product/B00101YEBO', 'https://veggiekinsblog.com/2020/01/13/vegan-zaru-soba/'], 'name': 'Buckwheat Soba Nodles', 'type': 'Noodle'}, {'urls': ['https://www.google.com/search?client=emacs&sca_esv=577922779&sxsrf=AM9HkKkUxzT-KjHg9ziVgvqz5Zsqmn7xdw:1698703946500&q=Japanese+nori&tbm=isch&source=lnms&sa=X&ved=2ahUKEwi647yq5Z6CAxVxMjQIHRW8BBYQ0pQJegQIChAB&biw=1440&bih=758&dpr=2'], 'name': 'Japanese Nori', 'type': 'Nori'}]}
-{'r': {'urls': ['https://cleananddelicious.com/wprm_print/26940'], 'name': 'Crispy Baked Tofu'}, 'products': [{'name': 'Morton Salt Kosher Coarse', 'type': 'Kosher Salt'}, {'name': 'Avocado Oil', 'type': 'Avocado Oil'}, {'name': 'Tamari', 'type': 'Tamari'}, {'name': 'Black Pepper', 'type': 'Black Pepper'}, {'name': 'Garlic Powder', 'type': 'Garlic'}, {'name': 'Cornstarch', 'type': 'Cornstarch'}, {'name': 'Extra Firm Tofu', 'type': 'Tofu'}]}
-{'r': {'urls': ['https://seonkyounglongest.com/drunken-noodles/', 'https://seonkyounglongest.com/drunken-noodles/print/27100/'], 'name': 'The Best Drunken Noodles'}, 'products': [{'name': 'Shrimp', 'type': 'Shrimp'}, {'name': 'Lime', 'type': 'Lime'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'name': 'White pepper', 'type': 'White pepper'}, {'name': 'Palm Sugar', 'type': 'Sugar'}, {'name': 'Basil', 'type': 'Basil'}, {'name': 'Cooking Oil', 'type': 'Cooking Oil'}, {'name': 'Thai-style Baked Tofu', 'type': 'Tofu'}, {'name': 'Shallots', 'type': 'Shallots'}, {'name': 'Dark soy sauce', 'type': 'Soy Sauce'}, {'name': 'Oyster Sauce', 'type': 'Oyster Sauce'}, {'name': 'Red Chilli Peppers', 'type': 'Chilli Pepper'}, {'name': 'Chicken', 'type': 'Chicken'}, {'name': 'Shrimp', 'type': 'Shrimp'}, {'name': 'Thai chili', 'type': 'Chilies'}, {'name': 'Chinese Broccoli', 'type': 'Broccoli'}, {'name': 'Pork', 'type': 'Pork'}, {'urls': ['https://www.google.com/search?sca_esv=579554252&sxsrf=AM9HkKlaWKZFra1JEJmQLagqVwu7lOpvPA:1699161392487&q=rice+paper&tbm=isch&source=lnms&sa=X&sqi=2&ved=2ahUKEwjyhdy5jayCAxWmADQIHTJBBhUQ0pQJegQIDxAB&biw=1440&bih=758&dpr=2', 'https://balancewithjess.com/hu-tieu-ap-chao/', 'https://www.google.com/search?q=hu+tieu+xao+rice+sheets&tbm=isch&ved=2ahUKEwjExZejjayCAxU_JjQIHf97ACQQ2-cCegQIABAA&oq=hu+tieu+xao+rice+sheets&gs_lcp=CgNpbWcQAzoECCMQJzoFCAAQgAQ6BwgAEIoFEEM6BwgAEBgQgARQvQRYpRdgxRpoAHAAeACAATmIAecEkgECMTOYAQCgAQGqAQtnd3Mtd2l6LWltZ8ABAQ&sclient=img&ei=ASVHZYTBDb_M0PEP__eBoAI&bih=758&biw=1440#imgrc=il_S9C1t9kGChM', 'https://www.foodsofjane.com/recipes/steamed-rice-rolls', 'https://www.google.com/search?client=emacs&sca_esv=579554252&sxsrf=AM9HkKkMHZcCbxpmpXqsj48WrwEW--xssw:1699161240321&q=Rice+noodle+sheets&tbm=isch&source=lnms&sa=X&ved=2ahUKEwiPypTxjKyCAxW_MDQIHVJjDeYQ0pQJegQIDBAB&biw=1440&bih=758&dpr=2#imgrc=Vw7_7S7XaN_v6M', 'https://photos.google.com/photo/AF1QipPM6Ts-zLh2dl10ono15alL7hCGwSCHhbOyav6v', 'https://phohoa.com/', 'https://www.google.com/search?q=pho+hoa+seattle&oq=pho+hoa+seatt&gs_lcrp=EgZjaHJvbWUqCggAEAAY4wIYgAQyCggAEAAY4wIYgAQyEAgBEC4YrwEYxwEYgAQYjgUyBggCEEUYOTIICAMQABgWGB4yCAgEEC4YFhgeMgoIBRAAGIYDGIoFMgYIBhBFGEDSAQg1Mjk1ajBqN6gCALACAA&sourceid=chrome&ie=UTF-8#lpg=cid:CgIgAQ%3D%3D,ik:CAoSLEFGMVFpcE40MXM4TXJDSzlDcFVRZWxBRHZPNUZXb1h5LWtIVFpaeHNnZm03', 'https://timeline.google.com/maps/timeline?pli=1&rapt=AEjHL4MhNWvrl4xjhvtinEYv8V8WTyxNYgSR-reE9VJgys6Ba7GccWm6B2Xi6Xa3uKxuR9rkftCXiinZ4f3LvAJGF9CnnqgrtUIGNdtCmaP1EhTNElp4eko&pb=!1m2!1m1!1s2023-11-04', 'https://www.google.com/search?client=emacs&sca_esv=579833118&sxsrf=AM9HkKmyvTZJVTjaoB4T2Is_emhNvlG1og:1699290431734&q=rice+paper&tbm=isch&source=lnms&sa=X&ved=2ahUKEwimz7aU7q-CAxVkFjQIHXrWCSgQ0pQJegQIDhAB&biw=1440&bih=758&dpr=2', 'https://i0.wp.com/www.wokandkin.com/wp-content/uploads/2021/04/Rice-Paper-saved-for-web-1200-px.png?w=1200&ssl=1'], 'name': 'Rice noodle sheets', 'google': 'Rice noodle sheets', 'type': 'Rice noodle sheets'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Soy sauce', 'type': 'Soy sauce'}]}
-{'r': {'urls': ['https://www.williams-sonoma.com/recipe/farro-salad-with-artichoke-hearts.html?print=true'], 'name': 'Farro Salad with Artichoke Hearts'}, 'products': [{'name': 'Pine Nuts', 'type': 'Pine nuts'}, {'name': 'Black Pepper', 'type': 'Black Pepper'}, {'name': 'Oil-packed sun-dried tomatoes', 'type': 'Tomatoes'}, {'name': 'Fresh flat-leaf parsley', 'type': 'Herbs'}, {'name': 'Extra Virgin Olive Oil', 'type': 'Olive Oil'}, {'name': 'Salt', 'type': 'Salt'}, {'name': 'Semi-pearled Farro', 'type': 'Farro'}, {'name': 'Red wine vinegar', 'type': 'Vinegar'}, {'name': 'Red Onion', 'type': 'Red Onion'}, {'name': 'Artichoke Hearts', 'type': 'Artichokes'}]}
-{'r': {'urls': ['https://www.meghanlivingstone.com/ginger-sesame-dressing/', 'https://www.meghanlivingstone.com/wprm_print/2060'], 'name': 'Ginger Sesame Dressing'}, 'products': [{'name': 'Maple Syrup', 'type': 'Maple Syrup'}, {'name': 'Coconut Aminos', 'type': 'Soy Sauce Alternative'}, {'name': 'Apple Cider Vinegar', 'type': 'Apple Cider Vinegar'}, {'name': 'Ginger Powder', 'type': 'Ginger Powder'}, {'name': 'Unsweetened Nut Butter', 'type': 'Unsweetened Nut Butter'}, {'name': 'Toasted Sesame Oil', 'type': 'Sesame Oil'}]}
-{'r': {'urls': ['https://www.ambitiouskitchen.com/wprm_print/24776'], 'name': 'The Easiest Chickpea Greek Salad'}, 'products': [{'name': 'Salt', 'type': 'Salt'}, {'name': 'Feta Cheese', 'type': 'Cheese'}, {'name': 'Extra Virgin Olive Oil', 'type': 'Olive Oil'}, {'name': 'Lemon Juice', 'type': 'Lemon Juice'}, {'name': 'Grape Tomatoes', 'type': 'Tomatoes'}, {'name': 'Red Onion', 'type': 'Red Onion'}, {'name': 'Kalamata Olives', 'type': 'Olives'}, {'name': 'Yellow Bell Pepper', 'type': 'Bell Pepper'}, {'name': 'Red Bell Pepper', 'type': 'Bell Pepper'}, {'name': 'Green Bell Pepper', 'type': 'Bell Pepper'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Cucumber', 'type': 'Cucumber'}, {'name': 'Oregano', 'type': 'Oregano'}, {'name': 'Chickpeas', 'type': 'Chickpeas'}]}
-{'r': {'urls': ['https://seonkyounglongest.com/korean-sesame-noodles/print/46266/'], 'name': 'Korean Sesame Noodles'}, 'products': [{'urls': ['https://www.google.com/search?q=tsuyu+soup+seasoning+sauce&oq=tsuyu+soup+seasoning+sauce'], 'googleSearch': 'tsuyu, soup seasoning sauce', 'name': 'Tsuyu', 'type': 'Sauce'}, {'name': 'Chili Oil', 'type': 'Chili Oil'}, {'name': 'Toasted Sesame Seeds', 'type': 'Sesame Seeds'}, {'name': 'Soba Noodles', 'type': 'Soba Noodles'}, {'name': 'Green Onion', 'type': 'Onion'}, {'name': 'Korean Wild Sesame Oil', 'type': 'Sesame Oil'}, {'name': 'Toasted Seaweed', 'type': 'Seaweed'}, {'name': 'Sesame Seeds', 'type': 'Sesame Seeds'}, {'name': 'Red Chilli Peppers', 'type': 'Chilli Pepper'}, {'name': 'Green Onion', 'type': 'Onion'}]}
-{'r': {'urls': ['https://hot-thai-kitchen.com/singaporean-laksa/print/7645/', 'https://hot-thai-kitchen.com/singaporean-laksa/', 'https://www.youtube.com/watch?v=cWtnFKFiB_0'], 'name': 'Laksa'}, 'products': [{'name': 'Thai chilies', 'type': 'Pepper'}, {'name': 'Sambal', 'type': 'Condiment'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Shrimp', 'type': 'Shrimp'}, {'name': 'Dried Shrimp', 'type': 'Seafood', 'photos': ['https://photos.google.com/photo/AF1QipMJV_m1w-qezTjSZAmu6Vam_PKMR6GICW6TJ883', 'https://www.google.com/search?sca_esv=579651652&sxsrf=AM9HkKlBKUS5rDWtKoKSgxss4PSHC4u0jA:1699211859653&q=bdmp+dried+shrimp&tbm=isch&source=lnms&sa=X&sqi=2&ved=2ahUKEwiUtKu6ya2CAxVFIjQIHXeICOQQ0pQJegQIDRAB&biw=1440&bih=758&dpr=2#imgrc=_WqiWb3wPqLdYM', 'https://www.youtube.com/watch?v=dBSmCwUXZF0']}, {'name': 'Beansprouts', 'type': 'Vegetable'}, {'name': 'Lemongrass', 'type': 'Lemongrass'}, {'name': 'Dry rice noodles', 'type': 'Rice Noodles'}, {'urls': ['https://thewoksoflife.com/shrimp-paste-sauce/'], 'name': 'Fermented shrimp paste', 'type': 'Fermented shrimp paste'}, {'name': 'Mild dried red chilies', 'type': 'Dry Chilies'}, {'urls': ['https://youtu.be/cWtnFKFiB_0?t=458'], 'name': 'Fish cakes', 'type': 'Seafood'}, {'name': 'Laksa leaves', 'type': 'Herb'}, {'name': 'Full fat coconut milk', 'type': 'Coconut Milk'}, {'name': 'Water', 'type': 'Water'}, {'name': 'Tofu puffs', 'type': 'Tofu'}, {'name': 'Turmeric', 'type': 'Turmeric'}, {'urls': ['https://www.google.com/search?client=emacs&sca_esv=580758711&sxsrf=AM9HkKmwGL8OAnRZ8-PJqCLp_VU9-SlJfg:1699507479310&q=Candlenuts&tbm=isch&source=lnms&sa=X&ved=2ahUKEwiwsOPclraCAxVVETQIHabkCi0Q0pQJegQIDRAB&biw=1440&bih=754&dpr=2#imgrc=7uHbBToP7aPjSM'], 'name': 'Candlenuts', 'type': 'Candlenuts'}, {'name': 'Galangal', 'type': 'Galangal'}, {'name': 'Shallots', 'type': 'Shallots'}, {'name': 'Clams', 'type': 'Clams'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'name': 'Granulated Sugar', 'type': 'Granulated Sugar'}]}
-{'r': {'urls': ['https://www.foodandwine.com/pad-see-ew-7559639?print'], 'name': 'Pad See Ew'}, 'products': [{'name': 'Dark soy sauce', 'type': 'Soy Sauce'}, {'name': 'Chinese Broccoli', 'type': 'Broccoli'}, {'name': 'Vegetable Oil', 'type': 'Vegetable Oil'}, {'name': 'Distilled white vinegar', 'type': 'Vinegar'}, {'name': 'Soy sauce', 'type': 'Soy sauce'}, {'name': 'Granulated Sugar', 'type': 'Granulated Sugar'}, {'name': 'Cornstarch', 'type': 'Cornstarch'}, {'name': 'Skirt steak', 'type': 'Beef'}, {'name': 'Oyster Sauce', 'type': 'Oyster Sauce'}, {'name': 'White pepper', 'type': 'White pepper'}, {'urls': ['https://en.wikipedia.org/wiki/Bird%27s_eye_chili', 'https://www.google.com/search?client=emacs&sca_esv=579702589&sxsrf=AM9HkKlqpOqf2K4ex4TTB1e3ix-WBqYAKQ:1699243036206&q=Thai+bird+chiles&tbm=isch&source=lnms&sa=X&ved=2ahUKEwjHnL3Mva6CAxVaCjQIHdJRCxEQ0pQJegQIDxAB&biw=1440&bih=758&dpr=2#imgrc=u6dinAhHDxTfaM'], 'name': 'Thai bird chiles', 'type': 'Chilies'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Eggs', 'type': 'Eggs'}, {'urls': ['https://youtu.be/5odVRW9ldzU?t=323'], 'name': 'Wide rice noodles', 'type': 'Rice Noodles'}]}
-{'r': {'urls': ['https://www.foodnetwork.com/recipes/pad-thai-7112938?soc=youtube'], 'name': 'Pad Thai'}, 'products': [{'name': 'Shrimp', 'type': 'Shrimp'}, {'name': 'Eggs', 'type': 'Eggs'}, {'name': 'Banana Leaf', 'type': 'Banana Leaf'}, {'name': 'Bean Sprouts', 'type': 'Bean Sprouts'}, {'name': 'Rice Wine Vinegar', 'type': 'Rice Wine Vinegar'}, {'name': 'Lime juice', 'type': 'Lime juice'}, {'name': 'Vegetable Oil', 'type': 'Vegetable Oil'}, {'name': 'Lime', 'type': 'Lime'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Granulated Sugar', 'type': 'Granulated Sugar'}, {'name': 'Thai-style Baked Tofu', 'type': 'Tofu'}, {'name': 'Dried Shrimp', 'type': 'Seafood', 'photos': ['https://photos.google.com/photo/AF1QipMJV_m1w-qezTjSZAmu6Vam_PKMR6GICW6TJ883', 'https://www.google.com/search?sca_esv=579651652&sxsrf=AM9HkKlBKUS5rDWtKoKSgxss4PSHC4u0jA:1699211859653&q=bdmp+dried+shrimp&tbm=isch&source=lnms&sa=X&sqi=2&ved=2ahUKEwiUtKu6ya2CAxVFIjQIHXeICOQQ0pQJegQIDRAB&biw=1440&bih=758&dpr=2#imgrc=_WqiWb3wPqLdYM', 'https://www.youtube.com/watch?v=dBSmCwUXZF0']}, {'name': 'Dry-Roasted Peanuts', 'type': 'Peanuts'}, {'urls': ['https://www.google.com/search?q=Rice%20Sticks'], 'name': 'Rice Sticks', 'type': 'Rice Noodles'}, {'name': 'Sweet Paprika', 'type': 'Paprika'}, {'name': 'Tamarind Paste', 'type': 'Tamarind Paste'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'urls': ['https://www.amazon.com/8oz-Salted-Turnip-Pack/dp/B01578SHHW'], 'name': 'Salted Turnip', 'type': 'Salted Turnip'}, {'urls': ['https://www.youtube.com/watch?v=dBSmCwUXZF0'], 'name': 'Garlic Chives', 'type': 'Chives'}, {'name': 'Chicken', 'type': 'Chicken'}, {'urls': ['https://thewoksoflife.com/wp-content/uploads/2020/07/chili-oil-recipe-18.jpg', 'https://www.amazon.com/%E8%80%81%E5%B9%B2%E5%A6%88%E9%A6%99%E8%BE%A3%E8%84%86%E6%B2%B9%E8%BE%A3%E6%A4%92-Spicy-Chili-Crisp-7-41/dp/B07VHKTTR3/ref=asc_df_B07VHKTTR3/?tag=hyprod-20&linkCode=df0&hvadid=642112947349&hvpos=&hvnetw=g&hvrand=12580253979732381700&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9061293&hvtargid=pla-1951193779579&psc=1', 'https://www.google.com/search?sca_esv=580857096&sxsrf=AM9HkKmLh9FDQ0x5jNY12kJCSSbwO6Q3FA:1699539552211&q=thai+and+true+hot+chili&tbm=isch&source=lnms&sa=X&ved=2ahUKEwiJ8KiajreCAxWqAjQIHaMBDKYQ0pQJegQIDBAB&biw=1440&bih=754&dpr=2#imgrc=KDhcVOHe9yNjkM', 'https://photos.google.com/photo/AF1QipMQPtIdU1_m3SkgBWs5RcE2QXFs2OnbbJAdaG9M'], 'name': 'Chili Sauce', 'type': 'Chili Sauce'}]}
-{'r': {'urls': ['https://www.youtube.com/watch?v=9ANH-tkkBrg'], 'name': 'Pad Thai'}, 'products': [{'name': 'Pressed Tofu', 'type': 'Tofu'}, {'name': 'Palm Sugar', 'type': 'Sugar'}, {'urls': ['https://www.google.com/search?q=Sweetened+Radish&tbm=isch&chips=q:sweet+radish,g_1:pad+thai:jagT0YaAv9M%3D&client=emacs&hl=en&sa=X&ved=2ahUKEwj-mLvS56-CAxWKFjQIHTmHCrEQ4lYoAHoECAEQNQ&biw=1440&bih=758#imgrc=8T2ZeEeH0IL-QM'], 'name': 'Sweetened Radish', 'type': 'Sweetened Radish'}, {'name': 'Roasted Chili Flakes', 'type': 'Chili Flakes'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Rice Stick Noodles', 'type': 'Rice Noodles'}, {'name': 'Grounded Roasted Peanuts', 'type': 'Peanuts'}, {'name': 'Lime', 'type': 'Lime'}, {'name': 'Shrimp', 'type': 'Shrimp'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'name': 'Eggs', 'type': 'Eggs'}, {'name': 'Shallots', 'type': 'Shallots'}, {'name': 'Dried Shrimp', 'type': 'Seafood', 'photos': ['https://photos.google.com/photo/AF1QipMJV_m1w-qezTjSZAmu6Vam_PKMR6GICW6TJ883', 'https://www.google.com/search?sca_esv=579651652&sxsrf=AM9HkKlBKUS5rDWtKoKSgxss4PSHC4u0jA:1699211859653&q=bdmp+dried+shrimp&tbm=isch&source=lnms&sa=X&sqi=2&ved=2ahUKEwiUtKu6ya2CAxVFIjQIHXeICOQQ0pQJegQIDRAB&biw=1440&bih=758&dpr=2#imgrc=_WqiWb3wPqLdYM', 'https://www.youtube.com/watch?v=dBSmCwUXZF0']}, {'urls': ['https://www.youtube.com/watch?v=dBSmCwUXZF0'], 'name': 'Garlic Chives', 'type': 'Chives'}, {'name': 'Bean Sprouts', 'type': 'Bean Sprouts'}, {'urls': ['https://photos.google.com/photo/AF1QipMTNoAmEBIUBgJiziw2Tl16y2KscVqpjfDGlS-q', 'https://photos.google.com/photo/AF1QipPd47xo0JnbBdfR9pbd6FgvPRvxghQoP_wmWxph'], 'name': 'Tamarind Liquid', 'type': 'Tamarind Liquid'}]}
-{'r': {'urls': ['https://www.evolvingtable.com/peanut-sauce/'], 'name': 'Peanut Sauce'}, 'products': [{'name': 'Adams Peanut Butter', 'type': 'Peanut Butter'}, {'name': 'Sriracha', 'type': 'Sriracha'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Soy sauce', 'type': 'Soy sauce'}, {'name': 'Rice vinegar', 'type': 'Vinegar'}, {'name': 'Water', 'type': 'Water'}, {'name': 'Brown Sugar', 'type': 'Sugar'}]}
-{'r': {'urls': ['https://hot-thai-kitchen.com/red-curry-paste/print/6752/'], 'name': 'Vegan Thai Red Curry'}, 'products': [{'urls': ['https://www.google.com/search?client=emacs&sca_esv=579520937&sxsrf=AM9HkKlUrnbTZeiuHkGuxjA6wsla9_IkfQ:1699140927441&q=Makrut+Lime&tbm=isch&source=lnms&sa=X&ved=2ahUKEwir5pybwauCAxXfLTQIHYj1DqQQ0pQJegQICxAB&biw=1440&bih=758&dpr=2'], 'name': 'Makrut lime zest', 'type': 'Makrut Lime'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Mild dried red chilies', 'type': 'Dry Chilies'}, {'name': 'Galangal', 'type': 'Galangal'}, {'name': 'Cilantro roots', 'type': 'Cilantro'}, {'name': 'Spicy dried red chilies', 'type': 'Dry Chilies'}, {'name': 'White Peppercorns', 'type': 'White Peppercorns'}, {'name': 'Shrimp Paste', 'type': 'Shrimp Paste'}, {'name': 'Coriander seeds', 'type': 'Spice'}, {'name': 'Shallots', 'type': 'Shallots'}, {'name': 'Cumin seeds', 'type': 'Cumin '}, {'name': 'Lemongrass', 'type': 'Lemongrass'}]}
-{'r': {'urls': ['https://www.seriouseats.com/the-best-roast-potatoes-ever-recipe'], 'name': 'The Best Crispy Roast Potatoes Ever'}, 'products': [{'name': 'Baking soda', 'type': 'Baking Soda'}, {'name': 'Extra Virgin Olive Oil', 'type': 'Olive Oil'}, {'name': 'Rosemary', 'type': 'Rosemary'}, {'name': 'Russet potatoes', 'type': 'Potatoes'}, {'name': 'Parsley', 'type': 'Parsley'}, {'name': 'Garlic', 'type': 'Garlic'}]}
-{'r': {'urls': ['https://www.simplyrecipes.com/recipes/tomatillo_salsa_verde/?print'], 'name': 'Tomatillo Salsa Verde'}, 'products': [{'name': 'White Onion', 'type': 'Onion'}, {'name': 'Tomatillos', 'type': 'Tomatillos'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Lime juice', 'type': 'Lime juice'}, {'name': 'Jalapeno Pepper', 'type': 'Pepper'}, {'name': 'Cilantro', 'type': 'Cilantro'}, {'name': 'Salt', 'type': 'Salt'}]}
-{'r': {'urls': ['https://cookieandkate.com/sugar-snap-pea-and-carrot-soba-noodles/print/23556/'], 'name': 'Sugar Snap Pea and Carrot Soba Noodles'}, 'products': [{'name': 'Edamame', 'type': 'Edamame'}, {'name': 'Cilantro', 'type': 'Cilantro'}, {'name': 'Sesame Seeds', 'type': 'Sesame Seeds'}, {'name': 'Cilantro', 'type': 'Cilantro'}, {'name': 'Lime', 'type': 'Lime'}, {'name': 'Tamari', 'type': 'Tamari'}, {'name': 'Sriracha', 'type': 'Sriracha'}, {'name': 'Tamari', 'type': 'Tamari'}, {'name': 'Lime', 'type': 'Lime'}, {'name': 'Toasted Sesame Oil', 'type': 'Sesame Oil'}, {'name': 'Bell Pepper', 'type': 'Bell Pepper'}, {'name': 'Sesame Seeds', 'type': 'Sesame Seeds'}, {'name': 'Soba Noodles', 'type': 'Soba Noodles'}, {'name': 'Bell Pepper', 'type': 'Bell Pepper'}, {'name': 'Sugar Snap Peas', 'type': 'Sugar Snap Peas'}, {'name': 'Sweet White Miso', 'type': 'Miso'}, {'name': 'Peanut Oil', 'type': 'Oil'}, {'name': 'Tamari', 'type': 'Tamari'}, {'name': 'Soba Noodles', 'type': 'Soba Noodles'}, {'name': 'Honey', 'type': 'Honey'}, {'name': 'Carrots', 'type': 'Carrots'}, {'name': 'Soba Noodles', 'type': 'Soba Noodles'}, {'name': 'Soba Noodles', 'type': 'Soba Noodles'}, {'name': 'Edamame', 'type': 'Edamame'}, {'name': 'Sugar Snap Peas', 'type': 'Sugar Snap Peas'}, {'name': 'Tamari', 'type': 'Tamari'}, {'name': 'Ginger', 'type': 'Ginger'}]}
-{'r': {'urls': ['https://youtu.be/HJPRPEJY2WM?t=265', 'https://natashaskitchen.com/fresh-spring-rolls/', 'https://natashaskitchen.com/wprm_print/72895', 'https://www.youtube.com/shorts/lECNJqSXk64'], 'name': 'Fresh Spring Rolls'}, 'products': [{'name': 'Shrimp', 'type': 'Shrimp'}, {'name': 'Cilantro', 'type': 'Cilantro'}, {'name': 'Shredded Carrot', 'type': 'Shredded Carrot'}, {'name': 'Dry rice noodles', 'type': 'Rice Noodles'}, {'name': 'Carrots', 'type': 'Carrots'}, {'name': 'Toasted Sesame Oil', 'type': 'Sesame Oil'}, {'name': 'Rice Wine Vinegar', 'type': 'Rice Wine Vinegar'}, {'urls': ['https://www.google.com/search?client=emacs&sca_esv=581269367&sxsrf=AM9HkKkz3fh-g6VKFw7SQLjSbKO7bO0n2g:1699640340645&q=Chili+Garlic+Sauce&tbm=isch&source=lnms&sa=X&ved=2ahUKEwjB3P_VhbqCAxW9FjQIHQ6rDewQ0pQJegQIDRAB&biw=1440&bih=754&dpr=2'], 'name': 'Huy Fong Chili Garlic Sauce', 'type': 'Chili Garlic Sauce'}, {'name': 'Lime juice', 'type': 'Lime juice'}, {'name': 'Round Rice Paper Sheets', 'type': 'Round Rice Paper Sheets'}, {'name': 'Granulated Sugar', 'type': 'Granulated Sugar'}, {'name': 'Three Crabs Fish Sauce', 'type': 'Three Crabs Fish Sauce'}, {'name': 'Water', 'type': 'Water'}, {'name': 'Green lettuce', 'type': 'Lettuce'}, {'name': 'Cucumber', 'type': 'Cucumber'}, {'name': 'Garlic', 'type': 'Garlic'}]}
-{'r': {'urls': ['https://www.youtube.com/watch?v=t-Hj2pILMz4', 'https://prohomecooks.com/blogs/all/why-every-cook-should-master-chicken-teriyaki?_pos=1&_sid=7db443900&_ss=r'], 'name': 'Chicken Teriyaki Recipe'}, 'products': [{'name': 'Red Onion', 'type': 'Red Onion'}, {'name': 'Sesame Seeds', 'type': 'Sesame Seeds'}, {'name': 'Soy sauce', 'type': 'Soy sauce'}, {'name': 'Thai-style Baked Tofu', 'type': 'Tofu'}, {'name': 'Red Pepper', 'type': 'Bell Pepper'}, {'name': 'Cornstarch', 'type': 'Cornstarch'}, {'name': 'Chicken Thighs', 'type': 'Chicken'}, {'name': 'Rice', 'type': 'Rice'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Water', 'type': 'Water'}, {'name': 'Water', 'type': 'Water'}, {'name': 'Cooking Oil', 'type': 'Oil'}, {'name': 'Rice Wine Vinegar - Kikkoman Mirin', 'type': 'Vinegar'}, {'name': 'Broccolini', 'type': 'Broccolini'}, {'name': 'Ginger', 'type': 'Ginger'}]}
-{'r': {'urls': ['https://www.joshuaweissman.com/post/easy-authentic-thai-green-curry', 'https://photos.google.com/photo/AF1QipMJV_m1w-qezTjSZAmu6Vam_PKMR6GICW6TJ883'], 'name': 'The Best Green Curry'}, 'products': [{'name': 'Cumin seeds', 'type': 'Cumin '}, {'name': 'White Peppercorns', 'type': 'White Peppercorns'}, {'name': 'Palm Sugar', 'type': 'Sugar'}, {'name': 'Chicken Thighs', 'type': 'Chicken'}, {'name': 'Cilantro', 'type': 'Cilantro'}, {'name': 'Lemongrass', 'type': 'Lemongrass'}, {'name': 'Full fat coconut milk', 'type': 'Coconut Milk'}, {'urls': ['https://www.wholefoodsmarket.com/product/kaffir-lime%20leaves-b07q8ldbvj', 'https://www.youtube.com/watch?v=4Qz5nC-DcKk', 'https://www.safeway.com/shop/marketplace/product-details.970537048.html', 'https://photos.google.com/photo/AF1QipPI_6_YxYIuCSAvP93sDoRcyFDjekCQjNSb3Ln0', 'https://photos.google.com/photo/AF1QipPd_yNuI9VcQAFOwMSuvBx40o_sl4gAmCgBYNIQ', 'https://www.youtube.com/watch?v=SB3AV7oHKiE'], 'name': 'Kaffir lime leaves', 'type': 'Kaffir Lime Leaves'}, {'urls': ['https://www.fredmeyer.com/p/simple-truth-organic-thai-basil/0001111001922'], 'name': 'Thai basil', 'type': 'Herb'}, {'name': 'Shallots', 'type': 'Shallots'}, {'name': 'Chicken stock', 'type': 'Stock'}, {'name': 'Lime', 'type': 'Lime'}, {'name': 'Serranos', 'type': 'Serrano Peppers'}, {'name': 'Thai Eggplant', 'type': 'Thai Eggplant'}, {'name': 'Coriander seeds', 'type': 'Spice'}, {'name': 'Snow peas', 'type': 'Snow Peas'}, {'urls': ['https://www.google.com/search?sca_esv=579007228&sxsrf=AM9HkKkqQcpTokvs8EUmjT-DnZNXV9I6Lw:1698970375605&q=kaffir+lime&tbm=isch&source=lnms&sa=X&ved=2ahUKEwiH6eLtxaaCAxVnMDQIHZ94DUYQ0pQJegQIDhAB&biw=1440&bih=758&dpr=2'], 'name': 'Kaffir Lime', 'type': 'Kaffir Lime'}, {'name': 'Galangal', 'type': 'Galangal'}, {'name': 'Fried shallots', 'type': 'Condiment'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'name': 'Garlic cloves', 'type': 'Garlic'}, {'urls': ['https://www.eatingthaifood.com/thai-nam-prik-kapi-recipe/'], 'comments': ['thaiShrimpPasteComment1', 'thaiShrimpPasteComment2'], 'name': 'Dried Thai shrimp paste', 'google': ['shrimp paste kapi OR gabi OR gkabi'], 'type': 'Condiment'}]}
-{'r': {'urls': ['https://www.myfoodchannel.com/thai-eggplant-recipe/', 'https://www.youtube.com/watch?v=7a0IAC7pCgA'], 'name': 'Thai Eggplant Recipe'}, 'products': [{'name': 'Lime juice', 'type': 'Lime juice'}, {'name': 'Thai chilies', 'type': 'Pepper'}, {'name': 'Salt', 'type': 'Salt'}, {'name': 'Thai Eggplant', 'type': 'Thai Eggplant'}, {'name': 'Onion', 'type': 'Onion'}, {'name': 'Red Bell Pepper', 'type': 'Bell Pepper'}, {'name': 'Turmeric', 'type': 'Turmeric'}, {'name': 'Garlic cloves', 'type': 'Garlic'}, {'urls': ['https://www.fredmeyer.com/p/simple-truth-organic-thai-basil/0001111001922'], 'name': 'Thai basil', 'type': 'Herb'}, {'name': 'Chicken stock', 'type': 'Stock'}, {'name': 'Coriander powder', 'type': 'Spice'}, {'name': 'Ginger', 'type': 'Ginger'}, {'name': 'Coconut Oil', 'type': 'Coconut Oil'}, {'name': 'Chili powder', 'type': 'Spice'}, {'name': 'Lemongrass', 'type': 'Lemongrass'}, {'name': 'Full fat coconut milk', 'type': 'Coconut Milk'}]}
-{'r': {'urls': ['https://hot-thai-kitchen.com/creamy-tom-yum/print/6203/', 'https://hot-thai-kitchen.com/creamy-tom-yum/', 'https://www.youtube.com/watch?v=hhcYNjeQ_XY&list=PLaS2Ffd8cyD7SL49uWtqbfuUBmLi9nVup'], 'name': 'Tom Yum Goong'}, 'products': [{'name': 'Shrimp', 'type': 'Shrimp'}, {'name': 'Lemongrass', 'type': 'Lemongrass'}, {'name': 'Thai chilies', 'type': 'Pepper'}, {'name': 'Water', 'type': 'Water'}, {'urls': ['https://youtu.be/hhcYNjeQ_XY?list=PLaS2Ffd8cyD7SL49uWtqbfuUBmLi9nVup&t=433'], 'name': 'Mae Ploy Thai Chili Paste in Oil', 'type': 'Thai Chili Paste'}, {'name': 'Evaporated Milk', 'type': 'Evaporated Milk'}, {'urls': ['https://www.youtube.com/watch?v=hhcYNjeQ_XY&list=PLaS2Ffd8cyD7SL49uWtqbfuUBmLi9nVup'], 'name': 'Sawtooth Coriander', 'type': 'Sawtooth Coriander'}, {'name': 'Oyster Mushrooms', 'type': 'Oyster Mushroom'}, {'name': 'Galangal', 'type': 'Galangal'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'urls': ['https://photos.google.com/photo/AF1QipM0ragYoS8EjrRngQukQJH_U1hnen_ACdJyMqEV'], 'name': 'Jasmine Rice', 'type': 'Jasmine Rice'}, {'name': 'Lime juice', 'type': 'Lime juice'}, {'urls': ['https://www.wholefoodsmarket.com/product/kaffir-lime%20leaves-b07q8ldbvj', 'https://www.youtube.com/watch?v=4Qz5nC-DcKk', 'https://www.safeway.com/shop/marketplace/product-details.970537048.html', 'https://photos.google.com/photo/AF1QipPI_6_YxYIuCSAvP93sDoRcyFDjekCQjNSb3Ln0', 'https://photos.google.com/photo/AF1QipPd_yNuI9VcQAFOwMSuvBx40o_sl4gAmCgBYNIQ', 'https://www.youtube.com/watch?v=SB3AV7oHKiE'], 'name': 'Kaffir lime leaves', 'type': 'Kaffir Lime Leaves'}]}
-{'r': {'urls': ['https://christieathome.com/wprm_print/3534'], 'name': 'Vietnamese Spring Rolls (Gỏi Cuốn)'}, 'products': [{'name': 'Shrimp', 'type': 'Shrimp'}, {'name': 'Lee Kum Kee Sauce Hoisin', 'type': 'Lee Kum Kee Sauce Hoisin'}, {'note': 'added to frezer Nov 6 2023', 'urls': ['https://photos.google.com/photo/AF1QipNrbFzt7g3nCOVFOmFa6geW-HODg2hilRdq4xl0'], 'name': 'Mint leaves', 'type': 'Mint'}, {'name': 'Adams Peanut Butter', 'type': 'Peanut Butter'}, {'name': 'Water', 'type': 'Water'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Vegetable Oil', 'type': 'Vegetable Oil'}, {'name': 'Dry-Roasted Peanuts', 'type': 'Peanuts'}, {'urls': ['https://photos.google.com/photo/AF1QipPPETrmRSh8-h9guEbb90DRig4g_njAUvQ50Ol6', 'https://photos.google.com/photo/AF1QipMYLPcT9Oybki3TQGztAT1X5tIxpknKSJ0ZmdlP', 'https://www.amazon.com/Fresh-Stick-Vermicelli-SIMPLY-FOOD/dp/B08NXVTFTP/ref=asc_df_B08NXVTFTP/?tag=hyprod-20&linkCode=df0&hvadid=652498065761&hvpos=&hvnetw=g&hvrand=10598234170837115346&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9061293&hvtargid=pla-2065471401768&psc=1', 'https://www.amazon.com/Fresh-Stick-Vermicelli-SIMPLY-FOOD/dp/B08NXVTFTP/ref=asc_df_B08NXVTFTP/?tag=hyprod-20&linkCode=df0&hvadid=652498065761&hvpos=&hvnetw=g&hvrand=10598234170837115346&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9061293&hvtargid=pla-2065471401768&psc=1'], 'name': 'Rice vermicelli', 'type': 'Rice vermicelli'}, {'name': 'Ginger', 'type': 'Ginger'}, {'name': 'Green lettuce', 'type': 'Lettuce'}, {'name': 'Rice paper', 'type': 'Rice Paper'}]}
-{'r': {'urls': ['https://lifemadesimplebakes.com/wprm_print/25731'], 'name': 'Yellow Coconut Curry Chicken'}, 'products': [{'name': 'Rice', 'type': 'Rice'}, {'name': 'Chicken Breast', 'type': 'Chicken'}, {'name': 'Coconut Oil', 'type': 'Coconut Oil'}, {'name': 'Carrots', 'type': 'Carrots'}, {'name': 'Chicken Broth', 'type': 'Broth'}, {'name': 'Russet Potatoes', 'type': 'Russet Potatoe'}, {'name': 'Full fat coconut milk', 'type': 'Coconut Milk'}, {'name': 'Yellow Onion', 'type': 'Onion'}, {'urls': ['https://www.google.com/search?q=Yellow+Curry+Powder+near+me&tbm=isch&ved=2ahUKEwiVxLm7h6mCAxWIFjQIHTNwBKoQ2-cCegQIABAA&oq=Yellow+Curry+Powder+near+me&gs_lcp=CgNpbWcQAzIHCAAQGBCABDoECCMQJzoGCAAQBxAeOgYIABAIEB46BAgAEB46BggAEAUQHlDIBViIEGD3EWgAcAB4AIABS4gBkQSSAQE5mAEAoAEBqgELZ3dzLXdpei1pbWfAAQE&sclient=img&ei=QoxFZZWbEYit0PEPs-CR0Ao&bih=758&biw=1440&client=emacs'], 'name': 'Yellow Curry Powder', 'type': 'Spice'}, {'urls': ['https://www.wholefoodsmarket.com/product/maesri-red-curry-paste-b0013esw84', 'https://www.safeway.com/shop/product-details.970519982.html?cmpid=ps_swy_sea_ecom_goo_20200924_71700000073186042_58700007112018081_92700063963421736&r=https%3A%2F%2Fwww.google.com%2F'], 'name': 'Maesri Thai Red Curry Paste', 'type': 'Curry Paste'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Brown Sugar', 'type': 'Sugar'}, {'name': 'Cilantro', 'type': 'Cilantro'}]}
-{'r': {'urls': ['https://www.templeofthai.com/recipes/yellow_chicken_curry.php'], 'name': 'Yellow Curry with Chicken'}, 'products': [{'name': 'Potatoes', 'type': 'Potatoe'}, {'name': 'Lemongrass', 'type': 'Lemongrass'}, {'name': 'Fried shallots', 'type': 'Condiment'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Shallots', 'type': 'Shallots'}, {'name': 'Chicken', 'type': 'Chicken'}, {'name': 'Full fat coconut milk', 'type': 'Coconut Milk'}, {'name': 'Curry Powder', 'type': 'Curry Powder'}, {'name': 'Cumin seeds', 'type': 'Cumin '}, {'urls': ['https://www.safeway.com/shop/product-details.960076294.html'], 'name': 'Yellow Curry Paste', 'type': 'Curry Paste'}, {'name': 'Ginger', 'type': 'Ginger'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'name': 'Dried Thai Chilis', 'type': 'Thai Chilies'}, {'name': 'Shrimp Paste', 'type': 'Shrimp Paste'}, {'name': 'Sea Salt', 'type': 'Seasoning'}, {'name': 'Galangal', 'type': 'Galangal'}, {'name': 'Coriander seeds', 'type': 'Spice'}]}
-{'r': {'urls': ['https://drivemehungry.com/wprm_print/13748'], 'name': '7-Minute Zaru Soba (Cold Soba Noodles)'}, 'products': [{'name': 'Sesame Seeds', 'type': 'Sesame Seeds'}, {'name': 'Wasabi', 'type': 'Wasabi'}, {'name': 'SWEET preserved daikon radish', 'type': 'Radish'}, {'urls': ['https://www.google.com/search?client=emacs&sca_esv=577922779&sxsrf=AM9HkKkUxzT-KjHg9ziVgvqz5Zsqmn7xdw:1698703946500&q=Japanese+nori&tbm=isch&source=lnms&sa=X&ved=2ahUKEwi647yq5Z6CAxVxMjQIHRW8BBYQ0pQJegQIChAB&biw=1440&bih=758&dpr=2'], 'name': 'Japanese Nori', 'type': 'Nori'}, {'urls': ['https://www.amazon.com/Kikkoman-Japanese-Noodle-Soup-Tsuyu/dp/B002Z3F0IW', 'https://www.google.com/search?q=kikkoman+japanese+noodle+soup+base(hon+tsuyu)&oq=Kikkoman+Japanese+Noodle+Soup+Base(Hon+Tsuyu)&gs_lcrp=EgZjaHJvbWUqBwgAEAAYgAQyBwgAEAAYgAQyBwgBEAAYgAQyCggCEAAYhgMYigUyCggDEAAYhgMYigUyBggEEEUYPDIGCAUQRRg9MgYIBhBFGD3SAQc0NzBqMGo0qAIAsAIA&sourceid=chrome&ie=UTF-8', 'https://www.youtube.com/watch?v=61nPpDkz1AI'], 'name': 'Kikkoman Japanese Noodle Soup Base (Hon Tsuyu)', 'type': 'Sauce', 'manufacturer': 'Kikkoman'}, {'name': 'Soba Noodles', 'type': 'Soba Noodles'}, {'name': 'Ice-cold water', 'type': 'Water'}]}
-{'r': {'urls': ['https://www.cookerru.com/wprm_print/7756'], 'name': '10-Minute Zaru Soba (Cold Soba Noodles)'}, 'products': [{'name': 'Wasabi', 'type': 'Wasabi'}, {'name': 'Egg yolk', 'type': 'Egg yolk'}, {'name': 'Green Onion', 'type': 'Onion'}, {'name': 'Toasted Seaweed', 'type': 'Seaweed'}, {'name': 'SWEET preserved daikon radish', 'type': 'Radish'}, {'name': 'Toasted sesame flakes', 'type': 'Garnish'}, {'name': 'Soba Noodles', 'type': 'Soba Noodles'}, {'name': 'Soy sauce', 'type': 'Soy sauce'}, {'name': 'Mirin', 'type': 'Mirin'}, {'name': 'Granulated Sugar', 'type': 'Granulated Sugar'}]}
+{'r': {'urls': ['https://www.food.com/recipe/easy-black-bean-soup-59796?ftab=reviews#activity-feed'], 'name': 'Easy Black Bean Soup'}, 'products': [{'name': 'Black Pepper', 'type': 'Black Pepper'}, {'name': 'Extra Virgin Olive Oil', 'type': 'Olive Oil'}, {'name': 'Cilantro', 'type': 'Cilantro'}, {'name': 'Red Onion', 'type': 'Red Onion'}, {'name': 'Ground Cumin', 'type': 'Cumin'}, {'name': 'Chicken Broth', 'type': 'Broth'}, {'name': 'Black Beans', 'type': 'Black Beans'}, {'name': 'Salt', 'type': 'Salt'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Onion', 'type': 'Onion'}]}
+{'r': {'urls': ['https://theflavoursofkitchen.com/wprm_print/104534'], 'name': 'Chicken Thai Red Curry'}, 'products': [{'name': 'Full fat coconut milk', 'type': 'Coconut Milk'}, {'name': 'Light Brown Sugar', 'type': 'Brown Sugar'}, {'name': 'Cooking Oil', 'type': 'Oil'}, {'name': 'Onion', 'type': 'Onion'}, {'name': 'Ginger', 'type': 'Ginger'}, {'name': 'Red Bell Pepper', 'type': 'Bell Pepper'}, {'name': 'Garlic', 'type': 'Garlic'}, {'urls': ['https://www.fredmeyer.com/p/simple-truth-organic-thai-basil/0001111001922'], 'name': 'Thai basil', 'type': 'Herb'}, {'name': 'Boneless Chicken Thighs', 'type': 'Chicken'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'name': 'Chicken Stock or Water', 'type': 'Chicken Stock'}, {'name': 'Lemongrass', 'type': 'Lemongrass'}, {'name': 'Zucchini', 'type': 'Zucchini'}, {'name': 'Red Curry Paste', 'type': 'Curry Paste'}, {'name': 'Lemon Juice', 'type': 'Lemon Juice'}]}
+{'r': {'urls': ['https://food52.com/recipes/print/86501', 'https://www.youtube.com/watch?v=VpAS3RarPi8'], 'name': 'Cold Soba With Periall Oil dresssing'}, 'products': [{'urls': ['https://www.amazon.com/gp/product/B00101YEBO', 'https://veggiekinsblog.com/2020/01/13/vegan-zaru-soba/'], 'name': 'Buckwheat Soba Nodles', 'type': 'Noodle'}, {'urls': ['https://www.google.com/search?client=emacs&sca_esv=577922779&sxsrf=AM9HkKkUxzT-KjHg9ziVgvqz5Zsqmn7xdw:1698703946500&q=Japanese+nori&tbm=isch&source=lnms&sa=X&ved=2ahUKEwi647yq5Z6CAxVxMjQIHRW8BBYQ0pQJegQIChAB&biw=1440&bih=758&dpr=2'], 'name': 'Japanese Nori', 'type': 'Nori'}, {'urls': ['https://www.youtube.com/watch?v=VpAS3RarPi8', 'https://megakfood.com/products/8801045448503', 'https://photos.google.com/photo/AF1QipNe7d-KXSpC90FJ1uJNMnH1fMFZ6E8Qlzr_j3Q0', 'https://photos.google.com/photo/AF1QipOLrXnJ8Bj20xFh5lg5yhm71ApUoRlT1z6_ZqnB', 'https://photos.google.com/photo/AF1QipP8OZZvarZPkNnnaOOv3k_ng9doQzMeVZgONlxK'], 'name': 'Perilla Oil', 'type': 'Oil'}]}
+{'r': {'urls': ['https://cleananddelicious.com/wprm_print/26940'], 'name': 'Crispy Baked Tofu'}, 'products': [{'name': 'Garlic Powder', 'type': 'Garlic'}, {'name': 'Avocado Oil', 'type': 'Avocado Oil'}, {'name': 'Morton Salt Kosher Coarse', 'type': 'Kosher Salt'}, {'name': 'Tamari', 'type': 'Tamari'}, {'name': 'Cornstarch', 'type': 'Cornstarch'}, {'name': 'Extra Firm Tofu', 'type': 'Tofu'}, {'name': 'Black Pepper', 'type': 'Black Pepper'}]}
+{'r': {'urls': ['https://seonkyounglongest.com/drunken-noodles/', 'https://seonkyounglongest.com/drunken-noodles/print/27100/'], 'name': 'The Best Drunken Noodles'}, 'products': [{'name': 'Chinese Broccoli', 'type': 'Broccoli'}, {'name': 'Thai chili', 'type': 'Chilies'}, {'name': 'Soy sauce', 'type': 'Soy sauce'}, {'name': 'Shrimp', 'type': 'Shrimp'}, {'name': 'Shallots', 'type': 'Shallots'}, {'name': 'Shrimp', 'type': 'Shrimp'}, {'name': 'White pepper', 'type': 'White pepper'}, {'name': 'Basil', 'type': 'Basil'}, {'name': 'Lime', 'type': 'Lime'}, {'name': 'Pork', 'type': 'Pork'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'search': ['Rice noodle sheets'], 'urls': ['https://www.google.com/search?sca_esv=579554252&sxsrf=AM9HkKlaWKZFra1JEJmQLagqVwu7lOpvPA:1699161392487&q=rice+paper&tbm=isch&source=lnms&sa=X&sqi=2&ved=2ahUKEwjyhdy5jayCAxWmADQIHTJBBhUQ0pQJegQIDxAB&biw=1440&bih=758&dpr=2', 'https://balancewithjess.com/hu-tieu-ap-chao/', 'https://www.google.com/search?q=hu+tieu+xao+rice+sheets&tbm=isch&ved=2ahUKEwjExZejjayCAxU_JjQIHf97ACQQ2-cCegQIABAA&oq=hu+tieu+xao+rice+sheets&gs_lcp=CgNpbWcQAzoECCMQJzoFCAAQgAQ6BwgAEIoFEEM6BwgAEBgQgARQvQRYpRdgxRpoAHAAeACAATmIAecEkgECMTOYAQCgAQGqAQtnd3Mtd2l6LWltZ8ABAQ&sclient=img&ei=ASVHZYTBDb_M0PEP__eBoAI&bih=758&biw=1440#imgrc=il_S9C1t9kGChM', 'https://www.foodsofjane.com/recipes/steamed-rice-rolls', 'https://www.google.com/search?client=emacs&sca_esv=579554252&sxsrf=AM9HkKkMHZcCbxpmpXqsj48WrwEW--xssw:1699161240321&q=Rice+noodle+sheets&tbm=isch&source=lnms&sa=X&ved=2ahUKEwiPypTxjKyCAxW_MDQIHVJjDeYQ0pQJegQIDBAB&biw=1440&bih=758&dpr=2#imgrc=Vw7_7S7XaN_v6M', 'https://photos.google.com/photo/AF1QipPM6Ts-zLh2dl10ono15alL7hCGwSCHhbOyav6v', 'https://phohoa.com/', 'https://www.google.com/search?q=pho+hoa+seattle&oq=pho+hoa+seatt&gs_lcrp=EgZjaHJvbWUqCggAEAAY4wIYgAQyCggAEAAY4wIYgAQyEAgBEC4YrwEYxwEYgAQYjgUyBggCEEUYOTIICAMQABgWGB4yCAgEEC4YFhgeMgoIBRAAGIYDGIoFMgYIBhBFGEDSAQg1Mjk1ajBqN6gCALACAA&sourceid=chrome&ie=UTF-8#lpg=cid:CgIgAQ%3D%3D,ik:CAoSLEFGMVFpcE40MXM4TXJDSzlDcFVRZWxBRHZPNUZXb1h5LWtIVFpaeHNnZm03', 'https://timeline.google.com/maps/timeline?pli=1&rapt=AEjHL4MhNWvrl4xjhvtinEYv8V8WTyxNYgSR-reE9VJgys6Ba7GccWm6B2Xi6Xa3uKxuR9rkftCXiinZ4f3LvAJGF9CnnqgrtUIGNdtCmaP1EhTNElp4eko&pb=!1m2!1m1!1s2023-11-04', 'https://www.google.com/search?client=emacs&sca_esv=579833118&sxsrf=AM9HkKmyvTZJVTjaoB4T2Is_emhNvlG1og:1699290431734&q=rice+paper&tbm=isch&source=lnms&sa=X&ved=2ahUKEwimz7aU7q-CAxVkFjQIHXrWCSgQ0pQJegQIDhAB&biw=1440&bih=758&dpr=2', 'https://i0.wp.com/www.wokandkin.com/wp-content/uploads/2021/04/Rice-Paper-saved-for-web-1200-px.png?w=1200&ssl=1'], 'name': 'Rice noodle sheets', 'type': 'Rice noodle sheets'}, {'name': 'Red Chilli Peppers', 'type': 'Chilli Pepper'}, {'name': 'Dark soy sauce', 'type': 'Soy Sauce'}, {'name': 'Oyster Sauce', 'type': 'Oyster Sauce'}, {'name': 'Chicken', 'type': 'Chicken'}, {'name': 'Thai-style Baked Tofu', 'type': 'Tofu'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Cooking Oil', 'type': 'Cooking Oil'}, {'name': 'Palm Sugar', 'type': 'Sugar'}]}
+{'r': {'urls': ['https://www.williams-sonoma.com/recipe/farro-salad-with-artichoke-hearts.html?print=true'], 'name': 'Farro Salad with Artichoke Hearts'}, 'products': [{'name': 'Semi-pearled Farro', 'type': 'Farro'}, {'name': 'Oil-packed sun-dried tomatoes', 'type': 'Tomatoes'}, {'name': 'Fresh flat-leaf parsley', 'type': 'Herbs'}, {'name': 'Pine Nuts', 'type': 'Pine nuts'}, {'name': 'Salt', 'type': 'Salt'}, {'name': 'Extra Virgin Olive Oil', 'type': 'Olive Oil'}, {'name': 'Red Onion', 'type': 'Red Onion'}, {'name': 'Red wine vinegar', 'type': 'Vinegar'}, {'name': 'Black Pepper', 'type': 'Black Pepper'}, {'name': 'Artichoke Hearts', 'type': 'Artichokes'}]}
+{'r': {'urls': ['https://www.meghanlivingstone.com/ginger-sesame-dressing/', 'https://www.meghanlivingstone.com/wprm_print/2060'], 'name': 'Ginger Sesame Dressing'}, 'products': [{'name': 'Apple Cider Vinegar', 'type': 'Apple Cider Vinegar'}, {'name': 'Unsweetened Nut Butter', 'type': 'Unsweetened Nut Butter'}, {'name': 'Toasted Sesame Oil', 'type': 'Sesame Oil'}, {'name': 'Ginger Powder', 'type': 'Ginger Powder'}, {'name': 'Coconut Aminos', 'type': 'Soy Sauce Alternative'}, {'name': 'Maple Syrup', 'type': 'Maple Syrup'}]}
+{'r': {'urls': ['https://www.ambitiouskitchen.com/wprm_print/24776'], 'name': 'The Easiest Chickpea Greek Salad'}, 'products': [{'name': 'Salt', 'type': 'Salt'}, {'name': 'Black Pepper', 'type': 'Black Pepper'}, {'name': 'Feta Cheese', 'type': 'Cheese'}, {'name': 'Extra Virgin Olive Oil', 'type': 'Olive Oil'}, {'name': 'Lemon Juice', 'type': 'Lemon Juice'}, {'name': 'Grape Tomatoes', 'type': 'Tomatoes'}, {'name': 'Red Onion', 'type': 'Red Onion'}, {'name': 'Kalamata Olives', 'type': 'Olives'}, {'name': 'Yellow Bell Pepper', 'type': 'Bell Pepper'}, {'name': 'Red Bell Pepper', 'type': 'Bell Pepper'}, {'name': 'Green Bell Pepper', 'type': 'Bell Pepper'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Cucumber', 'type': 'Cucumber'}, {'name': 'Oregano', 'type': 'Oregano'}, {'name': 'Chickpeas', 'type': 'Chickpeas'}]}
+{'r': {'urls': ['https://seonkyounglongest.com/korean-sesame-noodles/print/46266/'], 'name': 'Korean Sesame Noodles'}, 'products': [{'name': 'Green Onion', 'type': 'Onion'}, {'name': 'Chili Oil', 'type': 'Chili Oil'}, {'urls': ['https://www.google.com/search?q=tsuyu+soup+seasoning+sauce&oq=tsuyu+soup+seasoning+sauce'], 'search': ['tsuyu soup seasoning sauce'], 'name': 'Tsuyu', 'type': 'Tsuyu'}, {'name': 'Red Chilli Peppers', 'type': 'Chilli Pepper'}, {'name': 'Soba Noodles', 'type': 'Soba Noodles'}, {'name': 'Sesame Seeds', 'type': 'Sesame Seeds'}, {'name': 'Green Onion', 'type': 'Onion'}, {'name': 'Toasted Sesame Seeds', 'type': 'Sesame Seeds'}, {'name': 'Toasted Seaweed', 'type': 'Seaweed'}, {'name': 'Korean Wild Sesame Oil', 'type': 'Sesame Oil'}]}
+{'r': {'urls': ['https://hot-thai-kitchen.com/singaporean-laksa/print/7645/', 'https://hot-thai-kitchen.com/singaporean-laksa/', 'https://www.youtube.com/watch?v=cWtnFKFiB_0'], 'name': 'Laksa'}, 'products': [{'name': 'Mild dried red chilies', 'type': 'Dry Chilies'}, {'urls': ['https://youtu.be/cWtnFKFiB_0?t=458'], 'name': 'Fish cakes', 'type': 'Seafood'}, {'urls': ['https://www.google.com/search?client=emacs&sca_esv=580758711&sxsrf=AM9HkKmwGL8OAnRZ8-PJqCLp_VU9-SlJfg:1699507479310&q=Candlenuts&tbm=isch&source=lnms&sa=X&ved=2ahUKEwiwsOPclraCAxVVETQIHabkCi0Q0pQJegQIDRAB&biw=1440&bih=754&dpr=2#imgrc=7uHbBToP7aPjSM'], 'name': 'Candlenuts', 'type': 'Candlenuts'}, {'name': 'Shrimp', 'type': 'Shrimp'}, {'name': 'Turmeric', 'type': 'Turmeric'}, {'name': 'Thai chilies', 'type': 'Pepper'}, {'name': 'Granulated Sugar', 'type': 'Granulated Sugar'}, {'name': 'Beansprouts', 'type': 'Vegetable'}, {'name': 'Dry rice noodles', 'type': 'Rice Noodles'}, {'urls': ['https://thewoksoflife.com/shrimp-paste-sauce/'], 'name': 'Fermented shrimp paste', 'type': 'Fermented shrimp paste'}, {'name': 'Full fat coconut milk', 'type': 'Coconut Milk'}, {'name': 'Shallots', 'type': 'Shallots'}, {'name': 'Clams', 'type': 'Clams'}, {'urls': ['https://photos.google.com/photo/AF1QipMJV_m1w-qezTjSZAmu6Vam_PKMR6GICW6TJ883', 'https://www.google.com/search?sca_esv=579651652&sxsrf=AM9HkKlBKUS5rDWtKoKSgxss4PSHC4u0jA:1699211859653&q=bdmp+dried+shrimp&tbm=isch&source=lnms&sa=X&sqi=2&ved=2ahUKEwiUtKu6ya2CAxVFIjQIHXeICOQQ0pQJegQIDRAB&biw=1440&bih=758&dpr=2#imgrc=_WqiWb3wPqLdYM', 'https://www.youtube.com/watch?v=dBSmCwUXZF0'], 'name': 'Dried Shrimp', 'type': 'Seafood'}, {'name': 'Laksa leaves', 'type': 'Herb'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'name': 'Water', 'type': 'Water'}, {'name': 'Lemongrass', 'type': 'Lemongrass'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Tofu puffs', 'type': 'Tofu'}, {'name': 'Galangal', 'type': 'Galangal'}, {'name': 'Sambal', 'type': 'Condiment'}]}
+{'r': {'urls': ['https://www.foodandwine.com/pad-see-ew-7559639?print'], 'name': 'Pad See Ew'}, 'products': [{'urls': ['https://youtu.be/5odVRW9ldzU?t=323'], 'name': 'Wide rice noodles', 'type': 'Rice Noodles'}, {'name': 'Granulated Sugar', 'type': 'Granulated Sugar'}, {'name': 'Dark soy sauce', 'type': 'Soy Sauce'}, {'name': 'Eggs', 'type': 'Eggs'}, {'name': 'Distilled white vinegar', 'type': 'Vinegar'}, {'name': 'Chinese Broccoli', 'type': 'Broccoli'}, {'name': 'White pepper', 'type': 'White pepper'}, {'name': 'Cornstarch', 'type': 'Cornstarch'}, {'urls': ['https://en.wikipedia.org/wiki/Bird%27s_eye_chili', 'https://www.google.com/search?client=emacs&sca_esv=579702589&sxsrf=AM9HkKlqpOqf2K4ex4TTB1e3ix-WBqYAKQ:1699243036206&q=Thai+bird+chiles&tbm=isch&source=lnms&sa=X&ved=2ahUKEwjHnL3Mva6CAxVaCjQIHdJRCxEQ0pQJegQIDxAB&biw=1440&bih=758&dpr=2#imgrc=u6dinAhHDxTfaM'], 'name': 'Thai bird chiles', 'type': 'Chilies'}, {'name': 'Soy sauce', 'type': 'Soy sauce'}, {'name': 'Oyster Sauce', 'type': 'Oyster Sauce'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Skirt steak', 'type': 'Beef'}, {'name': 'Vegetable Oil', 'type': 'Vegetable Oil'}]}
+{'r': {'urls': ['https://www.foodnetwork.com/recipes/pad-thai-7112938?soc=youtube'], 'name': 'Pad Thai'}, 'products': [{'name': 'Shrimp', 'type': 'Shrimp'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'name': 'Dry-Roasted Peanuts', 'type': 'Peanuts'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Granulated Sugar', 'type': 'Granulated Sugar'}, {'urls': ['https://www.amazon.com/8oz-Salted-Turnip-Pack/dp/B01578SHHW'], 'name': 'Salted Turnip', 'type': 'Salted Turnip'}, {'name': 'Lime', 'type': 'Lime'}, {'urls': ['https://www.youtube.com/watch?v=dBSmCwUXZF0'], 'name': 'Garlic Chives', 'type': 'Chives'}, {'name': 'Chicken', 'type': 'Chicken'}, {'name': 'Banana Leaf', 'type': 'Banana Leaf'}, {'name': 'Tamarind Paste', 'type': 'Tamarind Paste'}, {'name': 'Sweet Paprika', 'type': 'Paprika'}, {'name': 'Lime juice', 'type': 'Lime juice'}, {'urls': ['https://photos.google.com/photo/AF1QipMJV_m1w-qezTjSZAmu6Vam_PKMR6GICW6TJ883', 'https://www.google.com/search?sca_esv=579651652&sxsrf=AM9HkKlBKUS5rDWtKoKSgxss4PSHC4u0jA:1699211859653&q=bdmp+dried+shrimp&tbm=isch&source=lnms&sa=X&sqi=2&ved=2ahUKEwiUtKu6ya2CAxVFIjQIHXeICOQQ0pQJegQIDRAB&biw=1440&bih=758&dpr=2#imgrc=_WqiWb3wPqLdYM', 'https://www.youtube.com/watch?v=dBSmCwUXZF0'], 'name': 'Dried Shrimp', 'type': 'Seafood'}, {'urls': ['https://thewoksoflife.com/wp-content/uploads/2020/07/chili-oil-recipe-18.jpg', 'https://www.amazon.com/%E8%80%81%E5%B9%B2%E5%A6%88%E9%A6%99%E8%BE%A3%E8%84%86%E6%B2%B9%E8%BE%A3%E6%A4%92-Spicy-Chili-Crisp-7-41/dp/B07VHKTTR3/ref=asc_df_B07VHKTTR3/?tag=hyprod-20&linkCode=df0&hvadid=642112947349&hvpos=&hvnetw=g&hvrand=12580253979732381700&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9061293&hvtargid=pla-1951193779579&psc=1', 'https://www.google.com/search?sca_esv=580857096&sxsrf=AM9HkKmLh9FDQ0x5jNY12kJCSSbwO6Q3FA:1699539552211&q=thai+and+true+hot+chili&tbm=isch&source=lnms&sa=X&ved=2ahUKEwiJ8KiajreCAxWqAjQIHaMBDKYQ0pQJegQIDBAB&biw=1440&bih=754&dpr=2#imgrc=KDhcVOHe9yNjkM', 'https://photos.google.com/photo/AF1QipMQPtIdU1_m3SkgBWs5RcE2QXFs2OnbbJAdaG9M'], 'name': 'Chili Sauce', 'type': 'Chili Sauce'}, {'name': 'Bean Sprouts', 'type': 'Bean Sprouts'}, {'name': 'Vegetable Oil', 'type': 'Vegetable Oil'}, {'name': 'Eggs', 'type': 'Eggs'}, {'urls': ['https://www.google.com/search?q=Rice%20Sticks'], 'name': 'Rice Sticks', 'type': 'Rice Noodles'}, {'name': 'Rice Wine Vinegar', 'type': 'Rice Wine Vinegar'}, {'name': 'Thai-style Baked Tofu', 'type': 'Tofu'}]}
+{'r': {'urls': ['https://www.youtube.com/watch?v=9ANH-tkkBrg'], 'name': 'Pad Thai'}, 'products': [{'name': 'Shrimp', 'type': 'Shrimp'}, {'name': 'Lime', 'type': 'Lime'}, {'name': 'Grounded Roasted Peanuts', 'type': 'Peanuts'}, {'urls': ['https://photos.google.com/photo/AF1QipMJV_m1w-qezTjSZAmu6Vam_PKMR6GICW6TJ883', 'https://www.google.com/search?sca_esv=579651652&sxsrf=AM9HkKlBKUS5rDWtKoKSgxss4PSHC4u0jA:1699211859653&q=bdmp+dried+shrimp&tbm=isch&source=lnms&sa=X&sqi=2&ved=2ahUKEwiUtKu6ya2CAxVFIjQIHXeICOQQ0pQJegQIDRAB&biw=1440&bih=758&dpr=2#imgrc=_WqiWb3wPqLdYM', 'https://www.youtube.com/watch?v=dBSmCwUXZF0'], 'name': 'Dried Shrimp', 'type': 'Seafood'}, {'name': 'Rice Stick Noodles', 'type': 'Rice Noodles'}, {'urls': ['https://www.youtube.com/watch?v=dBSmCwUXZF0'], 'name': 'Garlic Chives', 'type': 'Chives'}, {'name': 'Palm Sugar', 'type': 'Sugar'}, {'urls': ['https://photos.google.com/photo/AF1QipMTNoAmEBIUBgJiziw2Tl16y2KscVqpjfDGlS-q', 'https://photos.google.com/photo/AF1QipPd47xo0JnbBdfR9pbd6FgvPRvxghQoP_wmWxph'], 'name': 'Tamarind Liquid', 'type': 'Tamarind Liquid'}, {'name': 'Pressed Tofu', 'type': 'Tofu'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Shallots', 'type': 'Shallots'}, {'name': 'Bean Sprouts', 'type': 'Bean Sprouts'}, {'urls': ['https://www.google.com/search?q=Sweetened+Radish&tbm=isch&chips=q:sweet+radish,g_1:pad+thai:jagT0YaAv9M%3D&client=emacs&hl=en&sa=X&ved=2ahUKEwj-mLvS56-CAxWKFjQIHTmHCrEQ4lYoAHoECAEQNQ&biw=1440&bih=758#imgrc=8T2ZeEeH0IL-QM'], 'name': 'Sweetened Radish', 'type': 'Sweetened Radish'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'name': 'Eggs', 'type': 'Eggs'}, {'name': 'Roasted Chili Flakes', 'type': 'Chili Flakes'}]}
+{'r': {'urls': ['https://www.evolvingtable.com/peanut-sauce/'], 'name': 'Peanut Sauce'}, 'products': [{'name': 'Rice vinegar', 'type': 'Vinegar'}, {'name': 'Sriracha', 'type': 'Sriracha'}, {'name': 'Water', 'type': 'Water'}, {'name': 'Adams Peanut Butter', 'type': 'Peanut Butter'}, {'name': 'Soy sauce', 'type': 'Soy sauce'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Brown Sugar', 'type': 'Sugar'}]}
+{'r': {'urls': ['https://hot-thai-kitchen.com/red-curry-paste/print/6752/'], 'name': 'Vegan Thai Red Curry'}, 'products': [{'name': 'Cumin seeds', 'type': 'Cumin '}, {'urls': ['https://www.google.com/search?client=emacs&sca_esv=579520937&sxsrf=AM9HkKlUrnbTZeiuHkGuxjA6wsla9_IkfQ:1699140927441&q=Makrut+Lime&tbm=isch&source=lnms&sa=X&ved=2ahUKEwir5pybwauCAxXfLTQIHYj1DqQQ0pQJegQICxAB&biw=1440&bih=758&dpr=2'], 'name': 'Makrut lime zest', 'type': 'Makrut Lime'}, {'name': 'Shallots', 'type': 'Shallots'}, {'name': 'Coriander seeds', 'type': 'Spice'}, {'name': 'Spicy dried red chilies', 'type': 'Dry Chilies'}, {'name': 'Cilantro roots', 'type': 'Cilantro'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Mild dried red chilies', 'type': 'Dry Chilies'}, {'name': 'Galangal', 'type': 'Galangal'}, {'name': 'Lemongrass', 'type': 'Lemongrass'}, {'name': 'White Peppercorns', 'type': 'White Peppercorns'}, {'name': 'Shrimp Paste', 'type': 'Shrimp Paste'}]}
+{'r': {'urls': ['https://www.seriouseats.com/the-best-roast-potatoes-ever-recipe'], 'name': 'The Best Crispy Roast Potatoes Ever'}, 'products': [{'name': 'Parsley', 'type': 'Parsley'}, {'name': 'Rosemary', 'type': 'Rosemary'}, {'name': 'Baking soda', 'type': 'Baking Soda'}, {'name': 'Extra Virgin Olive Oil', 'type': 'Olive Oil'}, {'name': 'Russet potatoes', 'type': 'Potatoes'}, {'name': 'Garlic', 'type': 'Garlic'}]}
+{'r': {'urls': ['https://www.simplyrecipes.com/recipes/tomatillo_salsa_verde/?print'], 'name': 'Tomatillo Salsa Verde'}, 'products': [{'name': 'Tomatillos', 'type': 'Tomatillos'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Lime juice', 'type': 'Lime juice'}, {'name': 'Cilantro', 'type': 'Cilantro'}, {'name': 'Salt', 'type': 'Salt'}, {'name': 'White Onion', 'type': 'Onion'}, {'name': 'Jalapeno Pepper', 'type': 'Pepper'}]}
+{'r': {'urls': ['https://cookieandkate.com/sugar-snap-pea-and-carrot-soba-noodles/print/23556/'], 'name': 'Sugar Snap Pea and Carrot Soba Noodles'}, 'products': [{'name': 'Bell Pepper', 'type': 'Bell Pepper'}, {'name': 'Soba Noodles', 'type': 'Soba Noodles'}, {'name': 'Sweet White Miso', 'type': 'Miso'}, {'name': 'Tamari', 'type': 'Tamari'}, {'name': 'Carrots', 'type': 'Carrots'}, {'name': 'Sriracha', 'type': 'Sriracha'}, {'name': 'Honey', 'type': 'Honey'}, {'name': 'Bell Pepper', 'type': 'Bell Pepper'}, {'name': 'Soba Noodles', 'type': 'Soba Noodles'}, {'name': 'Lime', 'type': 'Lime'}, {'name': 'Cilantro', 'type': 'Cilantro'}, {'name': 'Toasted Sesame Oil', 'type': 'Sesame Oil'}, {'name': 'Tamari', 'type': 'Tamari'}, {'name': 'Peanut Oil', 'type': 'Oil'}, {'name': 'Ginger', 'type': 'Ginger'}, {'name': 'Cilantro', 'type': 'Cilantro'}, {'name': 'Tamari', 'type': 'Tamari'}, {'name': 'Tamari', 'type': 'Tamari'}, {'name': 'Edamame', 'type': 'Edamame'}, {'name': 'Edamame', 'type': 'Edamame'}, {'name': 'Soba Noodles', 'type': 'Soba Noodles'}, {'name': 'Sesame Seeds', 'type': 'Sesame Seeds'}, {'name': 'Sesame Seeds', 'type': 'Sesame Seeds'}, {'name': 'Soba Noodles', 'type': 'Soba Noodles'}, {'name': 'Lime', 'type': 'Lime'}, {'name': 'Sugar Snap Peas', 'type': 'Sugar Snap Peas'}, {'name': 'Sugar Snap Peas', 'type': 'Sugar Snap Peas'}]}
+{'r': {'urls': ['https://youtu.be/HJPRPEJY2WM?t=265', 'https://natashaskitchen.com/fresh-spring-rolls/', 'https://natashaskitchen.com/wprm_print/72895', 'https://www.youtube.com/shorts/lECNJqSXk64'], 'name': 'Fresh Spring Rolls'}, 'products': [{'name': 'Dry rice noodles', 'type': 'Rice Noodles'}, {'name': 'Carrots', 'type': 'Carrots'}, {'name': 'Toasted Sesame Oil', 'type': 'Sesame Oil'}, {'name': 'Rice Wine Vinegar', 'type': 'Rice Wine Vinegar'}, {'urls': ['https://www.google.com/search?client=emacs&sca_esv=581269367&sxsrf=AM9HkKkz3fh-g6VKFw7SQLjSbKO7bO0n2g:1699640340645&q=Chili+Garlic+Sauce&tbm=isch&source=lnms&sa=X&ved=2ahUKEwjB3P_VhbqCAxW9FjQIHQ6rDewQ0pQJegQIDRAB&biw=1440&bih=754&dpr=2'], 'name': 'Huy Fong Chili Garlic Sauce', 'type': 'Chili Garlic Sauce'}, {'name': 'Lime juice', 'type': 'Lime juice'}, {'name': 'Round Rice Paper Sheets', 'type': 'Round Rice Paper Sheets'}, {'name': 'Granulated Sugar', 'type': 'Granulated Sugar'}, {'name': 'Three Crabs Fish Sauce', 'type': 'Three Crabs Fish Sauce'}, {'name': 'Water', 'type': 'Water'}, {'name': 'Green lettuce', 'type': 'Lettuce'}, {'name': 'Cucumber', 'type': 'Cucumber'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Shredded Carrot', 'type': 'Shredded Carrot'}, {'name': 'Shrimp', 'type': 'Shrimp'}, {'name': 'Cilantro', 'type': 'Cilantro'}]}
+{'r': {'urls': ['https://www.youtube.com/watch?v=t-Hj2pILMz4', 'https://prohomecooks.com/blogs/all/why-every-cook-should-master-chicken-teriyaki?_pos=1&_sid=7db443900&_ss=r'], 'name': 'Chicken Teriyaki Recipe'}, 'products': [{'name': 'Cornstarch', 'type': 'Cornstarch'}, {'name': 'Thai-style Baked Tofu', 'type': 'Tofu'}, {'name': 'Ginger', 'type': 'Ginger'}, {'name': 'Rice', 'type': 'Rice'}, {'name': 'Cooking Oil', 'type': 'Oil'}, {'name': 'Water', 'type': 'Water'}, {'name': 'Water', 'type': 'Water'}, {'name': 'Chicken Thighs', 'type': 'Chicken'}, {'name': 'Red Onion', 'type': 'Red Onion'}, {'name': 'Broccolini', 'type': 'Broccolini'}, {'name': 'Sesame Seeds', 'type': 'Sesame Seeds'}, {'name': 'Rice Wine Vinegar - Kikkoman Mirin', 'type': 'Vinegar'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Red Pepper', 'type': 'Bell Pepper'}, {'name': 'Sake Wine', 'type': 'Sake Wine'}, {'name': 'Soy sauce', 'type': 'Soy sauce'}]}
+{'r': {'urls': ['https://www.joshuaweissman.com/post/easy-authentic-thai-green-curry', 'https://photos.google.com/photo/AF1QipMJV_m1w-qezTjSZAmu6Vam_PKMR6GICW6TJ883'], 'name': 'The Best Green Curry'}, 'products': [{'name': 'Garlic cloves', 'type': 'Garlic'}, {'urls': ['https://www.fredmeyer.com/p/simple-truth-organic-thai-basil/0001111001922'], 'name': 'Thai basil', 'type': 'Herb'}, {'name': 'White Peppercorns', 'type': 'White Peppercorns'}, {'urls': ['https://www.wholefoodsmarket.com/product/kaffir-lime%20leaves-b07q8ldbvj', 'https://www.youtube.com/watch?v=4Qz5nC-DcKk', 'https://www.safeway.com/shop/marketplace/product-details.970537048.html', 'https://photos.google.com/photo/AF1QipPI_6_YxYIuCSAvP93sDoRcyFDjekCQjNSb3Ln0', 'https://photos.google.com/photo/AF1QipPd_yNuI9VcQAFOwMSuvBx40o_sl4gAmCgBYNIQ', 'https://www.youtube.com/watch?v=SB3AV7oHKiE'], 'name': 'Kaffir lime leaves', 'type': 'Kaffir Lime Leaves'}, {'name': 'Galangal', 'type': 'Galangal'}, {'name': 'Thai Eggplant', 'type': 'Thai Eggplant'}, {'name': 'Chicken Thighs', 'type': 'Chicken'}, {'name': 'Fried shallots', 'type': 'Condiment'}, {'name': 'Serranos', 'type': 'Serrano Peppers'}, {'name': 'Lime', 'type': 'Lime'}, {'urls': ['https://www.google.com/search?sca_esv=579007228&sxsrf=AM9HkKkqQcpTokvs8EUmjT-DnZNXV9I6Lw:1698970375605&q=kaffir+lime&tbm=isch&source=lnms&sa=X&ved=2ahUKEwiH6eLtxaaCAxVnMDQIHZ94DUYQ0pQJegQIDhAB&biw=1440&bih=758&dpr=2'], 'name': 'Kaffir Lime', 'type': 'Kaffir Lime'}, {'name': 'Lemongrass', 'type': 'Lemongrass'}, {'name': 'Shallots', 'type': 'Shallots'}, {'name': 'Cilantro', 'type': 'Cilantro'}, {'name': 'Palm Sugar', 'type': 'Sugar'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'search': ['shrimp paste kapi OR gabi OR gkabi'], 'urls': ['https://www.eatingthaifood.com/thai-nam-prik-kapi-recipe/'], 'comments': ['thaiShrimpPasteComment1', 'thaiShrimpPasteComment2'], 'name': 'Thai shrimp paste', 'type': 'Thai shrimp paste'}, {'name': 'Cumin seeds', 'type': 'Cumin '}, {'name': 'Coriander seeds', 'type': 'Spice'}, {'name': 'Full fat coconut milk', 'type': 'Coconut Milk'}, {'name': 'Chicken stock', 'type': 'Stock'}, {'name': 'Snow peas', 'type': 'Snow Peas'}]}
+{'r': {'urls': ['https://www.myfoodchannel.com/thai-eggplant-recipe/', 'https://www.youtube.com/watch?v=7a0IAC7pCgA'], 'name': 'Thai Eggplant Recipe'}, 'products': [{'name': 'Coriander powder', 'type': 'Spice'}, {'name': 'Red Bell Pepper', 'type': 'Bell Pepper'}, {'name': 'Lime juice', 'type': 'Lime juice'}, {'name': 'Salt', 'type': 'Salt'}, {'name': 'Ginger', 'type': 'Ginger'}, {'name': 'Lemongrass', 'type': 'Lemongrass'}, {'urls': ['https://www.fredmeyer.com/p/simple-truth-organic-thai-basil/0001111001922'], 'name': 'Thai basil', 'type': 'Herb'}, {'name': 'Onion', 'type': 'Onion'}, {'name': 'Garlic cloves', 'type': 'Garlic'}, {'name': 'Full fat coconut milk', 'type': 'Coconut Milk'}, {'name': 'Chili powder', 'type': 'Spice'}, {'name': 'Coconut Oil', 'type': 'Coconut Oil'}, {'name': 'Chicken stock', 'type': 'Stock'}, {'name': 'Thai Eggplant', 'type': 'Thai Eggplant'}, {'name': 'Thai chilies', 'type': 'Pepper'}, {'name': 'Turmeric', 'type': 'Turmeric'}]}
+{'r': {'urls': ['https://hot-thai-kitchen.com/creamy-tom-yum/print/6203/', 'https://hot-thai-kitchen.com/creamy-tom-yum/', 'https://www.youtube.com/watch?v=hhcYNjeQ_XY&list=PLaS2Ffd8cyD7SL49uWtqbfuUBmLi9nVup'], 'name': 'Tom Yum Goong'}, 'products': [{'name': 'Lemongrass', 'type': 'Lemongrass'}, {'urls': ['https://youtu.be/hhcYNjeQ_XY?list=PLaS2Ffd8cyD7SL49uWtqbfuUBmLi9nVup&t=433', 'https://photos.google.com/photo/AF1QipNWHU8huzjTXkKBm0l9ehnPAJFm5J_jea8kU5KL'], 'name': 'Mae Ploy Thai Chili Paste in Oil', 'type': 'Thai Chili Paste'}, {'name': 'Water', 'type': 'Water'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'urls': ['https://www.youtube.com/watch?v=hhcYNjeQ_XY&list=PLaS2Ffd8cyD7SL49uWtqbfuUBmLi9nVup'], 'name': 'Sawtooth Coriander', 'type': 'Sawtooth Coriander'}, {'name': 'Thai chilies', 'type': 'Pepper'}, {'name': 'Shrimp', 'type': 'Shrimp'}, {'name': 'Evaporated Milk', 'type': 'Evaporated Milk'}, {'name': 'Galangal', 'type': 'Galangal'}, {'urls': ['https://photos.google.com/photo/AF1QipM0ragYoS8EjrRngQukQJH_U1hnen_ACdJyMqEV'], 'name': 'Jasmine Rice', 'type': 'Jasmine Rice'}, {'name': 'Lime juice', 'type': 'Lime juice'}, {'urls': ['https://www.wholefoodsmarket.com/product/kaffir-lime%20leaves-b07q8ldbvj', 'https://www.youtube.com/watch?v=4Qz5nC-DcKk', 'https://www.safeway.com/shop/marketplace/product-details.970537048.html', 'https://photos.google.com/photo/AF1QipPI_6_YxYIuCSAvP93sDoRcyFDjekCQjNSb3Ln0', 'https://photos.google.com/photo/AF1QipPd_yNuI9VcQAFOwMSuvBx40o_sl4gAmCgBYNIQ', 'https://www.youtube.com/watch?v=SB3AV7oHKiE'], 'name': 'Kaffir lime leaves', 'type': 'Kaffir Lime Leaves'}, {'name': 'Oyster Mushrooms', 'type': 'Oyster Mushroom'}]}
+{'r': {'urls': ['https://christieathome.com/wprm_print/3534'], 'name': 'Vietnamese Spring Rolls (Gỏi Cuốn)'}, 'products': [{'name': 'Dry-Roasted Peanuts', 'type': 'Peanuts'}, {'name': 'Rice paper', 'type': 'Rice Paper'}, {'name': 'Ginger', 'type': 'Ginger'}, {'name': 'Adams Peanut Butter', 'type': 'Peanut Butter'}, {'name': 'Green lettuce', 'type': 'Lettuce'}, {'name': 'Lee Kum Kee Sauce Hoisin', 'type': 'Lee Kum Kee Sauce Hoisin'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Shrimp', 'type': 'Shrimp'}, {'name': 'Water', 'type': 'Water'}, {'urls': ['https://photos.google.com/photo/AF1QipPPETrmRSh8-h9guEbb90DRig4g_njAUvQ50Ol6', 'https://photos.google.com/photo/AF1QipMYLPcT9Oybki3TQGztAT1X5tIxpknKSJ0ZmdlP', 'https://www.amazon.com/Fresh-Stick-Vermicelli-SIMPLY-FOOD/dp/B08NXVTFTP/ref=asc_df_B08NXVTFTP/?tag=hyprod-20&linkCode=df0&hvadid=652498065761&hvpos=&hvnetw=g&hvrand=10598234170837115346&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9061293&hvtargid=pla-2065471401768&psc=1', 'https://www.amazon.com/Fresh-Stick-Vermicelli-SIMPLY-FOOD/dp/B08NXVTFTP/ref=asc_df_B08NXVTFTP/?tag=hyprod-20&linkCode=df0&hvadid=652498065761&hvpos=&hvnetw=g&hvrand=10598234170837115346&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9061293&hvtargid=pla-2065471401768&psc=1'], 'name': 'Rice vermicelli', 'type': 'Rice vermicelli'}, {'name': 'Shallots', 'type': 'Shallots'}, {'urls': ['https://photos.google.com/photo/AF1QipNrbFzt7g3nCOVFOmFa6geW-HODg2hilRdq4xl0'], 'notes': ['added to frezer Nov 6 2023'], 'name': 'Mint leaves', 'type': 'Mint'}, {'name': 'Vegetable Oil', 'type': 'Vegetable Oil'}]}
+{'r': {'urls': ['https://lifemadesimplebakes.com/wprm_print/25731'], 'name': 'Yellow Coconut Curry Chicken'}, 'products': [{'urls': ['https://www.google.com/search?q=Yellow+Curry+Powder+near+me&tbm=isch&ved=2ahUKEwiVxLm7h6mCAxWIFjQIHTNwBKoQ2-cCegQIABAA&oq=Yellow+Curry+Powder+near+me&gs_lcp=CgNpbWcQAzIHCAAQGBCABDoECCMQJzoGCAAQBxAeOgYIABAIEB46BAgAEB46BggAEAUQHlDIBViIEGD3EWgAcAB4AIABS4gBkQSSAQE5mAEAoAEBqgELZ3dzLXdpei1pbWfAAQE&sclient=img&ei=QoxFZZWbEYit0PEPs-CR0Ao&bih=758&biw=1440&client=emacs'], 'name': 'Yellow Curry Powder', 'type': 'Spice'}, {'name': 'Carrots', 'type': 'Carrots'}, {'urls': ['https://www.wholefoodsmarket.com/product/maesri-red-curry-paste-b0013esw84', 'https://www.safeway.com/shop/product-details.970519982.html?cmpid=ps_swy_sea_ecom_goo_20200924_71700000073186042_58700007112018081_92700063963421736&r=https%3A%2F%2Fwww.google.com%2F'], 'name': 'Maesri Thai Red Curry Paste', 'type': 'Curry Paste'}, {'name': 'Russet Potatoes', 'type': 'Russet Potatoe'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Yellow Onion', 'type': 'Onion'}, {'name': 'Chicken Breast', 'type': 'Chicken'}, {'name': 'Brown Sugar', 'type': 'Sugar'}, {'name': 'Full fat coconut milk', 'type': 'Coconut Milk'}, {'name': 'Rice', 'type': 'Rice'}, {'name': 'Coconut Oil', 'type': 'Coconut Oil'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'name': 'Chicken Broth', 'type': 'Broth'}, {'name': 'Cilantro', 'type': 'Cilantro'}]}
+{'r': {'urls': ['https://www.templeofthai.com/recipes/yellow_chicken_curry.php'], 'name': 'Yellow Curry with Chicken'}, 'products': [{'name': 'Curry Powder', 'type': 'Curry Powder'}, {'name': 'Chicken', 'type': 'Chicken'}, {'name': 'Shrimp Paste', 'type': 'Shrimp Paste'}, {'name': 'Shallots', 'type': 'Shallots'}, {'name': 'Fried shallots', 'type': 'Condiment'}, {'name': 'Cumin seeds', 'type': 'Cumin '}, {'name': 'Potatoes', 'type': 'Potatoe'}, {'name': 'Full fat coconut milk', 'type': 'Coconut Milk'}, {'name': 'Ginger', 'type': 'Ginger'}, {'name': 'Sea Salt', 'type': 'Seasoning'}, {'name': 'Lemongrass', 'type': 'Lemongrass'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'name': 'Coriander seeds', 'type': 'Spice'}, {'name': 'Dried Thai Chilis', 'type': 'Thai Chilies'}, {'name': 'Garlic', 'type': 'Garlic'}, {'urls': ['https://www.safeway.com/shop/product-details.960076294.html'], 'name': 'Yellow Curry Paste', 'type': 'Curry Paste'}, {'name': 'Galangal', 'type': 'Galangal'}]}
+{'r': {'urls': ['https://drivemehungry.com/wprm_print/13748'], 'name': '7-Minute Zaru Soba (Cold Soba Noodles)'}, 'products': [{'name': 'SWEET preserved daikon radish', 'type': 'Radish'}, {'urls': ['https://www.google.com/search?client=emacs&sca_esv=577922779&sxsrf=AM9HkKkUxzT-KjHg9ziVgvqz5Zsqmn7xdw:1698703946500&q=Japanese+nori&tbm=isch&source=lnms&sa=X&ved=2ahUKEwi647yq5Z6CAxVxMjQIHRW8BBYQ0pQJegQIChAB&biw=1440&bih=758&dpr=2'], 'name': 'Japanese Nori', 'type': 'Nori'}, {'name': 'Ice-cold water', 'type': 'Water'}, {'name': 'Sesame Seeds', 'type': 'Sesame Seeds'}, {'urls': ['https://www.amazon.com/Kikkoman-Japanese-Noodle-Soup-Tsuyu/dp/B002Z3F0IW', 'https://www.google.com/search?q=kikkoman+japanese+noodle+soup+base(hon+tsuyu)&oq=Kikkoman+Japanese+Noodle+Soup+Base(Hon+Tsuyu)&gs_lcrp=EgZjaHJvbWUqBwgAEAAYgAQyBwgAEAAYgAQyBwgBEAAYgAQyCggCEAAYhgMYigUyCggDEAAYhgMYigUyBggEEEUYPDIGCAUQRRg9MgYIBhBFGD3SAQc0NzBqMGo0qAIAsAIA&sourceid=chrome&ie=UTF-8', 'https://www.youtube.com/watch?v=61nPpDkz1AI'], 'name': 'Kikkoman Japanese Noodle Soup Base (Hon Tsuyu)', 'type': 'Tsuyu', 'brand': 'Kikkoman'}, {'name': 'Scallions or Chives', 'type': 'Scalions'}, {'name': 'Wasabi', 'type': 'Wasabi'}, {'name': 'Soba Noodles', 'type': 'Soba Noodles'}]}
+{'r': {'urls': ['https://www.cookerru.com/wprm_print/7756'], 'name': '10-Minute Zaru Soba (Cold Soba Noodles)'}, 'products': [{'name': 'Green Onion', 'type': 'Onion'}, {'name': 'Soy sauce', 'type': 'Soy sauce'}, {'name': 'Soba Noodles', 'type': 'Soba Noodles'}, {'name': 'SWEET preserved daikon radish', 'type': 'Radish'}, {'name': 'Mirin', 'type': 'Mirin'}, {'name': 'Egg yolk', 'type': 'Egg yolk'}, {'name': 'Toasted sesame flakes', 'type': 'Garnish'}, {'name': 'Toasted Seaweed', 'type': 'Seaweed'}, {'name': 'Wasabi', 'type': 'Wasabi'}, {'name': 'Granulated Sugar', 'type': 'Granulated Sugar'}]}
 #+end_example
 
 * locate products with vegetable types
@@ -1286,8 +1475,7 @@ Results:
 #+begin_example
 MATCH (p:Product)
 WHERE toLower(p.type) CONTAINS 'vegetable'
-RETURN p.name AS ProductName, p.type AS Type
-;
+RETURN p.name AS ProductName, p.type AS Type;
 #+end_example
 
 Results:
@@ -1302,8 +1490,7 @@ Results:
 #+begin_example
 MATCH (p:Product)
 WHERE toLower(p.type) CONTAINS 'peas'
-RETURN p.name AS ProductName, p.type AS Type
-;
+RETURN p.name AS ProductName, p.type AS Type;
 #+end_example
 
 Results:
@@ -1316,7 +1503,6 @@ Results:
 
 * what recipes call for chicken stock?
 
-
 I made a recipe that calls for chicken stock but I could only buy
 1 qt, but recipe didn't call for 1qt. What other recipe can I make
 with the leftovers?
@@ -1326,8 +1512,7 @@ MATCH (recipe:Recipe)-[:CONTAINS]->(ingredient:Product)
 WHERE
   toLower(ingredient.name) CONTAINS 'chicken stock'
 RETURN recipe, ingredient
-ORDER BY toLower(recipe.name)
-;
+ORDER BY toLower(recipe.name);
 #+end_example
 
 Results:
@@ -1335,6 +1520,27 @@ Results:
 {'recipe': {'urls': ['https://theflavoursofkitchen.com/wprm_print/104534'], 'name': 'Chicken Thai Red Curry'}, 'ingredient': {'name': 'Chicken Stock or Water', 'type': 'Chicken Stock'}}
 {'recipe': {'urls': ['https://www.myfoodchannel.com/thai-eggplant-recipe/', 'https://www.youtube.com/watch?v=7a0IAC7pCgA'], 'name': 'Thai Eggplant Recipe'}, 'ingredient': {'name': 'Chicken stock', 'type': 'Stock'}}
 {'recipe': {'urls': ['https://www.joshuaweissman.com/post/easy-authentic-thai-green-curry', 'https://photos.google.com/photo/AF1QipMJV_m1w-qezTjSZAmu6Vam_PKMR6GICW6TJ883'], 'name': 'The Best Green Curry'}, 'ingredient': {'name': 'Chicken stock', 'type': 'Stock'}}
+#+end_example
+
+* ingredients for chicken stock recipes
+
+Loop over all recipes that call for chicken stock and show their
+ingredients.
+
+#+begin_example
+MATCH (recipe:Recipe)-[:CONTAINS]->(ingredient:Product)
+WHERE toLower(ingredient.name) CONTAINS 'chicken stock'
+WITH recipe
+MATCH (recipe)-[:CONTAINS]->(allIngredients:Product)
+RETURN recipe.name AS RecipeName, recipe.urls AS RecipeURLs, COLLECT(DISTINCT allIngredients.name) AS AllIngredients
+ORDER BY toLower(recipe.name);
+#+end_example
+
+Results:
+#+begin_example
+{'RecipeName': 'Chicken Thai Red Curry', 'RecipeURLs': ['https://theflavoursofkitchen.com/wprm_print/104534'], 'AllIngredients': ['Full fat coconut milk', 'Light Brown Sugar', 'Cooking Oil', 'Onion', 'Ginger', 'Red Bell Pepper', 'Garlic', 'Thai basil', 'Boneless Chicken Thighs', 'Fish sauce', 'Chicken Stock or Water', 'Lemongrass', 'Zucchini', 'Red Curry Paste', 'Lemon Juice']}
+{'RecipeName': 'Thai Eggplant Recipe', 'RecipeURLs': ['https://www.myfoodchannel.com/thai-eggplant-recipe/', 'https://www.youtube.com/watch?v=7a0IAC7pCgA'], 'AllIngredients': ['Coriander powder', 'Red Bell Pepper', 'Lime juice', 'Salt', 'Ginger', 'Lemongrass', 'Thai basil', 'Onion', 'Garlic cloves', 'Full fat coconut milk', 'Chili powder', 'Coconut Oil', 'Chicken stock', 'Thai Eggplant', 'Thai chilies', 'Turmeric']}
+{'RecipeName': 'The Best Green Curry', 'RecipeURLs': ['https://www.joshuaweissman.com/post/easy-authentic-thai-green-curry', 'https://photos.google.com/photo/AF1QipMJV_m1w-qezTjSZAmu6Vam_PKMR6GICW6TJ883'], 'AllIngredients': ['Garlic cloves', 'Thai basil', 'White Peppercorns', 'Kaffir lime leaves', 'Galangal', 'Thai Eggplant', 'Chicken Thighs', 'Fried shallots', 'Serranos', 'Lime', 'Kaffir Lime', 'Lemongrass', 'Shallots', 'Cilantro', 'Palm Sugar', 'Fish sauce', 'Thai shrimp paste', 'Cumin seeds', 'Coriander seeds', 'Full fat coconut milk', 'Chicken stock', 'Snow peas']}
 #+end_example
 
 * find recipes that contain either carrots or beans
@@ -1346,8 +1552,7 @@ WHERE
   toLower(ingredient.name) CONTAINS 'carrots' OR
   toLower(ingredient.name) CONTAINS 'beans'
 RETURN recipe, ingredient
-ORDER BY toLower(recipe.name)
-;
+ORDER BY toLower(recipe.name);
 #+end_example
 
 Results:
@@ -1361,26 +1566,19 @@ Results:
 
 * detecting unknown products in a recipe
 
-
 Black Beans has cumin, but we don't have cumin listed in the
 database...for example.
 
 #+begin_example
 MATCH (recipe)-[:CONTAINS]->(product)
 WHERE product.name IS NULL
-RETURN recipe.name
-;
+RETURN recipe.name;
 #+end_example
 
 Results:
 #+begin_example
-{'recipe.name': 'The Easiest Chickpea Greek Salad'}
-{'recipe.name': 'Chicken Teriyaki Recipe'}
-{'recipe.name': 'Vietnamese Spring Rolls (Gỏi Cuốn)'}
-{'recipe.name': '7-Minute Zaru Soba (Cold Soba Noodles)'}
-{'recipe.name': 'Laksa'}
-{'recipe.name': 'Easy Black Bean Soup'}
 #+end_example
+We're hoping for empty result list.
 
 * recipe with unknown products
 
@@ -1388,22 +1586,15 @@ Results:
 #+begin_example
 MATCH (recipe)-[r:CONTAINS]->(product)
 WHERE product.name IS NULL
-RETURN DISTINCT recipe.name, r.quantity
-;
+RETURN DISTINCT recipe.name, r.quantity;
 #+end_example
 
 Results:
 #+begin_example
-{'recipe.name': 'The Easiest Chickpea Greek Salad', 'r.quantity': 'to taste'}
-{'recipe.name': 'Chicken Teriyaki Recipe', 'r.quantity': '1 cup'}
-{'recipe.name': 'Vietnamese Spring Rolls (Gỏi Cuốn)', 'r.quantity': '1 shallot'}
-{'recipe.name': '7-Minute Zaru Soba (Cold Soba Noodles)', 'r.quantity': None}
-{'recipe.name': 'Laksa', 'r.quantity': '1 recipe'}
-{'recipe.name': 'Easy Black Bean Soup', 'r.quantity': '1 tablespoon'}
 #+end_example
+We're hoping for empty result list.
 
-* cleanup data, find recipes with null prouct names
-
+* cleanup data, find recipes with unknown products
 
 This is data cleanup task.
 
@@ -1419,98 +1610,13 @@ MATCH (recipe)-[:CONTAINS]->(product)
 WHERE product.name IS NULL
 WITH recipe
 MATCH (recipe)-[:CONTAINS]->(allProducts)
-RETURN recipe.name, allProducts.name
-;
+RETURN recipe.name, allProducts.name;
 #+end_example
 
 Results:
 #+begin_example
-{'recipe.name': 'The Easiest Chickpea Greek Salad', 'allProducts.name': 'Chickpeas'}
-{'recipe.name': 'The Easiest Chickpea Greek Salad', 'allProducts.name': 'Oregano'}
-{'recipe.name': 'The Easiest Chickpea Greek Salad', 'allProducts.name': 'Cucumber'}
-{'recipe.name': 'The Easiest Chickpea Greek Salad', 'allProducts.name': 'Garlic'}
-{'recipe.name': 'The Easiest Chickpea Greek Salad', 'allProducts.name': 'Green Bell Pepper'}
-{'recipe.name': 'The Easiest Chickpea Greek Salad', 'allProducts.name': 'Red Bell Pepper'}
-{'recipe.name': 'The Easiest Chickpea Greek Salad', 'allProducts.name': 'Yellow Bell Pepper'}
-{'recipe.name': 'The Easiest Chickpea Greek Salad', 'allProducts.name': 'Kalamata Olives'}
-{'recipe.name': 'The Easiest Chickpea Greek Salad', 'allProducts.name': 'Red Onion'}
-{'recipe.name': 'The Easiest Chickpea Greek Salad', 'allProducts.name': 'Grape Tomatoes'}
-{'recipe.name': 'The Easiest Chickpea Greek Salad', 'allProducts.name': 'Lemon Juice'}
-{'recipe.name': 'The Easiest Chickpea Greek Salad', 'allProducts.name': 'Extra Virgin Olive Oil'}
-{'recipe.name': 'The Easiest Chickpea Greek Salad', 'allProducts.name': 'Feta Cheese'}
-{'recipe.name': 'The Easiest Chickpea Greek Salad', 'allProducts.name': None}
-{'recipe.name': 'The Easiest Chickpea Greek Salad', 'allProducts.name': 'Salt'}
-{'recipe.name': 'Chicken Teriyaki Recipe', 'allProducts.name': 'Rice'}
-{'recipe.name': 'Chicken Teriyaki Recipe', 'allProducts.name': 'Rice Wine Vinegar - Kikkoman Mirin'}
-{'recipe.name': 'Chicken Teriyaki Recipe', 'allProducts.name': None}
-{'recipe.name': 'Chicken Teriyaki Recipe', 'allProducts.name': 'Soy sauce'}
-{'recipe.name': 'Chicken Teriyaki Recipe', 'allProducts.name': 'Water'}
-{'recipe.name': 'Chicken Teriyaki Recipe', 'allProducts.name': 'Broccolini'}
-{'recipe.name': 'Chicken Teriyaki Recipe', 'allProducts.name': 'Ginger'}
-{'recipe.name': 'Chicken Teriyaki Recipe', 'allProducts.name': 'Thai-style Baked Tofu'}
-{'recipe.name': 'Chicken Teriyaki Recipe', 'allProducts.name': 'Chicken Thighs'}
-{'recipe.name': 'Chicken Teriyaki Recipe', 'allProducts.name': 'Sesame Seeds'}
-{'recipe.name': 'Chicken Teriyaki Recipe', 'allProducts.name': 'Red Onion'}
-{'recipe.name': 'Chicken Teriyaki Recipe', 'allProducts.name': 'Red Pepper'}
-{'recipe.name': 'Chicken Teriyaki Recipe', 'allProducts.name': 'Garlic'}
-{'recipe.name': 'Chicken Teriyaki Recipe', 'allProducts.name': 'Cornstarch'}
-{'recipe.name': 'Chicken Teriyaki Recipe', 'allProducts.name': 'Cooking Oil'}
-{'recipe.name': 'Chicken Teriyaki Recipe', 'allProducts.name': 'Water'}
-{'recipe.name': 'Vietnamese Spring Rolls (Gỏi Cuốn)', 'allProducts.name': 'Shrimp'}
-{'recipe.name': 'Vietnamese Spring Rolls (Gỏi Cuốn)', 'allProducts.name': None}
-{'recipe.name': 'Vietnamese Spring Rolls (Gỏi Cuốn)', 'allProducts.name': 'Mint leaves'}
-{'recipe.name': 'Vietnamese Spring Rolls (Gỏi Cuốn)', 'allProducts.name': 'Rice vermicelli'}
-{'recipe.name': 'Vietnamese Spring Rolls (Gỏi Cuốn)', 'allProducts.name': 'Green lettuce'}
-{'recipe.name': 'Vietnamese Spring Rolls (Gỏi Cuốn)', 'allProducts.name': 'Rice paper'}
-{'recipe.name': 'Vietnamese Spring Rolls (Gỏi Cuốn)', 'allProducts.name': 'Ginger'}
-{'recipe.name': 'Vietnamese Spring Rolls (Gỏi Cuốn)', 'allProducts.name': 'Garlic'}
-{'recipe.name': 'Vietnamese Spring Rolls (Gỏi Cuốn)', 'allProducts.name': 'Lee Kum Kee Sauce Hoisin'}
-{'recipe.name': 'Vietnamese Spring Rolls (Gỏi Cuốn)', 'allProducts.name': 'Adams Peanut Butter'}
-{'recipe.name': 'Vietnamese Spring Rolls (Gỏi Cuốn)', 'allProducts.name': 'Dry-Roasted Peanuts'}
-{'recipe.name': 'Vietnamese Spring Rolls (Gỏi Cuốn)', 'allProducts.name': 'Vegetable Oil'}
-{'recipe.name': 'Vietnamese Spring Rolls (Gỏi Cuốn)', 'allProducts.name': 'Water'}
-{'recipe.name': '7-Minute Zaru Soba (Cold Soba Noodles)', 'allProducts.name': 'Ice-cold water'}
-{'recipe.name': '7-Minute Zaru Soba (Cold Soba Noodles)', 'allProducts.name': 'Soba Noodles'}
-{'recipe.name': '7-Minute Zaru Soba (Cold Soba Noodles)', 'allProducts.name': 'Kikkoman Japanese Noodle Soup Base (Hon Tsuyu)'}
-{'recipe.name': '7-Minute Zaru Soba (Cold Soba Noodles)', 'allProducts.name': 'SWEET preserved daikon radish'}
-{'recipe.name': '7-Minute Zaru Soba (Cold Soba Noodles)', 'allProducts.name': None}
-{'recipe.name': '7-Minute Zaru Soba (Cold Soba Noodles)', 'allProducts.name': 'Japanese Nori'}
-{'recipe.name': '7-Minute Zaru Soba (Cold Soba Noodles)', 'allProducts.name': 'Sesame Seeds'}
-{'recipe.name': '7-Minute Zaru Soba (Cold Soba Noodles)', 'allProducts.name': 'Wasabi'}
-{'recipe.name': 'Laksa', 'allProducts.name': 'Beansprouts'}
-{'recipe.name': 'Laksa', 'allProducts.name': 'Fish cakes'}
-{'recipe.name': 'Laksa', 'allProducts.name': 'Laksa leaves'}
-{'recipe.name': 'Laksa', 'allProducts.name': 'Dry rice noodles'}
-{'recipe.name': 'Laksa', 'allProducts.name': 'Sambal'}
-{'recipe.name': 'Laksa', 'allProducts.name': 'Tofu puffs'}
-{'recipe.name': 'Laksa', 'allProducts.name': 'Fermented shrimp paste'}
-{'recipe.name': 'Laksa', 'allProducts.name': 'Granulated Sugar'}
-{'recipe.name': 'Laksa', 'allProducts.name': 'Clams'}
-{'recipe.name': 'Laksa', 'allProducts.name': None}
-{'recipe.name': 'Laksa', 'allProducts.name': 'Lemongrass'}
-{'recipe.name': 'Laksa', 'allProducts.name': 'Full fat coconut milk'}
-{'recipe.name': 'Laksa', 'allProducts.name': 'Galangal'}
-{'recipe.name': 'Laksa', 'allProducts.name': 'Mild dried red chilies'}
-{'recipe.name': 'Laksa', 'allProducts.name': 'Fish sauce'}
-{'recipe.name': 'Laksa', 'allProducts.name': 'Thai chilies'}
-{'recipe.name': 'Laksa', 'allProducts.name': 'Turmeric'}
-{'recipe.name': 'Laksa', 'allProducts.name': 'Dried Shrimp'}
-{'recipe.name': 'Laksa', 'allProducts.name': 'Shrimp'}
-{'recipe.name': 'Laksa', 'allProducts.name': 'Water'}
-{'recipe.name': 'Laksa', 'allProducts.name': 'Garlic'}
-{'recipe.name': 'Laksa', 'allProducts.name': 'Candlenuts'}
-{'recipe.name': 'Laksa', 'allProducts.name': 'Shallots'}
-{'recipe.name': 'Easy Black Bean Soup', 'allProducts.name': 'Onion'}
-{'recipe.name': 'Easy Black Bean Soup', 'allProducts.name': 'Red Onion'}
-{'recipe.name': 'Easy Black Bean Soup', 'allProducts.name': None}
-{'recipe.name': 'Easy Black Bean Soup', 'allProducts.name': 'Cilantro'}
-{'recipe.name': 'Easy Black Bean Soup', 'allProducts.name': 'Black Beans'}
-{'recipe.name': 'Easy Black Bean Soup', 'allProducts.name': 'Chicken Broth'}
-{'recipe.name': 'Easy Black Bean Soup', 'allProducts.name': 'Garlic'}
-{'recipe.name': 'Easy Black Bean Soup', 'allProducts.name': 'Extra Virgin Olive Oil'}
-{'recipe.name': 'Easy Black Bean Soup', 'allProducts.name': 'Black Pepper'}
-{'recipe.name': 'Easy Black Bean Soup', 'allProducts.name': 'Salt'}
 #+end_example
+We're hoping for empty result list.
 
 * fixing data for a single recipe
 
@@ -1520,10 +1626,10 @@ MATCH (recipe)-[:CONTAINS]->(product)
 WHERE product.name IS NULL AND recipe.name = 'Chicken Thai Red Curry'
 WITH recipe
 MATCH (recipe)-[:CONTAINS]->(allProducts)
-RETURN recipe, allProducts
-;
+RETURN recipe, allProducts;
 #+end_example
 
 Results:
 #+begin_example
 #+end_example
+We're hoping for empty result list.

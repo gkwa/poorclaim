@@ -2,18 +2,42 @@
     MATCH (p:Product)
     WHERE p.name = 'Ground Cumin'
     RETURN p
-  title: find cumin in our database
+  title: find cumin in my list of proucts
+- cypher_query: |
+    MATCH (n:Product) RETURN n
+  limit: 10
+  title: list product entities with properties
 - cypher_query: |
     MATCH (n) RETURN n
   limit: 10
   title: list all nodes and relations
+  comment: |
+    Not sure what a 'node' means other than that its not a
+    'relation'...I think.
+
+    Either way, i have products, stores...things and 'relations
+    entities' to connect them.
+- cypher_query: |
+    MATCH (p:Product)
+    RETURN p.name
+    ORDER BY toLower(p.name)
+  limit: 5
+  title: list all product names
+- cypher_query: |
+    MATCH (p:Product)
+    RETURN p.name AS ProductName, p.urls AS URLs;
+  limit: 10
+  title: get all product urls
 - cypher_query: |
     MATCH (n)
     RETURN DISTINCT labels(n) AS objectType
     ORDER BY objectType
   title: list unique node types
 - comment: |
-    This reveals that I need to clean up duplicates.
+    This reveals that I need to clean up duplicates. Listing two
+    instances of the same product name is harmful.
+  footer: |
+    [[https://www.google.com/search?q=neo4j+collect+subquery][COLLECT]]
   cypher_query: |
     MATCH (p:Product)
     WITH p.name AS productName, COLLECT(p) AS products
@@ -26,6 +50,14 @@
     WHERE SIZE(products) > 1
     RETURN productName, COUNT(products) AS duplicateCount
   title: count duplicates for each product
+- comment: |
+    In other words how much work do I have to do to cleanup my data?
+  cypher_query: |
+    MATCH (p:Product)
+    WITH p.name AS productName, COUNT(p) AS productCount
+    WHERE productCount > 1
+    RETURN COUNT(productCount) AS totalDuplicateProducts
+  title: count entities with the same product name
 - cypher_query: |
     MATCH (p:Product)
     RETURN p
@@ -38,19 +70,18 @@
     RETURN productName, url
   limit: 5
   title: list all products with their urls
-- cypher_query: |
-    MATCH (p:Product)
-    RETURN p.name
-    ORDER BY toLower(p.name)
-  limit: 5
-  title: list all product names
-- cypher_query: |
-    MATCH ()-[r]-()
-    RETURN DISTINCT type(r) AS relationType
-    ORDER BY relationType
-  title: list all relations
+  comment: |
+    Each product can have 0 or more urls.
+
+    #+begin_example
+        for each product
+           for each url
+              ...
+    #+end_example
+
+    Unwind https://www.google.com/search?q=neo4j+unwind&oq=neo4j+unw&gs_lcrp=EgZjaHJvbWUqBwgAEAAYgAQyBwgAEAAYgAQyBggBEEUYOTIHCAIQABiABDIHCAMQABiABDIHCAQQABiABDIICAUQABgWGB4yCAgGEAAYFhgeMggIBxAAGBYYHjIICAgQABgWGB4yCAgJEAAYFhge0gEJMjc1MjZqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8
 - comment: |
-    WRONG: list relations, not just CONTAINS and show relation
+    BAD: list relations, not just CONTAINS and show relation
     properties.
 
     Gotcha!  This is wrong.  Notice we're missing the is-the-same-as relation.
@@ -59,20 +90,64 @@
     UNWIND keys(r) AS propertyNames
     RETURN DISTINCT type(r) AS type, propertyNames AS propertyName
     ORDER BY type, propertyName
-  title: 'WRONG: list relation entities with properties'
-- comment: |
-    In other words how much work do I have to do to cleanup my data?
-  cypher_query: |
-    MATCH (p:Product)
-    WITH p.name AS productName, COUNT(p) AS productCount
-    WHERE productCount > 1
-    RETURN COUNT(productCount) AS totalDuplicateProducts
-  title: count products with duplicates
+  title: 'BAD: list relation entities with properties'
+- cypher_query: |
+    MATCH ()-[r]-()
+    RETURN DISTINCT type(r) AS relationType
+    ORDER BY relationType
+  title: list all relations
 - cypher_query: |
     MATCH (r:Recipe {name: 'Vegan Thai Red Curry'})-[:CONTAINS]->(p:Product)
     MATCH (p)-[:PURCHASE_AT]->(s:Store)
-    RETURN s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients
-  title: find ingredients for making Thai Curry
+    RETURN r.name as RecipeName, s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients
+  title: find Thai Curry
+- cypher_query: |
+    MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
+    WHERE r.name CONTAINS 'Thai Red Curry'
+    MATCH (p)-[:PURCHASE_AT]->(s:Store)
+    RETURN r.name as RecipeName, s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients;
+  title: find Thai Curry without specifying exact title
+  comment: |
+    Substring matching with CONTAINS. We didn't specify Vegan Thai Red
+    Curry here.
+- cypher_query: |
+    MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
+    WHERE 'Thai' IN r.name AND 'Curry' IN r.name
+    MATCH (p)-[:PURCHASE_AT]->(s:Store)
+    RETURN r.name as RecipeName, s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients;
+  title: find Thai Curry with multiple substings
+- cypher_query: |
+    MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
+    WHERE r.name =~ '.*Thai.*Curry.*'
+    MATCH (p)-[:PURCHASE_AT]->(s:Store)
+    RETURN r.name as RecipeName, s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients;
+  title: find Thai Curry with regex
+- cypher_query: |
+    // ok:
+    // MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
+    // WHERE r.name =~ '(?i).*Thai.*|(?i).*Curry.*'
+    // MATCH (p)-[:PURCHASE_AT]->(s:Store)
+    // RETURN r.name as RecipeName, s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients;
+
+    // better:
+    MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
+    WHERE r.name =~ '(?i).*(Thai|Curry).*'
+    MATCH (p)-[:PURCHASE_AT]->(s:Store)
+    RETURN r.name as RecipeName, s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients;
+  title: find recipes with either Thai or Curry
+- cypher_query: |
+    MATCH (r:Recipe)
+    WHERE 'Thai' IN [r.name] AND 'Curry' IN [r.name]
+    RETURN r.name AS RecipeName;
+  title: find Thai Curry using cypher IN [] query format
+  comment: |
+    This returns empty...thats unexpected...
+- cypher_query: |
+    MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
+    WHERE r.name =~ '(?i).*thai.*curry.*'
+    MATCH (p)-[:PURCHASE_AT]->(s:Store)
+    RETURN r.name as RecipeName, s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients;
+  title: find Thai Curry with regex case insensitively
 - cypher_query: |
     MATCH (p:Product)-[:PURCHASE_AT]->(s:Store)
     RETURN p.name AS ProductName, s.name AS StoreName, p.type as Type
@@ -89,10 +164,8 @@
     WHERE id(p) IS NULL
     RETURN r.name AS RecipeName, c.quantity AS Quantity, c.urls AS RecipeUrls
   title: details about product urls
-- cypher_query: |
-    MATCH (n:Product) RETURN n
-  limit: 10
-  title: list product nodes with properties
+  comment: |
+    What the hell is this one...I've forgotten.
 - comment: |
     I can't get this to do what I expect.
   cypher_query: |
@@ -187,7 +260,7 @@
     MATCH (p:Product)
     WHERE p.Brand IS NULL OR p.Brand = ""
     RETURN COUNT(p) AS productCount;
-  title: 'WRONG: tally products with associated brands'
+  title: 'BAD: tally products with associated brands'
 - cypher_query: |
     MATCH (p:Product)
     WITH count(p) AS TotalProducts,
@@ -212,27 +285,41 @@
     ORDER BY RAND()
   limit: 10
   title: find products with non-alphanumeric names
-- cypher_query: |
-    MATCH (p:Product)
-    RETURN p.name AS ProductName, p.urls AS URLs;
-  limit: 10
-  title: get all product urls
 - comment: |
     This is not possible.
 
-    WRONG: fetch all urls for all products, but then don't show urls
-    if product doesn't have any
+    BAD: fetch all urls for all products, but then don't show urls
+    if product doesn't have any.
+
+    Don't try to coerece cypher into formatting output, use
+    golang/python/...to pretty-print as you like.
   cypher_query: |
     MATCH (p:Product)
     RETURN p.name AS ProductName, p.urls AS URLs;
   limit: 10
-  title: 'WRONG: get non-empty product urls'
+  title: 'BAD: get non-empty product urls'
 - cypher_query: |
     MATCH (p:Product)
     WHERE p.urls IS NOT NULL AND SIZE(p.urls) > 0
     RETURN p.name AS ProductName, p.urls AS URLs;
   limit: 10
   title: get products with non-empty url lists
+- cypher_query: |
+    // ok:
+    // MATCH (r:Recipe)-[:CONTAINS]->(p:Product {name: 'Candlenuts'})
+    // RETURN r.name AS RecipeName;
+
+    // better:
+    MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
+    WHERE p.name =~ '(?i)Candlenuts'
+    RETURN r.name AS RecipeName;
+  title: Candlenuts...really?  What recipe calls for that?
+- cypher_query: |
+    MATCH (p:Product)
+    WHERE size(p.urls) > 0
+    RETURN p.name AS ProductName, p.urls AS URLs;
+  limit: 10
+  title: list products with at least one url
 - comment: |
     A product may or may not have any one of these properties.
   cypher_query: |
@@ -247,6 +334,9 @@
     UNWIND keys(r) AS propertyNames
     RETURN DISTINCT propertyNames
   title: list PURCHASE-AT relation properties
+  comment: |
+    Find all the PURCHASE-AT relations and aggreget the list of
+    properties seen.
 - cypher_query: |
     MATCH (n)
     UNWIND keys(n) AS propertyName
@@ -254,12 +344,18 @@
     ORDER BY toLower(propertyName)
   title: list case-insensitive properties for all entities
 - comment: |
-    Item 'list properties of all entities including relations' fixes this.
+    It's good becaues it lists properties for node entities
+
+    but
+
+    Its bad because it doesn't list properties for relation entities.
+
+    [[GOOD: list properties across all entities]] fixes this problem.
   cypher_query: |
     MATCH (n)
     UNWIND keys(n) AS propertyName
     RETURN DISTINCT propertyName
-  title: 'WRONG: list properties for all entities'
+  title: 'BAD: list properties for all entities'
 - comment: |
     Get properties of nodes and then get properties of relation
     entities and then aggregate them into one list.
@@ -275,20 +371,30 @@
     UNWIND keys(r) AS propertyNames
     RETURN DISTINCT type(r) AS type, propertyNames AS propertyName
     ORDER BY type, propertyName
-  title: 'FIXED: list properties across all entities'
+  title: 'GOOD: list properties across all entities'
 - cypher_query: |
     MATCH (p:Product)-[:PURCHASE_AT]->(s:Store)
     RETURN p.name AS ProductName, s.name AS StoreName, p.type as Type
   limit: 10
   title: find products with stores for each
 - comment: |
-    Where the hell do I buy this crap?
+    Where the hell do I buy this crap? This is list of products that
+    I've not yet assiged a store with the PURCHASE-AT relation.
   cypher_query: |
     MATCH (p:Product)
     WHERE NOT (p)-[:PURCHASE_AT]->(:Store)
     RETURN p.name AS ProductName
     ORDER BY toLower(ProductName)
   title: find product purchasing info
+- comment: |
+    When I check out where to buy stuff, I find lots of things I have
+    no clue where to get. Count how many of those mystery product locations I
+    need to figure out.
+  cypher_query: |
+    MATCH (p:Product)
+    WHERE NOT (p)-[:PURCHASE_AT]->(:Store)
+    RETURN COUNT(p) AS ProductCount
+  title: dammit this is tedious, how much cleanup remains?
 - comment: |
     list products that don't have a store associated with them, but
     limit to 10
@@ -352,7 +458,18 @@
     UNWIND keys(n) AS propertyName
     RETURN label, propertyName
   limit: 10
-  title: list the entity type its assocted with
+  title: 'BAD: list the entity type the property is assocted with'
+  comment: |
+    This is crap.  Results are duplicated.
+- cypher_query: |
+    MATCH (n)
+    UNWIND labels(n) AS label
+    UNWIND keys(n) AS propertyName
+    RETURN DISTINCT label, propertyName;
+  title: 'GOOD: list the entity type the property is assocted with'
+  comment: |
+    Here's how we can add distinct to eliminates duplicates...makes it
+    not crap.
 - cypher_query: |
     MATCH (n)
     WITH DISTINCT labels(n) AS distinctLabels, keys(n) AS propertyNames
@@ -400,17 +517,17 @@
     RETURN p.name AS ProductName, p.urls AS URLs;
   title: list products with Google Drive photo urls
 - comment: |
-    FIXED: list relations, not just CONTAINS and show relation
+    GOOD: list relations, not just CONTAINS and show relation
     properties
 
-    This fixes the item in section: 'WRONG: list relations, not
+    This fixes the item in section: 'BAD: list relations, not
     just CONTAINS and show relation properties'
   cypher_query: |
     MATCH ()-[r]-()
     RETURN DISTINCT type(r) AS type,
                     CASE WHEN size(keys(r)) > 0 THEN keys(r) ELSE [] END AS propertyNames
     ORDER BY type, propertyNames
-  title: 'FIXED: list relation entities and their properties'
+  title: 'GOOD: list relation entities and their properties'
 - comment: |
     suppose I would like to make a particular recipe, then what stores
     do I need to visit?
@@ -464,7 +581,7 @@
     ORDER BY [store IN Stores | toLower(store)]
   title: minimize travel for recipe ingredients
 - comment: |
-    WRONG: some recipes point to the same product multiple times by
+    BAD: some recipes point to the same product multiple times by
     mistake
 
     This doesn't do what I expect.  Need to spend more time iterating.
@@ -473,7 +590,7 @@
     WITH r, COLLECT(p) AS products
     WHERE SIZE(products) > 1
     RETURN r, products
-  title: 'WRONG: remove duplicate ingredients'
+  title: 'BAD: remove duplicate ingredients'
 - cypher_query: |
     MATCH (p:Product)
     WHERE toLower(p.type) CONTAINS 'vegetable'
@@ -497,6 +614,17 @@
     with the leftovers?
 - cypher_query: |
     MATCH (recipe:Recipe)-[:CONTAINS]->(ingredient:Product)
+    WHERE toLower(ingredient.name) CONTAINS 'chicken stock'
+    WITH recipe
+    MATCH (recipe)-[:CONTAINS]->(allIngredients:Product)
+    RETURN recipe.name AS RecipeName, recipe.urls AS RecipeURLs, COLLECT(DISTINCT allIngredients.name) AS AllIngredients
+    ORDER BY toLower(recipe.name);
+  title: ingredients for chicken stock recipes
+  comment: |
+    Loop over all recipes that call for chicken stock and show their
+    ingredients.
+- cypher_query: |
+    MATCH (recipe:Recipe)-[:CONTAINS]->(ingredient:Product)
     WHERE
       toLower(ingredient.name) CONTAINS 'carrots' OR
       toLower(ingredient.name) CONTAINS 'beans'
@@ -511,11 +639,15 @@
   comment: |
     Black Beans has cumin, but we don't have cumin listed in the
     database...for example.
+  result_comment: |
+    We're hoping for empty result list.
 - cypher_query: |
     MATCH (recipe)-[r:CONTAINS]->(product)
     WHERE product.name IS NULL
     RETURN DISTINCT recipe.name, r.quantity;
   title: recipe with unknown products
+  result_comment: |
+    We're hoping for empty result list.
 - cypher_query: |
     MATCH (recipe)-[:CONTAINS]->(product)
     WHERE product.name IS NULL
@@ -531,7 +663,9 @@
 
     Once you've found the recipes, then list all the products
     associated with this recipe.  We will need to compare that list.
-  title: cleanup data, find recipes with null prouct names
+  title: cleanup data, find recipes with unknown products
+  result_comment: |
+    We're hoping for empty result list.
 - cypher_query: |
     MATCH (recipe)-[:CONTAINS]->(product)
     WHERE product.name IS NULL AND recipe.name = 'Chicken Thai Red Curry'
@@ -539,3 +673,5 @@
     MATCH (recipe)-[:CONTAINS]->(allProducts)
     RETURN recipe, allProducts;
   title: fixing data for a single recipe
+  result_comment: |
+    We're hoping for empty result list.
