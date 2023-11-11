@@ -672,16 +672,16 @@ ORDER BY RAND();
 
 Results:
 #+begin_example
-{'ProductName': 'Red, Green, Yella Peppers'}
-{'ProductName': 'Chicken Broth - 16 Oz'}
+{'ProductName': 'A.1. Sauce'}
+{'ProductName': 'Eggs - Liquid Egg Whites (Blue Chikn)'}
+{'ProductName': 'Enchilada Sauce - Red'}
+{'ProductName': 'Avocados (not in bag stupid)'}
+{'ProductName': 'Ball powder, smells nice'}
+{'ProductName': 'Chili Pepper, Chipotle, Ground'}
+{'ProductName': 'Reynolds Parchment Paper Genuine Non-Stick 45 Sq. Ft.'}
+{'ProductName': 'Fresh flat-leaf parsley'}
 {'ProductName': 'Broth - Beef - low sodium'}
-{'ProductName': 'Aroy-D Coconut Milk'}
-{'ProductName': 'Almonds - bulk roasted or raw -- whichever is cheaper'}
-{'ProductName': 'Coffee / MTM / PLU 5820 / Kivu / Kivu Dark French Roast'}
-{'ProductName': 'Chicken (3-4 lb)'}
-{'ProductName': 'Chili Pepper, Ancho, Ground'}
-{'ProductName': 'Lemon Zest (grated lemon rind)'}
-{'ProductName': 'Rolled Oats / Oats / Old Fashioned / PLU 8490'}
+{'ProductName': 'Ice-cold water'}
 # ...truncated to 10 for brevity
 #+end_example
 
@@ -745,17 +745,17 @@ Results:
 #+begin_example
 // ok:
 // MATCH (r:Recipe)-[:CONTAINS]->(p:Product {name: 'Candlenuts'})
-// RETURN r.name AS RecipeName;
+// RETURN r.name AS RecipeName, r.urls AS RecipeURLs;
 
-// better:
+// better to use case insensitive:
 MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
 WHERE p.name =~ '(?i)Candlenuts'
-RETURN r.name AS RecipeName;
+RETURN r.name AS RecipeName, r.urls AS RecipeURLs;
 #+end_example
 
 Results:
 #+begin_example
-{'RecipeName': 'Laksa'}
+{'RecipeName': 'Laksa', 'RecipeURLs': ['https://hot-thai-kitchen.com/singaporean-laksa/print/7645/', 'https://hot-thai-kitchen.com/singaporean-laksa/', 'https://www.youtube.com/watch?v=cWtnFKFiB_0']}
 #+end_example
 
 * list products with at least one url
@@ -1095,16 +1095,16 @@ ORDER BY ProductName;
 
 Results:
 #+begin_example
-{'ProductName': 'Cornstarch'}
-{'ProductName': 'Dashi'}
+{'ProductName': 'Aroy-D Coconut Milk'}
+{'ProductName': 'Coconut Oil'}
+{'ProductName': 'Cooking Oil'}
+{'ProductName': 'Corn on cob'}
+{'ProductName': 'Egg yolk'}
 {'ProductName': 'Fermented shrimp paste'}
-{'ProductName': "Newman's Own Sesame Ginger Dressing"}
-{'ProductName': 'Oil-packed sun-dried tomatoes'}
-{'ProductName': 'Pressed Tofu'}
-{'ProductName': 'Salt and pepper'}
-{'ProductName': 'Spicy dried red chilies'}
-{'ProductName': 'Three Crabs Fish Sauce'}
-{'ProductName': 'Unsweetened Nut Butter'}
+{'ProductName': 'Salted Turnip'}
+{'ProductName': 'Straw Mushrooms'}
+{'ProductName': 'Tamarind Paste'}
+{'ProductName': 'Toasted sesame flakes'}
 #+end_example
 
 * BAD: list the entity type the property is assocted with

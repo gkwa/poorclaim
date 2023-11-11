@@ -309,12 +309,12 @@
 - cypher_query: |
     // ok:
     // MATCH (r:Recipe)-[:CONTAINS]->(p:Product {name: 'Candlenuts'})
-    // RETURN r.name AS RecipeName;
+    // RETURN r.name AS RecipeName, r.urls AS RecipeURLs;
 
-    // better:
+    // better to use case insensitive:
     MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
     WHERE p.name =~ '(?i)Candlenuts'
-    RETURN r.name AS RecipeName;
+    RETURN r.name AS RecipeName, r.urls AS RecipeURLs;
   title: Candlenuts...really?  What recipe calls for that?
 - cypher_query: |
     MATCH (p:Product)
