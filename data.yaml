@@ -37,7 +37,7 @@
     This reveals that I need to clean up duplicates. Listing two
     instances of the same product name is harmful.
   footer: |
-    [[https://www.google.com/search?q=neo4j+collect+subquery][COLLECT]]
+    [[https://www.google.com/search?q=neo4j+cypher+COLLECT+subquery][COLLECT]]
   cypher_query: |
     MATCH (p:Product)
     WITH p.name AS productName, COLLECT(p) AS products
@@ -78,8 +78,7 @@
            for each url
               ...
     #+end_example
-
-    Unwind https://www.google.com/search?q=neo4j+unwind&oq=neo4j+unw&gs_lcrp=EgZjaHJvbWUqBwgAEAAYgAQyBwgAEAAYgAQyBggBEEUYOTIHCAIQABiABDIHCAMQABiABDIHCAQQABiABDIICAUQABgWGB4yCAgGEAAYFhgeMggIBxAAGBYYHjIICAgQABgWGB4yCAgJEAAYFhge0gEJMjc1MjZqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8
+    [[https://www.google.com/search?q=neo4j+cypher+UNWIND][UNWIND]]
 - comment: |
     BAD: list relations, not just CONTAINS and show relation
     properties.

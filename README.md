@@ -235,7 +235,7 @@ Results:
 {'productName': 'Toasted Sesame Oil', 'products': [{'name': 'Toasted Sesame Oil', 'type': 'Sesame Oil'}, {'name': 'Toasted Sesame Oil', 'type': 'Sesame Oil'}]}
 ```
 
-[COLLECT](https://www.google.com/search?q=neo4j+collect+subquery)
+[COLLECT](https://www.google.com/search?q=neo4j+cypher+COLLECT+subquery)
 
 # count duplicates for each product
 
@@ -303,8 +303,7 @@ for each product
       ...
 ```
 
-Unwind
-<https://www.google.com/search?q=neo4j+unwind&oq=neo4j+unw&gs_lcrp=EgZjaHJvbWUqBwgAEAAYgAQyBwgAEAAYgAQyBggBEEUYOTIHCAIQABiABDIHCAMQABiABDIHCAQQABiABDIICAUQABgWGB4yCAgGEAAYFhgeMggIBxAAGBYYHjIICAgQABgWGB4yCAgJEAAYFhge0gEJMjc1MjZqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8>
+[UNWIND](https://www.google.com/search?q=neo4j+cypher+UNWIND)
 
 ``` example
 MATCH (p:Product)
@@ -771,16 +770,16 @@ ORDER BY RAND();
 Results:
 
 ``` example
-{'ProductName': 'A.1. Sauce'}
-{'ProductName': 'Eggs - Liquid Egg Whites (Blue Chikn)'}
-{'ProductName': 'Enchilada Sauce - Red'}
-{'ProductName': 'Avocados (not in bag stupid)'}
-{'ProductName': 'Ball powder, smells nice'}
-{'ProductName': 'Chili Pepper, Chipotle, Ground'}
-{'ProductName': 'Reynolds Parchment Paper Genuine Non-Stick 45 Sq. Ft.'}
-{'ProductName': 'Fresh flat-leaf parsley'}
-{'ProductName': 'Broth - Beef - low sodium'}
-{'ProductName': 'Ice-cold water'}
+{'ProductName': "Granola 'cookies'"}
+{'ProductName': 'Black, Beluga Lentils'}
+{'ProductName': 'Red, Green, Yella Peppers'}
+{'ProductName': 'Pinot Grigio - Dry White Wine'}
+{'ProductName': 'Sweet BBQ Pre-Marinated Super Firm Baked Tofu'}
+{'ProductName': 'Salmon - Still Frozen in the Shrink Wrap, 2 or 3 lbs'}
+{'ProductName': 'Black Pepper, Bulk'}
+{'ProductName': 'Chicken Broth - Swanson, 14.5 Oz'}
+{'ProductName': 'Rice Wine Vinegar - Kikkoman Mirin'}
+{'ProductName': 'Dino Kale (ugly spinach)'}
 # ...truncated to 10 for brevity
 ```
 
@@ -1203,16 +1202,16 @@ ORDER BY ProductName;
 Results:
 
 ``` example
-{'ProductName': 'Aroy-D Coconut Milk'}
-{'ProductName': 'Coconut Oil'}
-{'ProductName': 'Cooking Oil'}
-{'ProductName': 'Corn on cob'}
+{'ProductName': 'Black beans'}
+{'ProductName': 'Coconut Aminos'}
+{'ProductName': 'Dashi'}
 {'ProductName': 'Egg yolk'}
-{'ProductName': 'Fermented shrimp paste'}
+{'ProductName': 'Kaffir Lime'}
+{'ProductName': 'Mirin'}
 {'ProductName': 'Salted Turnip'}
-{'ProductName': 'Straw Mushrooms'}
-{'ProductName': 'Tamarind Paste'}
-{'ProductName': 'Toasted sesame flakes'}
+{'ProductName': 'Sambal'}
+{'ProductName': 'Thai shrimp paste'}
+{'ProductName': 'Yellow Bell Pepper'}
 ```
 
 # BAD: list the entity type the property is assocted with
