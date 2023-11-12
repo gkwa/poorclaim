@@ -11,8 +11,8 @@ Later if it turns out using neo4j is doing what I need, then I can
 properly pour over the manual to learn what chatgpt did to generate
 these snippts.
 
-Please, just give me a shitton of examples that I can copy/paste...
-maybe later I'll read the manual.
+Please, just give me a shitton of examples that I can
+copy/paste...maybe later I'll read the manual.
 
 Data for this is generated from here
 https://github.com/taylormonacelli/anythingflorida/blob/master/data.cypher

@@ -11,8 +11,8 @@ Later if it turns out using neo4j is doing what I need, then I can
 properly pour over the manual to learn what chatgpt did to generate
 these snippts.
 
-Please, just give me a shitton of examples that I can copy/paste...
-maybe later I'll read the manual.
+Please, just give me a shitton of examples that I can
+copy/paste...maybe later I'll read the manual.
 
 Data for this is generated from here
 https://github.com/taylormonacelli/anythingflorida/blob/master/data.cypher
@@ -788,16 +788,16 @@ ORDER BY RAND();
 Results:
 
 ``` example
-{'ProductName': 'Red, Organic Kidney Beans, 15 Oz'}
-{'ProductName': 'Blueberries - frozen uponina bag'}
-{'ProductName': 'Chicken (3-4 lb)'}
-{'ProductName': 'Turkey (whole)'}
-{'ProductName': "Newman's Own Sesame Ginger Dressing"}
-{'ProductName': "Dave's Seed Bread"}
-{'ProductName': 'Ice-cold water'}
+{'ProductName': 'Rolled Oats / Oats / Old Fashioned / PLU 8490'}
+{'ProductName': 'Black Beans (15 oz can)'}
+{'ProductName': 'Coffee - T - PLU 8853'}
+{'ProductName': 'Large Shrimp (not frozen)'}
 {'ProductName': 'Coffee - MTM - Kivu Dark Espresso Roast'}
-{'ProductName': "Coffee / BB's 1st preference / BB / PLU 8863 / Equal Exchange / Peruvian"}
-{'ProductName': 'Soy Sauce - Liquid Aminos'}
+{'ProductName': 'Quick Rolled Oats / Oats PLU 8485'}
+{'ProductName': 'Unsalted Tops (Unsalted Salteens)'}
+{'ProductName': 'Aroy-D Red Curry Paste'}
+{'ProductName': 'Marketspice Tea Decaf - 2 Oz for Mommy'}
+{'ProductName': 'Barbecue sauce - Baby Rays bbq sauce'}
 # ...truncated to 10 for brevity
 ```
 
@@ -1316,16 +1316,16 @@ ORDER BY ProductName;
 Results:
 
 ``` example
-{'ProductName': 'Kaffir Lime'}
-{'ProductName': 'Korean Wild Sesame Oil'}
-{'ProductName': 'Laksa leaves'}
+{'ProductName': 'Cooking Oil'}
+{'ProductName': 'Dashi'}
 {'ProductName': 'Makrut lime zest'}
 {'ProductName': 'Mild dried red chilies'}
-{'ProductName': "Newman's Own Sesame Ginger Dressing"}
-{'ProductName': 'Salt and pepper'}
-{'ProductName': 'Salted Turnip'}
-{'ProductName': 'Spicy dried red chilies'}
-{'ProductName': 'Thai chili'}
+{'ProductName': 'Rosemary'}
+{'ProductName': 'Sambal'}
+{'ProductName': 'Thai shrimp paste'}
+{'ProductName': 'Turmeric'}
+{'ProductName': 'Unsweetened Nut Butter'}
+{'ProductName': 'Yellow Bell Pepper'}
 ```
 
 # BAD: list the entity type the property is assocted with
