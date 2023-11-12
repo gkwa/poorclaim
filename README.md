@@ -27,20 +27,20 @@ https://memgraph.com/blog/cypher-cheat-sheet
 
 https://www.google.com/search?q=cypher+cheat+sheet
 * [list all nodes and relations](#list-all-nodes-and-relations)
+* [list all products](#list-all-products)
 * [find cumin in my list of products](#find-cumin-in-my-list-of-products)
 * [list product entities with properties](#list-product-entities-with-properties)
 * [list all product names](#list-all-product-names)
-* [get all product urls](#get-all-product-urls)
+* [list all product urls](#list-all-product-urls)
 * [list unique node types](#list-unique-node-types)
-* [find products with identical names](#find-products-with-identical-names)
+* [list products with identical names](#list-products-with-identical-names)
 * [count duplicates for each product](#count-duplicates-for-each-product)
 * [count entities with the same product name](#count-entities-with-the-same-product-name)
-* [list all products](#list-all-products)
 * [list all products with their urls](#list-all-products-with-their-urls)
 * [BAD: list relation entities with properties](#bad-list-relation-entities-with-properties)
 * [list all relations](#list-all-relations)
-* [find Thai Curry](#find-thai-curry)
-* [find Thai Curry without specifying exact title](#find-thai-curry-without-specifying-exact-title)
+* [find Vegan Thai Red Curry](#find-vegan-thai-red-curry)
+* [find Thai Red Curry without specifying exact title](#find-thai-red-curry-without-specifying-exact-title)
 * [find Thai Curry with regex](#find-thai-curry-with-regex)
 * [find recipes with either Thai or Curry](#find-recipes-with-either-thai-or-curry)
 * [find Thai Curry using cypher IN [] query format](#find-thai-curry-using-cypher-in--query-format)
@@ -116,6 +116,24 @@ Results:
 # ...truncated to 10 for brevity
 ```
 
+# list all products
+
+``` example
+MATCH (p:Product)
+RETURN p;
+```
+
+Results:
+
+``` example
+{'p': {'name': 'A.1. Sauce', 'type': 'A.1. Sauce'}}
+{'p': {'name': 'Allspice', 'type': 'Allspice'}}
+{'p': {'name': 'Almond Milk', 'type': 'Almond Milk'}}
+{'p': {'name': 'Almonds - bulk roasted or raw -- whichever is cheaper', 'type': 'Almonds'}}
+{'p': {'name': 'Angkor Cambodian Food Paste Lemongrass', 'type': 'Food Paste'}}
+# ...truncated to 5 for brevity
+```
+
 # find cumin in my list of products
 
 ``` example
@@ -171,7 +189,7 @@ Results:
 # ...truncated to 5 for brevity
 ```
 
-# get all product urls
+# list all product urls
 
 ``` example
 MATCH (p:Product)
@@ -212,7 +230,7 @@ Results:
 {'objectType': ['Store']}
 ```
 
-# find products with identical names
+# list products with identical names
 
 This reveals that I need to clean up duplicates. Listing two instances
 of the same product name is harmful.
@@ -263,24 +281,6 @@ Results:
 
 ``` example
 {'totalDuplicateProducts': 1}
-```
-
-# list all products
-
-``` example
-MATCH (p:Product)
-RETURN p;
-```
-
-Results:
-
-``` example
-{'p': {'name': 'A.1. Sauce', 'type': 'A.1. Sauce'}}
-{'p': {'name': 'Allspice', 'type': 'Allspice'}}
-{'p': {'name': 'Almond Milk', 'type': 'Almond Milk'}}
-{'p': {'name': 'Almonds - bulk roasted or raw -- whichever is cheaper', 'type': 'Almonds'}}
-{'p': {'name': 'Angkor Cambodian Food Paste Lemongrass', 'type': 'Food Paste'}}
-# ...truncated to 5 for brevity
 ```
 
 # list all products with their urls
@@ -355,7 +355,7 @@ Results:
 {'relationType': 'RECOMMENDS'}
 ```
 
-# find Thai Curry
+# find Vegan Thai Red Curry
 
 ``` example
 MATCH (r:Recipe {name: 'Vegan Thai Red Curry'})-[:CONTAINS]->(p:Product)
@@ -372,7 +372,7 @@ Results:
 {'RecipeName': 'Vegan Thai Red Curry', 'StoreName': 'Uwajimaya', 'Ingredients': ['Galangal']}
 ```
 
-# find Thai Curry without specifying exact title
+# find Thai Red Curry without specifying exact title
 
 Substring matching with CONTAINS. We didn't specify Vegan Thai Red Curry
 here.
@@ -759,16 +759,16 @@ ORDER BY RAND();
 Results:
 
 ``` example
-{'ProductName': 'Tomato Sauce - 29 oz can'}
-{'ProductName': 'Marketspice Tea Decaf - 2 Oz for Mommy'}
-{'ProductName': 'German Mustard medium hot in jar w/ handle'}
-{'ProductName': "Coffee / BB's 2nd preference / BB / PLU 3794 / Kalani Coffee / Indonesian Enyana Sumatra"}
-{'ProductName': 'Red, Organic Kidney Beans, 15 Oz'}
+{'ProductName': 'Ramen Noodles - Dry'}
+{'ProductName': 'Beans - Kidney (Bulk)'}
+{'ProductName': 'Unsalted Tops (Unsalted Salteens)'}
+{'ProductName': 'Turkey (whole)'}
+{'ProductName': 'Soy Sauce - Liquid Aminos'}
+{'ProductName': 'Blueberries - frozen uponina bag'}
 {'ProductName': "Cornstarch Baby Powder (not Johnson's, they're baddies)"}
-{'ProductName': 'Reynolds Parchment Paper Genuine Non-Stick 45 Sq. Ft.'}
-{'ProductName': 'Salmon - Still Frozen in the Shrink Wrap, 2 or 3 lbs'}
-{'ProductName': 'Black Beans (15 oz can)'}
-{'ProductName': 'One Percent or 2 Percent Milk in Glass Jar (Not Red Cap Whole Milk)'}
+{'ProductName': 'Whole wheat Flour, all-purpose'}
+{'ProductName': 'Nonfat Yogurt (Plain/Blue Bucket)'}
+{'ProductName': 'Quick Rolled Oats / Oats PLU 8485'}
 # ...truncated to 10 for brevity
 ```
 
@@ -1180,16 +1180,16 @@ ORDER BY ProductName;
 Results:
 
 ``` example
-{'ProductName': 'Aroy-D Coconut Milk'}
+{'ProductName': 'Coconut Oil'}
 {'ProductName': 'Corn on cob'}
-{'ProductName': 'Dried Thai Chilis'}
-{'ProductName': 'Fish Sauce'}
-{'ProductName': 'Mild dried red chilies'}
+{'ProductName': 'Dashi'}
+{'ProductName': 'Egg yolk'}
+{'ProductName': 'Laksa leaves'}
 {'ProductName': 'Mirin'}
-{'ProductName': 'Miso'}
-{'ProductName': 'Rice vinegar'}
-{'ProductName': 'Tofu puffs'}
-{'ProductName': 'Yellow Bell Pepper'}
+{'ProductName': "Newman's Own Sesame Ginger Dressing"}
+{'ProductName': 'Pressed Tofu'}
+{'ProductName': 'Sawtooth Coriander'}
+{'ProductName': 'Toasted sesame flakes'}
 ```
 
 # BAD: list the entity type the property is assocted with

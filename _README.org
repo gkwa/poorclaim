@@ -27,6 +27,24 @@ Results:
 # ...truncated to 10 for brevity
 #+end_example
 
+* list all products
+
+
+#+begin_example
+MATCH (p:Product)
+RETURN p;
+#+end_example
+
+Results:
+#+begin_example
+{'p': {'name': 'A.1. Sauce', 'type': 'A.1. Sauce'}}
+{'p': {'name': 'Allspice', 'type': 'Allspice'}}
+{'p': {'name': 'Almond Milk', 'type': 'Almond Milk'}}
+{'p': {'name': 'Almonds - bulk roasted or raw -- whichever is cheaper', 'type': 'Almonds'}}
+{'p': {'name': 'Angkor Cambodian Food Paste Lemongrass', 'type': 'Food Paste'}}
+# ...truncated to 5 for brevity
+#+end_example
+
 * find cumin in my list of products
 
 
@@ -82,7 +100,7 @@ Results:
 # ...truncated to 5 for brevity
 #+end_example
 
-* get all product urls
+* list all product urls
 
 
 #+begin_example
@@ -123,7 +141,7 @@ Results:
 {'objectType': ['Store']}
 #+end_example
 
-* find products with identical names
+* list products with identical names
 
 This reveals that I need to clean up duplicates. Listing two
 instances of the same product name is harmful.
@@ -170,24 +188,6 @@ RETURN COUNT(productCount) AS totalDuplicateProducts;
 Results:
 #+begin_example
 {'totalDuplicateProducts': 1}
-#+end_example
-
-* list all products
-
-
-#+begin_example
-MATCH (p:Product)
-RETURN p;
-#+end_example
-
-Results:
-#+begin_example
-{'p': {'name': 'A.1. Sauce', 'type': 'A.1. Sauce'}}
-{'p': {'name': 'Allspice', 'type': 'Allspice'}}
-{'p': {'name': 'Almond Milk', 'type': 'Almond Milk'}}
-{'p': {'name': 'Almonds - bulk roasted or raw -- whichever is cheaper', 'type': 'Almonds'}}
-{'p': {'name': 'Angkor Cambodian Food Paste Lemongrass', 'type': 'Food Paste'}}
-# ...truncated to 5 for brevity
 #+end_example
 
 * list all products with their urls
@@ -260,7 +260,7 @@ Results:
 {'relationType': 'RECOMMENDS'}
 #+end_example
 
-* find Thai Curry
+* find Vegan Thai Red Curry
 
 
 #+begin_example
@@ -277,7 +277,7 @@ Results:
 {'RecipeName': 'Vegan Thai Red Curry', 'StoreName': 'Uwajimaya', 'Ingredients': ['Galangal']}
 #+end_example
 
-* find Thai Curry without specifying exact title
+* find Thai Red Curry without specifying exact title
 
 Substring matching with CONTAINS. We didn't specify Vegan Thai Red
 Curry here.
@@ -658,16 +658,16 @@ ORDER BY RAND();
 
 Results:
 #+begin_example
-{'ProductName': 'Tomato Sauce - 29 oz can'}
-{'ProductName': 'Marketspice Tea Decaf - 2 Oz for Mommy'}
-{'ProductName': 'German Mustard medium hot in jar w/ handle'}
-{'ProductName': "Coffee / BB's 2nd preference / BB / PLU 3794 / Kalani Coffee / Indonesian Enyana Sumatra"}
-{'ProductName': 'Red, Organic Kidney Beans, 15 Oz'}
+{'ProductName': 'Ramen Noodles - Dry'}
+{'ProductName': 'Beans - Kidney (Bulk)'}
+{'ProductName': 'Unsalted Tops (Unsalted Salteens)'}
+{'ProductName': 'Turkey (whole)'}
+{'ProductName': 'Soy Sauce - Liquid Aminos'}
+{'ProductName': 'Blueberries - frozen uponina bag'}
 {'ProductName': "Cornstarch Baby Powder (not Johnson's, they're baddies)"}
-{'ProductName': 'Reynolds Parchment Paper Genuine Non-Stick 45 Sq. Ft.'}
-{'ProductName': 'Salmon - Still Frozen in the Shrink Wrap, 2 or 3 lbs'}
-{'ProductName': 'Black Beans (15 oz can)'}
-{'ProductName': 'One Percent or 2 Percent Milk in Glass Jar (Not Red Cap Whole Milk)'}
+{'ProductName': 'Whole wheat Flour, all-purpose'}
+{'ProductName': 'Nonfat Yogurt (Plain/Blue Bucket)'}
+{'ProductName': 'Quick Rolled Oats / Oats PLU 8485'}
 # ...truncated to 10 for brevity
 #+end_example
 
@@ -1070,16 +1070,16 @@ ORDER BY ProductName;
 
 Results:
 #+begin_example
-{'ProductName': 'Aroy-D Coconut Milk'}
+{'ProductName': 'Coconut Oil'}
 {'ProductName': 'Corn on cob'}
-{'ProductName': 'Dried Thai Chilis'}
-{'ProductName': 'Fish Sauce'}
-{'ProductName': 'Mild dried red chilies'}
+{'ProductName': 'Dashi'}
+{'ProductName': 'Egg yolk'}
+{'ProductName': 'Laksa leaves'}
 {'ProductName': 'Mirin'}
-{'ProductName': 'Miso'}
-{'ProductName': 'Rice vinegar'}
-{'ProductName': 'Tofu puffs'}
-{'ProductName': 'Yellow Bell Pepper'}
+{'ProductName': "Newman's Own Sesame Ginger Dressing"}
+{'ProductName': 'Pressed Tofu'}
+{'ProductName': 'Sawtooth Coriander'}
+{'ProductName': 'Toasted sesame flakes'}
 #+end_example
 
 * BAD: list the entity type the property is assocted with

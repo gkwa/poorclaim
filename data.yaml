@@ -10,6 +10,11 @@
     entities' to connect them.
 - cypher_query: |
     MATCH (p:Product)
+    RETURN p
+  limit: 5
+  title: list all products
+- cypher_query: |
+    MATCH (p:Product)
     WHERE p.name = 'Ground Cumin'
     RETURN p
   title: find cumin in my list of products
@@ -27,7 +32,7 @@
     MATCH (p:Product)
     RETURN p.name AS ProductName, p.urls AS URLs;
   limit: 10
-  title: get all product urls
+  title: list all product urls
 - cypher_query: |
     MATCH (n)
     RETURN DISTINCT labels(n) AS objectType
@@ -43,7 +48,7 @@
     WITH p.name AS productName, COLLECT(p) AS products
     WHERE SIZE(products) > 1
     RETURN productName, products
-  title: find products with identical names
+  title: list products with identical names
 - cypher_query: |
     MATCH (p:Product)
     WITH p.name AS productName, COLLECT(p) AS products
@@ -58,11 +63,6 @@
     WHERE productCount > 1
     RETURN COUNT(productCount) AS totalDuplicateProducts
   title: count entities with the same product name
-- cypher_query: |
-    MATCH (p:Product)
-    RETURN p
-  limit: 5
-  title: list all products
 - cypher_query: |
     MATCH (p:Product)
     WITH p.name AS productName, p.urls AS productUrls
@@ -99,13 +99,13 @@
     MATCH (r:Recipe {name: 'Vegan Thai Red Curry'})-[:CONTAINS]->(p:Product)
     MATCH (p)-[:PURCHASE_AT]->(s:Store)
     RETURN r.name as RecipeName, s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients
-  title: find Thai Curry
+  title: find Vegan Thai Red Curry
 - cypher_query: |
     MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
     WHERE r.name CONTAINS 'Thai Red Curry'
     MATCH (p)-[:PURCHASE_AT]->(s:Store)
     RETURN r.name as RecipeName, s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients;
-  title: find Thai Curry without specifying exact title
+  title: find Thai Red Curry without specifying exact title
   comment: |
     Substring matching with CONTAINS. We didn't specify Vegan Thai Red
     Curry here.
