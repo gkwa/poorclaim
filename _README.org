@@ -267,15 +267,15 @@ Results:
 #+begin_example
 MATCH (r:Recipe {name: 'Vegan Thai Red Curry'})-[:CONTAINS]->(p:Product)
 MATCH (p)-[:PURCHASE_AT]->(s:Store)
-RETURN r.name as RecipeName, s.name AS Store, COLLECT(DISTINCT p.name) AS Ingredients;
+RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS Ingredients;
 #+end_example
 
 Results:
 #+begin_example
-{'RecipeName': 'Vegan Thai Red Curry', 'Store': 'Madison Co-op', 'Ingredients': ['Cumin seeds', 'Coriander seeds', 'White Peppercorns']}
-{'RecipeName': 'Vegan Thai Red Curry', 'Store': 'Safeway', 'Ingredients': ['Shallots', 'Cilantro roots', 'Lemongrass']}
-{'RecipeName': 'Vegan Thai Red Curry', 'Store': "Trader Joe's", 'Ingredients': ['Garlic']}
-{'RecipeName': 'Vegan Thai Red Curry', 'Store': 'Uwajimaya', 'Ingredients': ['Galangal']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Madison Co-op', 'Ingredients': ['Cumin seeds', 'Coriander seeds', 'White Peppercorns']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Safeway', 'Ingredients': ['Shallots', 'Cilantro roots', 'Lemongrass']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': "Trader Joe's", 'Ingredients': ['Garlic']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Uwajimaya', 'Ingredients': ['Galangal']}
 #+end_example
 
 * find Thai Red Curry without specifying exact title
@@ -287,21 +287,21 @@ Curry here.
 MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
 WHERE r.name CONTAINS 'Thai Red Curry'
 MATCH (p)-[:PURCHASE_AT]->(s:Store)
-RETURN r.name as RecipeName, s.name AS Store, COLLECT(DISTINCT p.name) AS Ingredients;
+RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS Ingredients;
 #+end_example
 
 Results:
 #+begin_example
-{'RecipeName': 'Chicken Thai Red Curry', 'Store': 'Safeway', 'Ingredients': ['Full fat coconut milk', 'Light Brown Sugar', 'Ginger', 'Chicken Stock or Water', 'Lemongrass', 'Zucchini']}
-{'RecipeName': 'Chicken Thai Red Curry', 'Store': "Trader Joe's", 'Ingredients': ['Onion', 'Red Bell Pepper', 'Garlic']}
-{'RecipeName': 'Chicken Thai Red Curry', 'Store': 'Uwajimaya', 'Ingredients': ['Thai basil']}
-{'RecipeName': 'Chicken Thai Red Curry', 'Store': 'Madison Co-op', 'Ingredients': ['Boneless Chicken Thighs']}
-{'RecipeName': 'Chicken Thai Red Curry', 'Store': 'Hau Hau Market', 'Ingredients': ['Fish sauce']}
-{'RecipeName': 'Chicken Thai Red Curry', 'Store': 'Whole Foods', 'Ingredients': ['Lemon Juice']}
-{'RecipeName': 'Vegan Thai Red Curry', 'Store': 'Madison Co-op', 'Ingredients': ['Cumin seeds', 'Coriander seeds', 'White Peppercorns']}
-{'RecipeName': 'Vegan Thai Red Curry', 'Store': 'Safeway', 'Ingredients': ['Shallots', 'Cilantro roots', 'Lemongrass']}
-{'RecipeName': 'Vegan Thai Red Curry', 'Store': "Trader Joe's", 'Ingredients': ['Garlic']}
-{'RecipeName': 'Vegan Thai Red Curry', 'Store': 'Uwajimaya', 'Ingredients': ['Galangal']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Safeway', 'Ingredients': ['Full fat coconut milk', 'Light Brown Sugar', 'Ginger', 'Chicken Stock or Water', 'Lemongrass', 'Zucchini']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': "Trader Joe's", 'Ingredients': ['Onion', 'Red Bell Pepper', 'Garlic']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Uwajimaya', 'Ingredients': ['Thai basil']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Madison Co-op', 'Ingredients': ['Boneless Chicken Thighs']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Hau Hau Market', 'Ingredients': ['Fish sauce']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Whole Foods', 'Ingredients': ['Lemon Juice']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Madison Co-op', 'Ingredients': ['Cumin seeds', 'Coriander seeds', 'White Peppercorns']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Safeway', 'Ingredients': ['Shallots', 'Cilantro roots', 'Lemongrass']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': "Trader Joe's", 'Ingredients': ['Garlic']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Uwajimaya', 'Ingredients': ['Galangal']}
 #+end_example
 
 * find Thai Curry with regex
@@ -311,21 +311,21 @@ Results:
 MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
 WHERE r.name =~ '.*Thai.*Curry.*'
 MATCH (p)-[:PURCHASE_AT]->(s:Store)
-RETURN r.name as RecipeName, s.name AS Store, COLLECT(DISTINCT p.name) AS Ingredients;
+RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS Ingredients;
 #+end_example
 
 Results:
 #+begin_example
-{'RecipeName': 'Chicken Thai Red Curry', 'Store': 'Safeway', 'Ingredients': ['Full fat coconut milk', 'Light Brown Sugar', 'Ginger', 'Chicken Stock or Water', 'Lemongrass', 'Zucchini']}
-{'RecipeName': 'Chicken Thai Red Curry', 'Store': "Trader Joe's", 'Ingredients': ['Onion', 'Red Bell Pepper', 'Garlic']}
-{'RecipeName': 'Chicken Thai Red Curry', 'Store': 'Uwajimaya', 'Ingredients': ['Thai basil']}
-{'RecipeName': 'Chicken Thai Red Curry', 'Store': 'Madison Co-op', 'Ingredients': ['Boneless Chicken Thighs']}
-{'RecipeName': 'Chicken Thai Red Curry', 'Store': 'Hau Hau Market', 'Ingredients': ['Fish sauce']}
-{'RecipeName': 'Chicken Thai Red Curry', 'Store': 'Whole Foods', 'Ingredients': ['Lemon Juice']}
-{'RecipeName': 'Vegan Thai Red Curry', 'Store': 'Madison Co-op', 'Ingredients': ['Cumin seeds', 'Coriander seeds', 'White Peppercorns']}
-{'RecipeName': 'Vegan Thai Red Curry', 'Store': 'Safeway', 'Ingredients': ['Shallots', 'Cilantro roots', 'Lemongrass']}
-{'RecipeName': 'Vegan Thai Red Curry', 'Store': "Trader Joe's", 'Ingredients': ['Garlic']}
-{'RecipeName': 'Vegan Thai Red Curry', 'Store': 'Uwajimaya', 'Ingredients': ['Galangal']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Safeway', 'Ingredients': ['Full fat coconut milk', 'Light Brown Sugar', 'Ginger', 'Chicken Stock or Water', 'Lemongrass', 'Zucchini']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': "Trader Joe's", 'Ingredients': ['Onion', 'Red Bell Pepper', 'Garlic']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Uwajimaya', 'Ingredients': ['Thai basil']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Madison Co-op', 'Ingredients': ['Boneless Chicken Thighs']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Hau Hau Market', 'Ingredients': ['Fish sauce']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Whole Foods', 'Ingredients': ['Lemon Juice']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Madison Co-op', 'Ingredients': ['Cumin seeds', 'Coriander seeds', 'White Peppercorns']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Safeway', 'Ingredients': ['Shallots', 'Cilantro roots', 'Lemongrass']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': "Trader Joe's", 'Ingredients': ['Garlic']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Uwajimaya', 'Ingredients': ['Galangal']}
 #+end_example
 
 * find recipes with either Thai or Curry
@@ -336,66 +336,66 @@ Results:
 // MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
 // WHERE r.name =~ '(?i).*Thai.*|(?i).*Curry.*'
 // MATCH (p)-[:PURCHASE_AT]->(s:Store)
-// RETURN r.name as RecipeName, s.name AS Store, COLLECT(DISTINCT p.name) AS Ingredients;
+// RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS Ingredients;
 
 // better:
 MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
 WHERE r.name =~ '(?i).*(Thai|Curry).*'
 MATCH (p)-[:PURCHASE_AT]->(s:Store)
-RETURN r.name as RecipeName, s.name AS Store, COLLECT(DISTINCT p.name) AS Ingredients;
+RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS Ingredients;
 #+end_example
 
 Results:
 #+begin_example
-{'RecipeName': 'Chicken Thai Red Curry', 'Store': 'Safeway', 'Ingredients': ['Full fat coconut milk', 'Light Brown Sugar', 'Ginger', 'Chicken Stock or Water', 'Lemongrass', 'Zucchini']}
-{'RecipeName': 'Chicken Thai Red Curry', 'Store': "Trader Joe's", 'Ingredients': ['Onion', 'Red Bell Pepper', 'Garlic']}
-{'RecipeName': 'Chicken Thai Red Curry', 'Store': 'Uwajimaya', 'Ingredients': ['Thai basil']}
-{'RecipeName': 'Chicken Thai Red Curry', 'Store': 'Madison Co-op', 'Ingredients': ['Boneless Chicken Thighs']}
-{'RecipeName': 'Chicken Thai Red Curry', 'Store': 'Hau Hau Market', 'Ingredients': ['Fish sauce']}
-{'RecipeName': 'Chicken Thai Red Curry', 'Store': 'Whole Foods', 'Ingredients': ['Lemon Juice']}
-{'RecipeName': 'Pad Thai', 'Store': 'Hau Hau Market', 'Ingredients': ['Shrimp', 'Fish sauce', 'Garlic Chives', 'Mung Bean Sprouts', 'Rice Sticks', 'Thai-style Baked Tofu', 'Rice Stick Noodles', 'Pressed Tofu', 'Roasted Chili Flakes']}
-{'RecipeName': 'Pad Thai', 'Store': 'PCC', 'Ingredients': ['Dry-Roasted Peanuts', 'Tamarind Paste', 'Sweet Paprika', 'Grounded Roasted Peanuts']}
-{'RecipeName': 'Pad Thai', 'Store': "Trader Joe's", 'Ingredients': ['Garlic', 'Lime', 'Chicken', 'Eggs', 'Pressed Tofu']}
-{'RecipeName': 'Pad Thai', 'Store': 'Safeway', 'Ingredients': ['Granulated Sugar', 'Dried Shrimp', 'Mung Bean Sprouts', 'Vegetable Oil', 'Shallots']}
-{'RecipeName': 'Pad Thai', 'Store': 'Viet-Wah Asian Food Market', 'Ingredients': ['Banana Leaf']}
-{'RecipeName': 'Pad Thai', 'Store': 'Whole Foods', 'Ingredients': ['Lime juice']}
-{'RecipeName': 'Pad Thai', 'Store': "Lam's Seafood Asian Market", 'Ingredients': ['Dried Shrimp']}
-{'RecipeName': 'Pad Thai', 'Store': 'M2M Mart', 'Ingredients': ['Chili Sauce', 'Mung Bean Sprouts']}
-{'RecipeName': 'Pad Thai', 'Store': 'Spice SPC', 'Ingredients': ['Chili Sauce', 'Tamarind Liquid']}
-{'RecipeName': 'Pad Thai', 'Store': 'Uwajimaya', 'Ingredients': ['Rice Wine Vinegar', 'Palm Sugar', 'Tamarind Liquid', 'Sweetened Radish']}
-{'RecipeName': 'Pad Thai', 'Store': 'Thanh Son Tofu', 'Ingredients': ['Thai-style Baked Tofu']}
-{'RecipeName': 'Phad Thai', 'Store': 'PCC', 'Ingredients': ['Roasted Unsalted Peanuts']}
-{'RecipeName': 'Vegan Thai Red Curry', 'Store': 'Madison Co-op', 'Ingredients': ['Cumin seeds', 'Coriander seeds', 'White Peppercorns']}
-{'RecipeName': 'Vegan Thai Red Curry', 'Store': 'Safeway', 'Ingredients': ['Shallots', 'Cilantro roots', 'Lemongrass']}
-{'RecipeName': 'Vegan Thai Red Curry', 'Store': "Trader Joe's", 'Ingredients': ['Garlic']}
-{'RecipeName': 'Vegan Thai Red Curry', 'Store': 'Uwajimaya', 'Ingredients': ['Galangal']}
-{'RecipeName': 'The Best Green Curry', 'Store': "Trader Joe's", 'Ingredients': ['Garlic cloves', 'Lime']}
-{'RecipeName': 'The Best Green Curry', 'Store': 'Uwajimaya', 'Ingredients': ['Thai basil', 'Kaffir lime leaves', 'Galangal', 'Thai Eggplant', 'Palm Sugar', 'Snow peas']}
-{'RecipeName': 'The Best Green Curry', 'Store': 'Madison Co-op', 'Ingredients': ['White Peppercorns', 'Chicken Thighs', 'Cumin seeds', 'Coriander seeds']}
-{'RecipeName': 'The Best Green Curry', 'Store': 'Hau Hau Market', 'Ingredients': ['Kaffir lime leaves', 'Fish sauce']}
-{'RecipeName': 'The Best Green Curry', 'Store': 'Safeway', 'Ingredients': ['Serranos', 'Lemongrass', 'Shallots', 'Cilantro', 'Full fat coconut milk', 'Chicken stock']}
-{'RecipeName': 'Thai Eggplant Recipe', 'Store': 'Madison Co-op', 'Ingredients': ['Coriander powder', 'Chili powder']}
-{'RecipeName': 'Thai Eggplant Recipe', 'Store': "Trader Joe's", 'Ingredients': ['Red Bell Pepper', 'Onion', 'Garlic cloves']}
-{'RecipeName': 'Thai Eggplant Recipe', 'Store': 'Whole Foods', 'Ingredients': ['Lime juice']}
-{'RecipeName': 'Thai Eggplant Recipe', 'Store': 'QFC', 'Ingredients': ['Salt']}
-{'RecipeName': 'Thai Eggplant Recipe', 'Store': 'Safeway', 'Ingredients': ['Ginger', 'Lemongrass', 'Full fat coconut milk', 'Coconut Oil', 'Chicken stock']}
-{'RecipeName': 'Thai Eggplant Recipe', 'Store': 'Uwajimaya', 'Ingredients': ['Thai basil', 'Thai Eggplant', 'Thai chilies']}
-{'RecipeName': 'Thai Eggplant Recipe', 'Store': 'PCC', 'Ingredients': ['Coconut Oil']}
-{'RecipeName': 'Thai Eggplant Recipe', 'Store': "Lam's Seafood Asian Market", 'Ingredients': ['Thai chilies']}
-{'RecipeName': 'Yellow Coconut Curry Chicken', 'Store': 'Madison Co-op', 'Ingredients': ['Yellow Curry Powder']}
-{'RecipeName': 'Yellow Coconut Curry Chicken', 'Store': 'Safeway', 'Ingredients': ['Carrots', 'Russet Potatoes', 'Brown Sugar', 'Full fat coconut milk', 'Coconut Oil', 'Chicken Broth', 'Cilantro']}
-{'RecipeName': 'Yellow Coconut Curry Chicken', 'Store': 'Whole Foods', 'Ingredients': ['Maesri Thai Red Curry Paste']}
-{'RecipeName': 'Yellow Coconut Curry Chicken', 'Store': "Trader Joe's", 'Ingredients': ['Garlic', 'Yellow Onion']}
-{'RecipeName': 'Yellow Coconut Curry Chicken', 'Store': 'QFC', 'Ingredients': ['Chicken Breast']}
-{'RecipeName': 'Yellow Coconut Curry Chicken', 'Store': 'Uwajimaya', 'Ingredients': ['Rice']}
-{'RecipeName': 'Yellow Coconut Curry Chicken', 'Store': 'PCC', 'Ingredients': ['Coconut Oil']}
-{'RecipeName': 'Yellow Coconut Curry Chicken', 'Store': 'Hau Hau Market', 'Ingredients': ['Fish sauce']}
-{'RecipeName': 'Yellow Curry with Chicken', 'Store': 'Madison Co-op', 'Ingredients': ['Curry Powder', 'Cumin seeds', 'Coriander seeds']}
-{'RecipeName': 'Yellow Curry with Chicken', 'Store': "Trader Joe's", 'Ingredients': ['Chicken', 'Garlic']}
-{'RecipeName': 'Yellow Curry with Chicken', 'Store': 'Safeway', 'Ingredients': ['Shallots', 'Potatoes', 'Full fat coconut milk', 'Ginger', 'Lemongrass', 'Yellow Curry Paste']}
-{'RecipeName': 'Yellow Curry with Chicken', 'Store': 'Hau Hau Market', 'Ingredients': ['Fish sauce']}
-{'RecipeName': 'Yellow Curry with Chicken', 'Store': 'M2M Mart', 'Ingredients': ['Yellow Curry Paste']}
-{'RecipeName': 'Yellow Curry with Chicken', 'Store': 'Uwajimaya', 'Ingredients': ['Galangal']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Safeway', 'Ingredients': ['Full fat coconut milk', 'Light Brown Sugar', 'Ginger', 'Chicken Stock or Water', 'Lemongrass', 'Zucchini']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': "Trader Joe's", 'Ingredients': ['Onion', 'Red Bell Pepper', 'Garlic']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Uwajimaya', 'Ingredients': ['Thai basil']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Madison Co-op', 'Ingredients': ['Boneless Chicken Thighs']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Hau Hau Market', 'Ingredients': ['Fish sauce']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Whole Foods', 'Ingredients': ['Lemon Juice']}
+{'Recipe': 'Pad Thai', 'Store': 'Hau Hau Market', 'Ingredients': ['Shrimp', 'Fish sauce', 'Garlic Chives', 'Mung Bean Sprouts', 'Rice Sticks', 'Thai-style Baked Tofu', 'Rice Stick Noodles', 'Pressed Tofu', 'Roasted Chili Flakes']}
+{'Recipe': 'Pad Thai', 'Store': 'PCC', 'Ingredients': ['Dry-Roasted Peanuts', 'Tamarind Paste', 'Sweet Paprika', 'Grounded Roasted Peanuts']}
+{'Recipe': 'Pad Thai', 'Store': "Trader Joe's", 'Ingredients': ['Garlic', 'Lime', 'Chicken', 'Eggs', 'Pressed Tofu']}
+{'Recipe': 'Pad Thai', 'Store': 'Safeway', 'Ingredients': ['Granulated Sugar', 'Dried Shrimp', 'Mung Bean Sprouts', 'Vegetable Oil', 'Shallots']}
+{'Recipe': 'Pad Thai', 'Store': 'Viet-Wah Asian Food Market', 'Ingredients': ['Banana Leaf']}
+{'Recipe': 'Pad Thai', 'Store': 'Whole Foods', 'Ingredients': ['Lime juice']}
+{'Recipe': 'Pad Thai', 'Store': "Lam's Seafood Asian Market", 'Ingredients': ['Dried Shrimp']}
+{'Recipe': 'Pad Thai', 'Store': 'M2M Mart', 'Ingredients': ['Chili Sauce', 'Mung Bean Sprouts']}
+{'Recipe': 'Pad Thai', 'Store': 'Spice SPC', 'Ingredients': ['Chili Sauce', 'Tamarind Liquid']}
+{'Recipe': 'Pad Thai', 'Store': 'Uwajimaya', 'Ingredients': ['Rice Wine Vinegar', 'Palm Sugar', 'Tamarind Liquid', 'Sweetened Radish']}
+{'Recipe': 'Pad Thai', 'Store': 'Thanh Son Tofu', 'Ingredients': ['Thai-style Baked Tofu']}
+{'Recipe': 'Phad Thai', 'Store': 'PCC', 'Ingredients': ['Roasted Unsalted Peanuts']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Madison Co-op', 'Ingredients': ['Cumin seeds', 'Coriander seeds', 'White Peppercorns']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Safeway', 'Ingredients': ['Shallots', 'Cilantro roots', 'Lemongrass']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': "Trader Joe's", 'Ingredients': ['Garlic']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Uwajimaya', 'Ingredients': ['Galangal']}
+{'Recipe': 'The Best Green Curry', 'Store': "Trader Joe's", 'Ingredients': ['Garlic cloves', 'Lime']}
+{'Recipe': 'The Best Green Curry', 'Store': 'Uwajimaya', 'Ingredients': ['Thai basil', 'Kaffir lime leaves', 'Galangal', 'Thai Eggplant', 'Palm Sugar', 'Snow peas']}
+{'Recipe': 'The Best Green Curry', 'Store': 'Madison Co-op', 'Ingredients': ['White Peppercorns', 'Chicken Thighs', 'Cumin seeds', 'Coriander seeds']}
+{'Recipe': 'The Best Green Curry', 'Store': 'Hau Hau Market', 'Ingredients': ['Kaffir lime leaves', 'Fish sauce']}
+{'Recipe': 'The Best Green Curry', 'Store': 'Safeway', 'Ingredients': ['Serranos', 'Lemongrass', 'Shallots', 'Cilantro', 'Full fat coconut milk', 'Chicken stock']}
+{'Recipe': 'Thai Eggplant Recipe', 'Store': 'Madison Co-op', 'Ingredients': ['Coriander powder', 'Chili powder']}
+{'Recipe': 'Thai Eggplant Recipe', 'Store': "Trader Joe's", 'Ingredients': ['Red Bell Pepper', 'Onion', 'Garlic cloves']}
+{'Recipe': 'Thai Eggplant Recipe', 'Store': 'Whole Foods', 'Ingredients': ['Lime juice']}
+{'Recipe': 'Thai Eggplant Recipe', 'Store': 'QFC', 'Ingredients': ['Salt']}
+{'Recipe': 'Thai Eggplant Recipe', 'Store': 'Safeway', 'Ingredients': ['Ginger', 'Lemongrass', 'Full fat coconut milk', 'Coconut Oil', 'Chicken stock']}
+{'Recipe': 'Thai Eggplant Recipe', 'Store': 'Uwajimaya', 'Ingredients': ['Thai basil', 'Thai Eggplant', 'Thai chilies']}
+{'Recipe': 'Thai Eggplant Recipe', 'Store': 'PCC', 'Ingredients': ['Coconut Oil']}
+{'Recipe': 'Thai Eggplant Recipe', 'Store': "Lam's Seafood Asian Market", 'Ingredients': ['Thai chilies']}
+{'Recipe': 'Yellow Coconut Curry Chicken', 'Store': 'Madison Co-op', 'Ingredients': ['Yellow Curry Powder']}
+{'Recipe': 'Yellow Coconut Curry Chicken', 'Store': 'Safeway', 'Ingredients': ['Carrots', 'Russet Potatoes', 'Brown Sugar', 'Full fat coconut milk', 'Coconut Oil', 'Chicken Broth', 'Cilantro']}
+{'Recipe': 'Yellow Coconut Curry Chicken', 'Store': 'Whole Foods', 'Ingredients': ['Maesri Thai Red Curry Paste']}
+{'Recipe': 'Yellow Coconut Curry Chicken', 'Store': "Trader Joe's", 'Ingredients': ['Garlic', 'Yellow Onion']}
+{'Recipe': 'Yellow Coconut Curry Chicken', 'Store': 'QFC', 'Ingredients': ['Chicken Breast']}
+{'Recipe': 'Yellow Coconut Curry Chicken', 'Store': 'Uwajimaya', 'Ingredients': ['Rice']}
+{'Recipe': 'Yellow Coconut Curry Chicken', 'Store': 'PCC', 'Ingredients': ['Coconut Oil']}
+{'Recipe': 'Yellow Coconut Curry Chicken', 'Store': 'Hau Hau Market', 'Ingredients': ['Fish sauce']}
+{'Recipe': 'Yellow Curry with Chicken', 'Store': 'Madison Co-op', 'Ingredients': ['Curry Powder', 'Cumin seeds', 'Coriander seeds']}
+{'Recipe': 'Yellow Curry with Chicken', 'Store': "Trader Joe's", 'Ingredients': ['Chicken', 'Garlic']}
+{'Recipe': 'Yellow Curry with Chicken', 'Store': 'Safeway', 'Ingredients': ['Shallots', 'Potatoes', 'Full fat coconut milk', 'Ginger', 'Lemongrass', 'Yellow Curry Paste']}
+{'Recipe': 'Yellow Curry with Chicken', 'Store': 'Hau Hau Market', 'Ingredients': ['Fish sauce']}
+{'Recipe': 'Yellow Curry with Chicken', 'Store': 'M2M Mart', 'Ingredients': ['Yellow Curry Paste']}
+{'Recipe': 'Yellow Curry with Chicken', 'Store': 'Uwajimaya', 'Ingredients': ['Galangal']}
 #+end_example
 
 * find Thai Curry using cypher IN [] query format
@@ -405,7 +405,7 @@ This returns empty...thats unexpected...
 #+begin_example
 MATCH (r:Recipe)
 WHERE 'Thai' IN [r.name] AND 'Curry' IN [r.name]
-RETURN r.name AS RecipeName;
+RETURN r.name AS Recipe;
 #+end_example
 
 Results:
@@ -420,7 +420,7 @@ Why does this return no results?
 MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
 WHERE 'Thai' IN r.name AND 'Curry' IN r.name
 MATCH (p)-[:PURCHASE_AT]->(s:Store)
-RETURN r.name as RecipeName, s.name AS Store, COLLECT(DISTINCT p.name) AS Ingredients;
+RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS Ingredients;
 #+end_example
 
 Results:
@@ -434,21 +434,21 @@ Results:
 MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
 WHERE r.name =~ '(?i).*thai.*curry.*'
 MATCH (p)-[:PURCHASE_AT]->(s:Store)
-RETURN r.name as RecipeName, s.name AS Store, COLLECT(DISTINCT p.name) AS Ingredients;
+RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS Ingredients;
 #+end_example
 
 Results:
 #+begin_example
-{'RecipeName': 'Chicken Thai Red Curry', 'Store': 'Safeway', 'Ingredients': ['Full fat coconut milk', 'Light Brown Sugar', 'Ginger', 'Chicken Stock or Water', 'Lemongrass', 'Zucchini']}
-{'RecipeName': 'Chicken Thai Red Curry', 'Store': "Trader Joe's", 'Ingredients': ['Onion', 'Red Bell Pepper', 'Garlic']}
-{'RecipeName': 'Chicken Thai Red Curry', 'Store': 'Uwajimaya', 'Ingredients': ['Thai basil']}
-{'RecipeName': 'Chicken Thai Red Curry', 'Store': 'Madison Co-op', 'Ingredients': ['Boneless Chicken Thighs']}
-{'RecipeName': 'Chicken Thai Red Curry', 'Store': 'Hau Hau Market', 'Ingredients': ['Fish sauce']}
-{'RecipeName': 'Chicken Thai Red Curry', 'Store': 'Whole Foods', 'Ingredients': ['Lemon Juice']}
-{'RecipeName': 'Vegan Thai Red Curry', 'Store': 'Madison Co-op', 'Ingredients': ['Cumin seeds', 'Coriander seeds', 'White Peppercorns']}
-{'RecipeName': 'Vegan Thai Red Curry', 'Store': 'Safeway', 'Ingredients': ['Shallots', 'Cilantro roots', 'Lemongrass']}
-{'RecipeName': 'Vegan Thai Red Curry', 'Store': "Trader Joe's", 'Ingredients': ['Garlic']}
-{'RecipeName': 'Vegan Thai Red Curry', 'Store': 'Uwajimaya', 'Ingredients': ['Galangal']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Safeway', 'Ingredients': ['Full fat coconut milk', 'Light Brown Sugar', 'Ginger', 'Chicken Stock or Water', 'Lemongrass', 'Zucchini']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': "Trader Joe's", 'Ingredients': ['Onion', 'Red Bell Pepper', 'Garlic']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Uwajimaya', 'Ingredients': ['Thai basil']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Madison Co-op', 'Ingredients': ['Boneless Chicken Thighs']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Hau Hau Market', 'Ingredients': ['Fish sauce']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Whole Foods', 'Ingredients': ['Lemon Juice']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Madison Co-op', 'Ingredients': ['Cumin seeds', 'Coriander seeds', 'White Peppercorns']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Safeway', 'Ingredients': ['Shallots', 'Cilantro roots', 'Lemongrass']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': "Trader Joe's", 'Ingredients': ['Garlic']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Uwajimaya', 'Ingredients': ['Galangal']}
 #+end_example
 
 * list products by type
@@ -497,7 +497,7 @@ What the hell is this one...I've forgotten.
 #+begin_example
 MATCH (r:Recipe)-[c:CONTAINS]->(p:Product)
 WHERE id(p) IS NULL
-RETURN r.name AS RecipeName, c.quantity AS Quantity, c.urls AS RecipeUrls;
+RETURN r.name AS Recipe, c.quantity AS Quantity, c.urls AS RecipeUrls;
 #+end_example
 
 Results:
@@ -662,16 +662,16 @@ ORDER BY RAND();
 
 Results:
 #+begin_example
-{'ProductName': 'Sun Dried Tomatoes - sun dried - real big jar'}
-{'ProductName': 'Blueberries - frozen uponina bag'}
-{'ProductName': 'Thai-style Baked Tofu'}
-{'ProductName': 'Potatoes - Baby / Tri Color'}
-{'ProductName': 'Red, Organic Kidney Beans, 15 Oz'}
-{'ProductName': 'Oil-packed sun-dried tomatoes'}
+{'ProductName': 'Chicken Tenderloins / Rubber Duckies / 1 BAG ONLY'}
 {'ProductName': 'Eggs (Dozen)'}
-{'ProductName': 'Baking Cups in cake mix/flour aisle'}
-{'ProductName': 'Sweet BBQ Pre-Marinated Super Firm Baked Tofu'}
-{'ProductName': 'Kidney Beans - S&W'}
+{'ProductName': 'Strong Roots Kale & Quinoa Burger'}
+{'ProductName': 'Dry-Roasted Peanuts'}
+{'ProductName': 'Thai-style Baked Tofu'}
+{'ProductName': 'Signature Select Garbanzo Beans - 15 Oz'}
+{'ProductName': 'Marketspice Tea Decaf - 2 Oz for Mommy'}
+{'ProductName': 'Ice-cold water'}
+{'ProductName': 'Tomato Sauce - 29 oz can'}
+{'ProductName': 'Ramen Noodles - Dry'}
 # ...truncated to 10 for brevity
 #+end_example
 
@@ -735,17 +735,17 @@ Results:
 #+begin_example
 // ok:
 // MATCH (r:Recipe)-[:CONTAINS]->(p:Product {name: 'Candlenuts'})
-// RETURN r.name AS RecipeName, r.urls AS RecipeURLs;
+// RETURN r.name AS Recipe, r.urls AS RecipeURLs;
 
 // better to use case insensitive:
 MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
 WHERE p.name =~ '(?i)Candlenuts'
-RETURN r.name AS RecipeName, r.urls AS RecipeURLs;
+RETURN r.name AS Recipe, r.urls AS RecipeURLs;
 #+end_example
 
 Results:
 #+begin_example
-{'RecipeName': 'Laksa', 'RecipeURLs': ['https://hot-thai-kitchen.com/singaporean-laksa/print/7645/', 'https://hot-thai-kitchen.com/singaporean-laksa/', 'https://www.youtube.com/watch?v=cWtnFKFiB_0']}
+{'Recipe': 'Laksa', 'RecipeURLs': ['https://hot-thai-kitchen.com/singaporean-laksa/print/7645/', 'https://hot-thai-kitchen.com/singaporean-laksa/', 'https://www.youtube.com/watch?v=cWtnFKFiB_0']}
 #+end_example
 
 * list products with at least one url
@@ -1182,16 +1182,16 @@ ORDER BY ProductName;
 
 Results:
 #+begin_example
-{'ProductName': 'Coconut Aminos'}
+{'ProductName': 'Aroy-D Coconut Milk'}
+{'ProductName': 'Candlenuts'}
 {'ProductName': 'Dried Thai Chilis'}
-{'ProductName': 'Egg yolk'}
-{'ProductName': 'Kalamata Olives'}
+{'ProductName': 'Korean Wild Sesame Oil'}
 {'ProductName': 'Miso'}
-{'ProductName': 'Thai chili'}
-{'ProductName': 'Toasted sesame flakes'}
-{'ProductName': 'Tofu puffs'}
+{'ProductName': 'Red Curry Paste'}
+{'ProductName': 'Sawtooth Coriander'}
+{'ProductName': 'Spicy dried red chilies'}
+{'ProductName': 'Tsuyu'}
 {'ProductName': 'Wasabi'}
-{'ProductName': 'Yellow Bell Pepper'}
 #+end_example
 
 * BAD: list the entity type the property is assocted with
@@ -1627,15 +1627,15 @@ MATCH (recipe:Recipe)-[:CONTAINS]->(ingredient:Product)
 WHERE toLower(ingredient.name) CONTAINS 'chicken stock'
 WITH recipe
 MATCH (recipe)-[:CONTAINS]->(allIngredients:Product)
-RETURN recipe.name AS RecipeName, recipe.urls AS RecipeURLs, COLLECT(DISTINCT allIngredients.name) AS AllIngredients
+RETURN recipe.name AS Recipe, recipe.urls AS RecipeURLs, COLLECT(DISTINCT allIngredients.name) AS AllIngredients
 ORDER BY toLower(recipe.name);
 #+end_example
 
 Results:
 #+begin_example
-{'RecipeName': 'Chicken Thai Red Curry', 'RecipeURLs': ['https://theflavoursofkitchen.com/wprm_print/104534'], 'AllIngredients': ['Full fat coconut milk', 'Light Brown Sugar', 'Cooking Oil', 'Onion', 'Ginger', 'Red Bell Pepper', 'Garlic', 'Thai basil', 'Boneless Chicken Thighs', 'Fish sauce', 'Chicken Stock or Water', 'Lemongrass', 'Zucchini', 'Red Curry Paste', 'Lemon Juice']}
-{'RecipeName': 'Thai Eggplant Recipe', 'RecipeURLs': ['https://www.myfoodchannel.com/thai-eggplant-recipe/', 'https://www.youtube.com/watch?v=7a0IAC7pCgA'], 'AllIngredients': ['Coriander powder', 'Red Bell Pepper', 'Lime juice', 'Salt', 'Ginger', 'Lemongrass', 'Thai basil', 'Onion', 'Garlic cloves', 'Full fat coconut milk', 'Chili powder', 'Coconut Oil', 'Chicken stock', 'Thai Eggplant', 'Thai chilies', 'Turmeric']}
-{'RecipeName': 'The Best Green Curry', 'RecipeURLs': ['https://www.joshuaweissman.com/post/easy-authentic-thai-green-curry', 'https://photos.google.com/photo/AF1QipMJV_m1w-qezTjSZAmu6Vam_PKMR6GICW6TJ883'], 'AllIngredients': ['Garlic cloves', 'Thai basil', 'White Peppercorns', 'Kaffir lime leaves', 'Galangal', 'Thai Eggplant', 'Chicken Thighs', 'Fried shallots', 'Serranos', 'Lime', 'Kaffir Lime', 'Lemongrass', 'Shallots', 'Cilantro', 'Palm Sugar', 'Fish sauce', 'Thai shrimp paste', 'Cumin seeds', 'Coriander seeds', 'Full fat coconut milk', 'Chicken stock', 'Snow peas']}
+{'Recipe': 'Chicken Thai Red Curry', 'RecipeURLs': ['https://theflavoursofkitchen.com/wprm_print/104534'], 'AllIngredients': ['Full fat coconut milk', 'Light Brown Sugar', 'Cooking Oil', 'Onion', 'Ginger', 'Red Bell Pepper', 'Garlic', 'Thai basil', 'Boneless Chicken Thighs', 'Fish sauce', 'Chicken Stock or Water', 'Lemongrass', 'Zucchini', 'Red Curry Paste', 'Lemon Juice']}
+{'Recipe': 'Thai Eggplant Recipe', 'RecipeURLs': ['https://www.myfoodchannel.com/thai-eggplant-recipe/', 'https://www.youtube.com/watch?v=7a0IAC7pCgA'], 'AllIngredients': ['Coriander powder', 'Red Bell Pepper', 'Lime juice', 'Salt', 'Ginger', 'Lemongrass', 'Thai basil', 'Onion', 'Garlic cloves', 'Full fat coconut milk', 'Chili powder', 'Coconut Oil', 'Chicken stock', 'Thai Eggplant', 'Thai chilies', 'Turmeric']}
+{'Recipe': 'The Best Green Curry', 'RecipeURLs': ['https://www.joshuaweissman.com/post/easy-authentic-thai-green-curry', 'https://photos.google.com/photo/AF1QipMJV_m1w-qezTjSZAmu6Vam_PKMR6GICW6TJ883'], 'AllIngredients': ['Garlic cloves', 'Thai basil', 'White Peppercorns', 'Kaffir lime leaves', 'Galangal', 'Thai Eggplant', 'Chicken Thighs', 'Fried shallots', 'Serranos', 'Lime', 'Kaffir Lime', 'Lemongrass', 'Shallots', 'Cilantro', 'Palm Sugar', 'Fish sauce', 'Thai shrimp paste', 'Cumin seeds', 'Coriander seeds', 'Full fat coconut milk', 'Chicken stock', 'Snow peas']}
 #+end_example
 
 * find recipes that contain either carrots or beans

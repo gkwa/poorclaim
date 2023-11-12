@@ -98,13 +98,13 @@
 - cypher_query: |
     MATCH (r:Recipe {name: 'Vegan Thai Red Curry'})-[:CONTAINS]->(p:Product)
     MATCH (p)-[:PURCHASE_AT]->(s:Store)
-    RETURN r.name as RecipeName, s.name AS Store, COLLECT(DISTINCT p.name) AS Ingredients
+    RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS Ingredients
   title: find Vegan Thai Red Curry
 - cypher_query: |
     MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
     WHERE r.name CONTAINS 'Thai Red Curry'
     MATCH (p)-[:PURCHASE_AT]->(s:Store)
-    RETURN r.name as RecipeName, s.name AS Store, COLLECT(DISTINCT p.name) AS Ingredients;
+    RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS Ingredients;
   title: find Thai Red Curry without specifying exact title
   comment: |
     Substring matching with CONTAINS. We didn't specify Vegan Thai Red
@@ -113,25 +113,25 @@
     MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
     WHERE r.name =~ '.*Thai.*Curry.*'
     MATCH (p)-[:PURCHASE_AT]->(s:Store)
-    RETURN r.name as RecipeName, s.name AS Store, COLLECT(DISTINCT p.name) AS Ingredients;
+    RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS Ingredients;
   title: find Thai Curry with regex
 - cypher_query: |
     // ok:
     // MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
     // WHERE r.name =~ '(?i).*Thai.*|(?i).*Curry.*'
     // MATCH (p)-[:PURCHASE_AT]->(s:Store)
-    // RETURN r.name as RecipeName, s.name AS Store, COLLECT(DISTINCT p.name) AS Ingredients;
+    // RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS Ingredients;
 
     // better:
     MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
     WHERE r.name =~ '(?i).*(Thai|Curry).*'
     MATCH (p)-[:PURCHASE_AT]->(s:Store)
-    RETURN r.name as RecipeName, s.name AS Store, COLLECT(DISTINCT p.name) AS Ingredients;
+    RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS Ingredients;
   title: find recipes with either Thai or Curry
 - cypher_query: |
     MATCH (r:Recipe)
     WHERE 'Thai' IN [r.name] AND 'Curry' IN [r.name]
-    RETURN r.name AS RecipeName;
+    RETURN r.name AS Recipe;
   title: find Thai Curry using cypher IN [] query format
   comment: |
     This returns empty...thats unexpected...
@@ -139,7 +139,7 @@
     MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
     WHERE 'Thai' IN r.name AND 'Curry' IN r.name
     MATCH (p)-[:PURCHASE_AT]->(s:Store)
-    RETURN r.name as RecipeName, s.name AS Store, COLLECT(DISTINCT p.name) AS Ingredients;
+    RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS Ingredients;
   title: find Thai Curry with multiple substings
   comment: |
     Why does this return no results?
@@ -147,7 +147,7 @@
     MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
     WHERE r.name =~ '(?i).*thai.*curry.*'
     MATCH (p)-[:PURCHASE_AT]->(s:Store)
-    RETURN r.name as RecipeName, s.name AS Store, COLLECT(DISTINCT p.name) AS Ingredients;
+    RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS Ingredients;
   title: find Thai Curry with regex case insensitively
 - cypher_query: |
     MATCH (p:Product)-[:PURCHASE_AT]->(s:Store)
@@ -163,7 +163,7 @@
 - cypher_query: |
     MATCH (r:Recipe)-[c:CONTAINS]->(p:Product)
     WHERE id(p) IS NULL
-    RETURN r.name AS RecipeName, c.quantity AS Quantity, c.urls AS RecipeUrls
+    RETURN r.name AS Recipe, c.quantity AS Quantity, c.urls AS RecipeUrls
   title: list details about product urls
   comment: |
     What the hell is this one...I've forgotten.
@@ -308,12 +308,12 @@
 - cypher_query: |
     // ok:
     // MATCH (r:Recipe)-[:CONTAINS]->(p:Product {name: 'Candlenuts'})
-    // RETURN r.name AS RecipeName, r.urls AS RecipeURLs;
+    // RETURN r.name AS Recipe, r.urls AS RecipeURLs;
 
     // better to use case insensitive:
     MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
     WHERE p.name =~ '(?i)Candlenuts'
-    RETURN r.name AS RecipeName, r.urls AS RecipeURLs;
+    RETURN r.name AS Recipe, r.urls AS RecipeURLs;
   title: Candlenuts...really?  What recipe calls for that?
 - cypher_query: |
     MATCH (p:Product)
@@ -640,7 +640,7 @@
     WHERE toLower(ingredient.name) CONTAINS 'chicken stock'
     WITH recipe
     MATCH (recipe)-[:CONTAINS]->(allIngredients:Product)
-    RETURN recipe.name AS RecipeName, recipe.urls AS RecipeURLs, COLLECT(DISTINCT allIngredients.name) AS AllIngredients
+    RETURN recipe.name AS Recipe, recipe.urls AS RecipeURLs, COLLECT(DISTINCT allIngredients.name) AS AllIngredients
     ORDER BY toLower(recipe.name);
   title: recipes that call for chicken stock
   comment: |
