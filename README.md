@@ -35,7 +35,7 @@ https://www.google.com/search?q=cypher+cheat+sheet
 * [list all products](#list-all-products-1)
 * [find cumin in my list of products](#find-cumin-in-my-list-of-products)
 * [list product entities with properties](#list-product-entities-with-properties)
-* [list all product names](#list-all-product-names)
+* [list all product names sorted](#list-all-product-names-sorted)
 * [list all product urls](#list-all-product-urls)
 * [list unique node types](#list-unique-node-types)
 * [list products with identical names](#list-products-with-identical-names)
@@ -207,7 +207,7 @@ Results:
 # ...truncated to 10 for brevity
 ```
 
-# list all product names
+# list all product names sorted
 
 ``` example
 MATCH (p:Product)
@@ -250,6 +250,11 @@ Results:
 ```
 
 # list unique node types
+
+[cypher DISTINCT](https://www.google.com/search?q=neo4j+cypher+DISTINCT)
+
+[cypher
+labels()](https://www.google.com/search?q=neo4j+cypher+labels+function)
 
 ``` example
 MATCH (n)
@@ -331,6 +336,9 @@ for each product
 ```
 
 [cypher UNWIND](https://www.google.com/search?q=neo4j+cypher+UNWIND)
+
+[cypher UNWINDing a
+list](https://neo4j.com/docs/cypher-manual/current/clauses/unwind/#unwind-unwinding-a-list)
 
 ``` example
 MATCH (p:Product)
@@ -824,16 +832,16 @@ ORDER BY RAND();
 Results:
 
 ``` example
-{'ProductName': 'Soy Sauce - Liquid Aminos'}
-{'ProductName': 'Sweet BBQ Pre-Marinated Super Firm Baked Tofu'}
-{'ProductName': 'Primo Taglio Cheese Goat - 4 Oz'}
-{'ProductName': 'Coffee - MTM - PLU 1859 - Fidalgo Bay Organic Fair Trade French Roast - Extra Dark'}
-{'ProductName': 'Eggs (Dozen)'}
-{'ProductName': 'Lemon Zest (grated lemon rind)'}
-{'ProductName': 'Black Beans (15 oz can)'}
+{'ProductName': 'Beans - Kidney (Bulk)'}
+{'ProductName': 'Potatoes - Baby / Tri Color'}
+{'ProductName': 'Chili Pepper, Ancho, Ground'}
+{'ProductName': 'Flour - White, all-purpose (Unbleached if possible but no bigs)'}
 {'ProductName': 'Tomato Sauce - 15 oz can'}
-{'ProductName': 'Coconut Milk - 13.5 oz can'}
-{'ProductName': 'Unsalted Tops (Unsalted Salteens)'}
+{'ProductName': 'Barbecue sauce - Baby Rays bbq sauce'}
+{'ProductName': 'Ramen Noodles - Dry'}
+{'ProductName': 'Chicken (3-4 lb)'}
+{'ProductName': 'Red, Green, Yella Peppers'}
+{'ProductName': 'Salmon - Still Frozen in the Shrink Wrap, 2 or 3 lbs'}
 # ...truncated to 10 for brevity
 ```
 
@@ -1352,16 +1360,16 @@ ORDER BY ProductName;
 Results:
 
 ``` example
-{'ProductName': 'Aroy-D Coconut Milk'}
-{'ProductName': 'Candlenuts'}
+{'ProductName': 'Coconut Aminos'}
 {'ProductName': 'Cooking Oil'}
-{'ProductName': 'Corn on cob'}
-{'ProductName': 'Miso'}
-{'ProductName': 'Red Curry Paste'}
+{'ProductName': 'Dried Thai Chilis'}
+{'ProductName': 'Egg yolk'}
+{'ProductName': 'Fish Sauce'}
+{'ProductName': 'Korean Wild Sesame Oil'}
+{'ProductName': 'Makrut lime zest'}
 {'ProductName': 'Rosemary'}
-{'ProductName': 'Thai shrimp paste'}
-{'ProductName': 'Tsuyu'}
-{'ProductName': 'Wasabi'}
+{'ProductName': 'Spicy dried red chilies'}
+{'ProductName': 'Tofu puffs'}
 ```
 
 # BAD: list the entity type the property is assocted with

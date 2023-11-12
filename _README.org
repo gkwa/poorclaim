@@ -110,7 +110,7 @@ Results:
 # ...truncated to 10 for brevity
 #+end_example
 
-* list all product names
+* list all product names sorted
 
 
 #+begin_example
@@ -154,6 +154,9 @@ Results:
 
 * list unique node types
 
+[[https://www.google.com/search?q=neo4j+cypher+DISTINCT][cypher DISTINCT]]
+
+[[https://www.google.com/search?q=neo4j+cypher+labels+function][cypher labels()]]
 
 #+begin_example
 MATCH (n)
@@ -229,6 +232,8 @@ Each product can have 0 or more urls.
           ...
 #+end_example
 [[https://www.google.com/search?q=neo4j+cypher+UNWIND][cypher UNWIND]]
+
+[[https://neo4j.com/docs/cypher-manual/current/clauses/unwind/#unwind-unwinding-a-list][cypher UNWINDing a list]]
 
 #+begin_example
 MATCH (p:Product)
@@ -715,16 +720,16 @@ ORDER BY RAND();
 
 Results:
 #+begin_example
-{'ProductName': 'Soy Sauce - Liquid Aminos'}
-{'ProductName': 'Sweet BBQ Pre-Marinated Super Firm Baked Tofu'}
-{'ProductName': 'Primo Taglio Cheese Goat - 4 Oz'}
-{'ProductName': 'Coffee - MTM - PLU 1859 - Fidalgo Bay Organic Fair Trade French Roast - Extra Dark'}
-{'ProductName': 'Eggs (Dozen)'}
-{'ProductName': 'Lemon Zest (grated lemon rind)'}
-{'ProductName': 'Black Beans (15 oz can)'}
+{'ProductName': 'Beans - Kidney (Bulk)'}
+{'ProductName': 'Potatoes - Baby / Tri Color'}
+{'ProductName': 'Chili Pepper, Ancho, Ground'}
+{'ProductName': 'Flour - White, all-purpose (Unbleached if possible but no bigs)'}
 {'ProductName': 'Tomato Sauce - 15 oz can'}
-{'ProductName': 'Coconut Milk - 13.5 oz can'}
-{'ProductName': 'Unsalted Tops (Unsalted Salteens)'}
+{'ProductName': 'Barbecue sauce - Baby Rays bbq sauce'}
+{'ProductName': 'Ramen Noodles - Dry'}
+{'ProductName': 'Chicken (3-4 lb)'}
+{'ProductName': 'Red, Green, Yella Peppers'}
+{'ProductName': 'Salmon - Still Frozen in the Shrink Wrap, 2 or 3 lbs'}
 # ...truncated to 10 for brevity
 #+end_example
 
@@ -1235,16 +1240,16 @@ ORDER BY ProductName;
 
 Results:
 #+begin_example
-{'ProductName': 'Aroy-D Coconut Milk'}
-{'ProductName': 'Candlenuts'}
+{'ProductName': 'Coconut Aminos'}
 {'ProductName': 'Cooking Oil'}
-{'ProductName': 'Corn on cob'}
-{'ProductName': 'Miso'}
-{'ProductName': 'Red Curry Paste'}
+{'ProductName': 'Dried Thai Chilis'}
+{'ProductName': 'Egg yolk'}
+{'ProductName': 'Fish Sauce'}
+{'ProductName': 'Korean Wild Sesame Oil'}
+{'ProductName': 'Makrut lime zest'}
 {'ProductName': 'Rosemary'}
-{'ProductName': 'Thai shrimp paste'}
-{'ProductName': 'Tsuyu'}
-{'ProductName': 'Wasabi'}
+{'ProductName': 'Spicy dried red chilies'}
+{'ProductName': 'Tofu puffs'}
 #+end_example
 
 * BAD: list the entity type the property is assocted with

@@ -44,7 +44,7 @@
     RETURN p.name
     ORDER BY toLower(p.name)
   limit: 5
-  title: list all product names
+  title: list all product names sorted
 - cypher_query: |
     MATCH (p:Product)
     RETURN p.name AS ProductName, p.urls AS URLs;
@@ -55,6 +55,10 @@
     RETURN DISTINCT labels(n) AS objectType
     ORDER BY objectType
   title: list unique node types
+  comment: |
+    [[https://www.google.com/search?q=neo4j+cypher+DISTINCT][cypher DISTINCT]]
+
+    [[https://www.google.com/search?q=neo4j+cypher+labels+function][cypher labels()]]
 - comment: |
     This reveals that I need to clean up duplicates. Listing two
     instances of the same product name is harmful.
@@ -96,6 +100,8 @@
               ...
     #+end_example
     [[https://www.google.com/search?q=neo4j+cypher+UNWIND][cypher UNWIND]]
+
+    [[https://neo4j.com/docs/cypher-manual/current/clauses/unwind/#unwind-unwinding-a-list][cypher UNWINDing a list]]
 - comment: |
     BAD: list relations, not just CONTAINS and show relation
     properties.
