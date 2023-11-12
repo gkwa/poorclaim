@@ -14,6 +14,12 @@ these snippts.
 Please, just give me a shitton of examples that I can
 copy/paste...maybe later I'll read the manual.
 
+I can't cook, but I'm annoyed with paying outrageous resturant prices
+and I love thai food.
+
+I don't spend enough time in the seattle international district to
+know my way around, but I expect I can learn with enough repititon.
+
 Data for this is generated from here
 https://github.com/taylormonacelli/anythingflorida/blob/master/data.cypher
 
