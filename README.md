@@ -26,9 +26,9 @@ Cheatsheet
 https://memgraph.com/blog/cypher-cheat-sheet
 
 https://www.google.com/search?q=cypher+cheat+sheet
+* [list all nodes and relations](#list-all-nodes-and-relations)
 * [find cumin in my list of proucts](#find-cumin-in-my-list-of-proucts)
 * [list product entities with properties](#list-product-entities-with-properties)
-* [list all nodes and relations](#list-all-nodes-and-relations)
 * [list all product names](#list-all-product-names)
 * [get all product urls](#get-all-product-urls)
 * [list unique node types](#list-unique-node-types)
@@ -87,6 +87,34 @@ https://www.google.com/search?q=cypher+cheat+sheet
 * [recipe with unknown products](#recipe-with-unknown-products)
 * [cleanup data, find recipes with unknown products](#cleanup-data-find-recipes-with-unknown-products)
 * [fixing data for a single recipe](#fixing-data-for-a-single-recipe)
+# list all nodes and relations
+
+Not sure what a 'node' means other than that its not a 'relation'…I
+think.
+
+Either way, i have products, stores…things and 'relations entities' to
+connect them.
+
+``` example
+MATCH (n) RETURN n;
+```
+
+Results:
+
+``` example
+{'n': {'urls': ['https://cleananddelicious.com/'], 'name': 'Dani Spies'}}
+{'n': {'urls': ['https://www.simplyrecipes.com/recipes/tomatillo_salsa_verde/'], 'name': 'Elise Bauer'}}
+{'n': {'urls': ['https://www.cookerru.com/about-me/'], 'name': 'Elle'}}
+{'n': {'urls': ['https://www.youtube.com/c/HanaAsbrink', 'https://www.instagram.com/hanaasbrink/'], 'name': 'Hana Asbrink'}}
+{'n': {'urls': [''], 'name': 'J. Kenji López-Alt'}}
+{'n': {'urls': ['https://drivemehungry.com/zaru-soba-cold-soba-noodles/'], 'name': 'Jamie'}}
+{'n': {'urls': ['https://www.youtube.com/@JoshuaWeissman'], 'name': 'Joshua Weissman'}}
+{'n': {'urls': ['https://www.loveandlemons.com/'], 'name': 'Love and Lemons'}}
+{'n': {'ytb': 'https://www.youtube.com/@Marionskitchen', 'name': 'Marionskitchen'}}
+{'n': {'urls': ['https://www.meghanlivingstone.com/'], 'name': 'Meghan Livingstone'}}
+# ...truncated to 10 for brevity
+```
+
 # find cumin in my list of proucts
 
 ``` example
@@ -120,34 +148,6 @@ Results:
 {'n': {'urls': ['https://www.google.com/search?sca_esv=581110607&sxsrf=AM9HkKlvxPZkhbmImtTjzpzoOo0bggx5gA:1699596383961&q=aroy-d+coconut+milk&tbm=isch&source=lnms&sa=X&sqi=2&ved=2ahUKEwjq0uj14biCAxW7GTQIHT6CDx0Q0pQJegQIDRAB&biw=1440&bih=754&dpr=2', 'https://www.templeofthai.com/food/coconut-milk/aroy-d-large', 'https://www.zhicayfoods.com/products/aroy-d-coconut-milk-original'], 'name': 'Aroy-D Coconut Milk', 'type': 'Coconut Milk'}}
 {'n': {'urls': ['https://www.google.com/search?sca_esv=579549787&sxsrf=AM9HkKlJ1akktSB6XfxzBxrRxM_VM-9vxA:1699158988679&q=aroy-d+red+curry+paste', 'https://www.youtube.com/watch?v=GC7ccNKatVU'], 'name': 'Aroy-D Red Curry Paste', 'type': 'Curry Paste', 'brand': 'Aroy D'}}
 {'n': {'name': 'Artichoke Hearts', 'type': 'Artichokes'}}
-# ...truncated to 10 for brevity
-```
-
-# list all nodes and relations
-
-Not sure what a 'node' means other than that its not a 'relation'…I
-think.
-
-Either way, i have products, stores…things and 'relations entities' to
-connect them.
-
-``` example
-MATCH (n) RETURN n;
-```
-
-Results:
-
-``` example
-{'n': {'urls': ['https://cleananddelicious.com/'], 'name': 'Dani Spies'}}
-{'n': {'urls': ['https://www.simplyrecipes.com/recipes/tomatillo_salsa_verde/'], 'name': 'Elise Bauer'}}
-{'n': {'urls': ['https://www.cookerru.com/about-me/'], 'name': 'Elle'}}
-{'n': {'urls': ['https://www.youtube.com/c/HanaAsbrink', 'https://www.instagram.com/hanaasbrink/'], 'name': 'Hana Asbrink'}}
-{'n': {'urls': [''], 'name': 'J. Kenji López-Alt'}}
-{'n': {'urls': ['https://drivemehungry.com/zaru-soba-cold-soba-noodles/'], 'name': 'Jamie'}}
-{'n': {'urls': ['https://www.youtube.com/@JoshuaWeissman'], 'name': 'Joshua Weissman'}}
-{'n': {'urls': ['https://www.loveandlemons.com/'], 'name': 'Love and Lemons'}}
-{'n': {'ytb': 'https://www.youtube.com/@Marionskitchen', 'name': 'Marionskitchen'}}
-{'n': {'urls': ['https://www.meghanlivingstone.com/'], 'name': 'Meghan Livingstone'}}
 # ...truncated to 10 for brevity
 ```
 
@@ -770,15 +770,15 @@ ORDER BY RAND();
 Results:
 
 ``` example
-{'ProductName': 'Barbecue sauce - Baby Rays bbq sauce'}
-{'ProductName': 'Signature Select Garbanzo Beans - 15 Oz'}
-{'ProductName': 'Chili Pepper, Chipotle, Ground'}
-{'ProductName': 'Half-gallon half & half'}
-{'ProductName': 'Yeast (Active Dry)'}
-{'ProductName': 'Rice Wine Vinegar - Kikkoman Mirin'}
-{'ProductName': 'Chili Pepper, Ancho, Ground'}
+{'ProductName': 'Chicken Broth - 32 Oz'}
+{'ProductName': 'Kikkoman Japanese Noodle Soup Base (Hon Tsuyu)'}
+{'ProductName': 'Rolled Oats / Oats / Old Fashioned / PLU 8490'}
+{'ProductName': 'Aroy-D Red Curry Paste'}
+{'ProductName': "Newman's Own Sesame Ginger Dressing"}
+{'ProductName': 'Marketspice Tea Decaf - 2 Oz for Mommy'}
+{'ProductName': 'Chicken (3-4 lb)'}
+{'ProductName': 'Reynolds Parchment Paper Genuine Non-Stick 45 Sq. Ft.'}
 {'ProductName': 'Broth - Beef - low sodium'}
-{'ProductName': 'Coffee - T - Decaf'}
 {'ProductName': 'Sweet BBQ Pre-Marinated Super Firm Baked Tofu'}
 # ...truncated to 10 for brevity
 ```
@@ -1197,16 +1197,16 @@ ORDER BY ProductName;
 Results:
 
 ``` example
-{'ProductName': 'Aroy-D Coconut Milk'}
-{'ProductName': 'Fish Sauce'}
-{'ProductName': 'Ice-cold water'}
-{'ProductName': 'Kalamata Olives'}
-{'ProductName': 'Makrut lime zest'}
-{'ProductName': 'Mild dried red chilies'}
-{'ProductName': 'Pressed Tofu'}
-{'ProductName': 'Shrimp Paste'}
-{'ProductName': 'Spicy dried red chilies'}
+{'ProductName': 'Beansprouts'}
+{'ProductName': 'Grape Tomatoes'}
+{'ProductName': 'Green Bell Pepper'}
+{'ProductName': "Newman's Own Sesame Ginger Dressing"}
+{'ProductName': 'Oil-packed sun-dried tomatoes'}
+{'ProductName': 'Rice vinegar'}
+{'ProductName': 'Straw Mushrooms'}
+{'ProductName': 'Toasted sesame flakes'}
 {'ProductName': 'Wasabi'}
+{'ProductName': 'Yellow Bell Pepper'}
 ```
 
 # BAD: list the entity type the property is assocted with

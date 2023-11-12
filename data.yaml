@@ -1,13 +1,4 @@
 - cypher_query: |
-    MATCH (p:Product)
-    WHERE p.name = 'Ground Cumin'
-    RETURN p
-  title: find cumin in my list of proucts
-- cypher_query: |
-    MATCH (n:Product) RETURN n
-  limit: 10
-  title: list product entities with properties
-- cypher_query: |
     MATCH (n) RETURN n
   limit: 10
   title: list all nodes and relations
@@ -17,6 +8,15 @@
 
     Either way, i have products, stores...things and 'relations
     entities' to connect them.
+- cypher_query: |
+    MATCH (p:Product)
+    WHERE p.name = 'Ground Cumin'
+    RETURN p
+  title: find cumin in my list of proucts
+- cypher_query: |
+    MATCH (n:Product) RETURN n
+  limit: 10
+  title: list product entities with properties
 - cypher_query: |
     MATCH (p:Product)
     RETURN p.name
