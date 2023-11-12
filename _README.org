@@ -765,16 +765,16 @@ ORDER BY RAND();
 
 Results:
 #+begin_example
-{'ProductName': 'Ka-Me Whole Peeled Straw Mushrooms'}
-{'ProductName': 'Cleanser - Bon Ami'}
-{'ProductName': 'Small, Green Cabbage'}
+{'ProductName': 'Boullion - Vegetable Broth Powdered'}
+{'ProductName': 'Chili Pepper, Ancho, Ground'}
+{'ProductName': 'Salmon - Still Frozen in the Shrink Wrap, 2 or 3 lbs'}
+{'ProductName': 'Chili Pepper, Chipotle, Ground'}
+{'ProductName': "Granola 'cookies'"}
+{'ProductName': 'Rice - Wild'}
 {'ProductName': 'Quick Rolled Oats / Oats PLU 8485'}
-{'ProductName': "Coffee / BB's 1st preference / BB / PLU 8863 / Equal Exchange / Peruvian"}
 {'ProductName': 'Malt-o-Meal'}
-{'ProductName': 'Martianmallows - Large but not gigantic'}
-{'ProductName': 'Chicken Broth - Swanson, 14.5 Oz'}
-{'ProductName': 'Red, Organic Kidney Beans, 15 Oz'}
-{'ProductName': 'German Mustard medium hot in jar w/ handle'}
+{'ProductName': 'Eggs (Dozen)'}
+{'ProductName': 'Tomato Paste - 6 oz can'}
 # ...truncated to 10 for brevity
 #+end_example
 
@@ -1285,16 +1285,16 @@ ORDER BY ProductName;
 
 Results:
 #+begin_example
+{'ProductName': 'Aroy-D Coconut Milk'}
 {'ProductName': 'Black beans'}
 {'ProductName': 'Dashi'}
-{'ProductName': 'Kaffir Lime'}
-{'ProductName': "Newman's Own Sesame Ginger Dressing"}
+{'ProductName': 'Fish Sauce'}
+{'ProductName': 'Korean Wild Sesame Oil'}
+{'ProductName': 'Miso'}
 {'ProductName': 'Red Curry Paste'}
-{'ProductName': 'Rosemary'}
-{'ProductName': 'Shrimp Paste'}
-{'ProductName': 'Spicy dried red chilies'}
-{'ProductName': 'Tsuyu'}
-{'ProductName': 'Wasabi'}
+{'ProductName': 'Sea Salt'}
+{'ProductName': 'Tofu puffs'}
+{'ProductName': 'Unsweetened Nut Butter'}
 #+end_example
 
 * BAD: list the entity type the property is assocted with

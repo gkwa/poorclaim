@@ -42,7 +42,7 @@ def fix_titles(data, fix_data):
 
 def update_data_yaml(data):
     with open("data.yaml", "w") as file:
-        yaml.dump(data, file, default_flow_style=False)
+        yaml.dump(data, file, default_flow_style=False, default_style='"')
 
 
 def process_query_data(query_data):
