@@ -46,6 +46,7 @@ https://www.google.com/search?q=cypher+cheat+sheet
 * [find Thai Curry using cypher IN [] query format](#find-thai-curry-using-cypher-in--query-format)
 * [find Thai Curry with multiple substings](#find-thai-curry-with-multiple-substings)
 * [find Thai Curry with regex case insensitively](#find-thai-curry-with-regex-case-insensitively)
+* [find Thai Curry with regex case insensitively, output full product details](#find-thai-curry-with-regex-case-insensitively-output-full-product-details)
 * [list products by type](#list-products-by-type)
 * [list products that I’ve not yet assiged a type to](#list-products-that-ive-not-yet-assiged-a-type-to)
 * [list details about product urls](#list-details-about-product-urls)
@@ -551,6 +552,30 @@ Results:
 {'Recipe': 'Vegan Thai Red Curry', 'Store': 'Uwajimaya', 'Ingredients': ['Galangal']}
 ```
 
+# find Thai Curry with regex case insensitively, output full product details
+
+``` example
+MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
+WHERE r.name =~ '(?i).*thai.*curry.*'
+MATCH (p)-[:PURCHASE_AT]->(s:Store)
+RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p) AS Ingredients;
+```
+
+Results:
+
+``` example
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Safeway', 'Ingredients': [{'name': 'Full fat coconut milk', 'type': 'Coconut Milk'}, {'name': 'Light Brown Sugar', 'type': 'Brown Sugar'}, {'name': 'Ginger', 'type': 'Ginger'}, {'name': 'Chicken Stock or Water', 'type': 'Chicken Stock'}, {'name': 'Lemongrass', 'type': 'Lemongrass'}, {'name': 'Zucchini', 'type': 'Zucchini'}]}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': "Trader Joe's", 'Ingredients': [{'name': 'Onion', 'type': 'Onion'}, {'name': 'Red Bell Pepper', 'type': 'Bell Pepper'}, {'name': 'Garlic', 'type': 'Garlic'}]}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Uwajimaya', 'Ingredients': [{'urls': ['https://www.fredmeyer.com/p/simple-truth-organic-thai-basil/0001111001922'], 'name': 'Thai basil', 'type': 'Herb'}]}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Madison Co-op', 'Ingredients': [{'name': 'Boneless Chicken Thighs', 'type': 'Chicken'}]}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Hau Hau Market', 'Ingredients': [{'name': 'Fish sauce', 'type': 'Fish Sauce'}]}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Whole Foods', 'Ingredients': [{'name': 'Lemon Juice', 'type': 'Lemon Juice'}]}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Madison Co-op', 'Ingredients': [{'name': 'Cumin seeds', 'type': 'Cumin '}, {'name': 'Coriander seeds', 'type': 'Spice'}, {'name': 'White Peppercorns', 'type': 'White Peppercorns'}]}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Safeway', 'Ingredients': [{'name': 'Shallots', 'type': 'Shallots'}, {'name': 'Cilantro roots', 'type': 'Cilantro'}, {'name': 'Lemongrass', 'type': 'Lemongrass'}]}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': "Trader Joe's", 'Ingredients': [{'name': 'Garlic', 'type': 'Garlic'}]}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Uwajimaya', 'Ingredients': [{'name': 'Galangal', 'type': 'Galangal'}]}
+```
+
 # list products by type
 
 ``` example
@@ -765,16 +790,16 @@ ORDER BY RAND();
 Results:
 
 ``` example
-{'ProductName': 'Chicken Tenderloins / Rubber Duckies / 1 BAG ONLY'}
-{'ProductName': 'Eggs (Dozen)'}
-{'ProductName': 'Strong Roots Kale & Quinoa Burger'}
-{'ProductName': 'Dry-Roasted Peanuts'}
-{'ProductName': 'Thai-style Baked Tofu'}
+{'ProductName': 'Ice-cold water'}
+{'ProductName': "Dave's Seed Bread"}
+{'ProductName': "Duke's Mayonnaise"}
+{'ProductName': 'Coffee - MTM - PLU 1859 - Fidalgo Bay Organic Fair Trade French Roast - Extra Dark'}
 {'ProductName': 'Signature Select Garbanzo Beans - 15 Oz'}
 {'ProductName': 'Marketspice Tea Decaf - 2 Oz for Mommy'}
-{'ProductName': 'Ice-cold water'}
-{'ProductName': 'Tomato Sauce - 29 oz can'}
-{'ProductName': 'Ramen Noodles - Dry'}
+{'ProductName': 'Kidney Beans - S&W'}
+{'ProductName': 'Black Beans (15 oz can)'}
+{'ProductName': 'Rice Wine Vinegar - Kikkoman Mirin'}
+{'ProductName': 'Red, Organic Kidney Beans, 15 Oz'}
 # ...truncated to 10 for brevity
 ```
 
@@ -1294,15 +1319,15 @@ Results:
 
 ``` example
 {'ProductName': 'Aroy-D Coconut Milk'}
+{'ProductName': 'Black beans'}
 {'ProductName': 'Candlenuts'}
-{'ProductName': 'Dried Thai Chilis'}
-{'ProductName': 'Korean Wild Sesame Oil'}
-{'ProductName': 'Miso'}
-{'ProductName': 'Red Curry Paste'}
-{'ProductName': 'Sawtooth Coriander'}
+{'ProductName': 'Dashi'}
+{'ProductName': 'Kalamata Olives'}
+{'ProductName': 'Mild dried red chilies'}
+{'ProductName': 'Salted Turnip'}
+{'ProductName': 'Sea Salt'}
+{'ProductName': 'Shrimp Paste'}
 {'ProductName': 'Spicy dried red chilies'}
-{'ProductName': 'Tsuyu'}
-{'ProductName': 'Wasabi'}
 ```
 
 # BAD: list the entity type the property is assocted with

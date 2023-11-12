@@ -83,9 +83,18 @@ def main():
     parser.add_argument("--run-neo4j", action="store_true", help="query neo4j")
     args = parser.parse_args()
 
+    if args.verbose and not all(
+        value is False for key, value in vars(args).items() if key != "verbose"
+    ):
+        parser.print_help()
+        return
+
     if args.verbose:
         logging.getLogger().setLevel(logging.DEBUG)
         logging.debug("Verbose logging enabled.")
+    else:
+        # If --verbose is not specified, set logging level to INFO
+        logging.getLogger().setLevel(logging.INFO)
 
     with open("data.yaml", "r") as file:
         query_data = yaml.load(file, Loader=yaml.FullLoader)
@@ -93,7 +102,9 @@ def main():
     if args.titles:
         report_titles(query_data)
 
-    if args.fix_titles:
+    if (
+        args.fix_titles and args.verbose
+    ):  # Only execute if --fix-titles and --verbose are specified
         with open("fix.yaml", "r") as fix_file:
             fix_data = yaml.load(fix_file, Loader=yaml.FullLoader)
 
