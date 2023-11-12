@@ -335,11 +335,6 @@ for each product
       ...
 ```
 
-[cypher UNWIND](https://www.google.com/search?q=neo4j+cypher+UNWIND)
-
-[cypher UNWINDing a
-list](https://neo4j.com/docs/cypher-manual/current/clauses/unwind/#unwind-unwinding-a-list)
-
 ``` example
 MATCH (p:Product)
 WITH p.name AS productName, p.urls AS productUrls
@@ -357,6 +352,11 @@ Results:
 {'productName': 'Aroy-D Red Curry Paste', 'url': 'https://www.youtube.com/watch?v=GC7ccNKatVU'}
 # ...truncated to 5 for brevity
 ```
+
+[cypher UNWIND](https://www.google.com/search?q=neo4j+cypher+UNWIND)
+
+[cypher UNWINDing a
+list](https://neo4j.com/docs/cypher-manual/current/clauses/unwind/#unwind-unwinding-a-list)
 
 # BAD: list relation entities with properties
 
@@ -832,16 +832,16 @@ ORDER BY RAND();
 Results:
 
 ``` example
-{'ProductName': 'Beans - Kidney (Bulk)'}
-{'ProductName': 'Potatoes - Baby / Tri Color'}
-{'ProductName': 'Chili Pepper, Ancho, Ground'}
-{'ProductName': 'Flour - White, all-purpose (Unbleached if possible but no bigs)'}
-{'ProductName': 'Tomato Sauce - 15 oz can'}
-{'ProductName': 'Barbecue sauce - Baby Rays bbq sauce'}
-{'ProductName': 'Ramen Noodles - Dry'}
-{'ProductName': 'Chicken (3-4 lb)'}
-{'ProductName': 'Red, Green, Yella Peppers'}
-{'ProductName': 'Salmon - Still Frozen in the Shrink Wrap, 2 or 3 lbs'}
+{'ProductName': 'German Mustard medium hot in jar w/ handle'}
+{'ProductName': 'Strong Roots Kale & Quinoa Burger'}
+{'ProductName': 'Boullion - Beef'}
+{'ProductName': 'Tomato Paste - 6 oz can'}
+{'ProductName': 'Tortilla - Flour large diameter Don Pancho or Safeway brand'}
+{'ProductName': 'Turkey (whole)'}
+{'ProductName': 'Oil-packed sun-dried tomatoes'}
+{'ProductName': 'Ice-cold water'}
+{'ProductName': 'Coffee - T - Decaf'}
+{'ProductName': 'Honey in glass jar?'}
 # ...truncated to 10 for brevity
 ```
 
@@ -1360,16 +1360,16 @@ ORDER BY ProductName;
 Results:
 
 ``` example
-{'ProductName': 'Coconut Aminos'}
-{'ProductName': 'Cooking Oil'}
-{'ProductName': 'Dried Thai Chilis'}
-{'ProductName': 'Egg yolk'}
+{'ProductName': 'Aroy-D Coconut Milk'}
 {'ProductName': 'Fish Sauce'}
-{'ProductName': 'Korean Wild Sesame Oil'}
-{'ProductName': 'Makrut lime zest'}
-{'ProductName': 'Rosemary'}
-{'ProductName': 'Spicy dried red chilies'}
+{'ProductName': 'Mild dried red chilies'}
+{'ProductName': 'Sambal'}
+{'ProductName': 'Sawtooth Coriander'}
+{'ProductName': 'Thai chili'}
+{'ProductName': 'Toasted sesame flakes'}
 {'ProductName': 'Tofu puffs'}
+{'ProductName': 'Unsweetened Nut Butter'}
+{'ProductName': 'Yellow Bell Pepper'}
 ```
 
 # BAD: list the entity type the property is assocted with

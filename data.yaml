@@ -91,6 +91,10 @@
     RETURN productName, url
   limit: 5
   title: list all products with their urls
+  footer: |
+    [[https://www.google.com/search?q=neo4j+cypher+UNWIND][cypher UNWIND]]
+
+    [[https://neo4j.com/docs/cypher-manual/current/clauses/unwind/#unwind-unwinding-a-list][cypher UNWINDing a list]]
   comment: |
     Each product can have 0 or more urls.
 
@@ -99,9 +103,6 @@
            for each url
               ...
     #+end_example
-    [[https://www.google.com/search?q=neo4j+cypher+UNWIND][cypher UNWIND]]
-
-    [[https://neo4j.com/docs/cypher-manual/current/clauses/unwind/#unwind-unwinding-a-list][cypher UNWINDing a list]]
 - comment: |
     BAD: list relations, not just CONTAINS and show relation
     properties.
