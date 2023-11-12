@@ -545,7 +545,7 @@
     UNWIND keys(r) AS propertyNames
     RETURN DISTINCT type(r) AS type, propertyNames AS propertyName
     ORDER BY type, propertyName
-  title: list unique CONTAINS relationships
+  title: list unique CONTAINS relationship properties
 - comment: |
     This fails
     #+begin_example
@@ -735,10 +735,10 @@
 - cypher_query: |
     MATCH (store:Store)-[:PURCHASE_AT]-(purchasedProduct:Product)-[:CONTAINS]-(recipe:Recipe)
     WHERE recipe.name IN ['Crispy Baked Tofu', 'Roasted Broccoli', 'Fresh Spring Rolls']
-    WITH DISTINCT recipe.name AS Recipe, store.name AS Store, purchasedProduct.name AS Product
-    RETURN Recipe, Store, Product
-    ORDER BY toLower(Store)
-  title: 'find stores for recipe ingredients: explore purchases'
+    WITH DISTINCT recipe.name AS RecipeName, store.name AS StoreName, purchasedProduct.name AS ProductName
+    RETURN RecipeName, StoreName, ProductName
+    ORDER BY toLower(StoreName)
+  title: find stores for recipe ingredients
   comment: |
     If I were to make Crispy Baked Tofu, Roasted Broccoli and Fresh
     Spring Rolls, then where would I need to go to get the

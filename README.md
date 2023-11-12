@@ -78,7 +78,7 @@ https://www.google.com/search?q=cypher+cheat+sheet
 * [GOOD: list the entity type the property is assocted with](#good-list-the-entity-type-the-property-is-assocted-with)
 * [list unique entities](#list-unique-entities)
 * [list CONTAINS relationships](#list-contains-relationships)
-* [list unique CONTAINS relationships](#list-unique-contains-relationships)
+* [list unique CONTAINS relationship properties](#list-unique-contains-relationship-properties)
 * [list products with Google Drive photo urls](#list-products-with-google-drive-photo-urls)
 * [GOOD: list relation entities and their properties](#good-list-relation-entities-and-their-properties)
 * [identify stores for recipe ingredients](#identify-stores-for-recipe-ingredients)
@@ -95,7 +95,7 @@ https://www.google.com/search?q=cypher+cheat+sheet
 * [recipe with unknown products](#recipe-with-unknown-products)
 * [cleanup data, find recipes with unknown products](#cleanup-data-find-recipes-with-unknown-products)
 * [fix data for a single recipe](#fix-data-for-a-single-recipe)
-* [find stores for recipe ingredients: explore purchases](#find-stores-for-recipe-ingredients-explore-purchases)
+* [find stores for recipe ingredients](#find-stores-for-recipe-ingredients)
 # list all nodes and relations
 
 Not sure what a 'node' means other than that its not a 'relation'…I
@@ -112,8 +112,8 @@ Results:
 
 ``` example
 {'n': {'urls': ['https://www.hwcmagazine.com'], 'name': 'HWC Magazine'}}
-{'n': {'urls': [''], 'name': 'J. Kenji López-Alt'}}
 {'n': {'urls': ['https://drivemehungry.com/zaru-soba-cold-soba-noodles/'], 'name': 'Jamie'}}
+{'n': {'urls': [''], 'name': 'J. Kenji López-Alt'}}
 {'n': {'urls': ['https://www.youtube.com/@JoshuaWeissman'], 'name': 'Joshua Weissman'}}
 {'n': {'urls': ['https://www.loveandlemons.com/'], 'name': 'Love and Lemons'}}
 {'n': {'ytb': 'https://www.youtube.com/@Marionskitchen', 'name': 'Marionskitchen'}}
@@ -433,8 +433,8 @@ RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS ProductNam
 Results:
 
 ``` example
-{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Safeway', 'ProductNames': ['Full fat coconut milk', 'Light Brown Sugar', 'Ginger', 'Chicken Stock or Water', 'Lemongrass', 'Zucchini']}
-{'Recipe': 'Chicken Thai Red Curry', 'Store': "Trader Joe's", 'ProductNames': ['Onion', 'Red Bell Pepper', 'Garlic']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Safeway', 'ProductNames': ['Full fat coconut milk', 'Light Brown Sugar', 'Chicken Stock or Water', 'Ginger', 'Zucchini', 'Lemongrass']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': "Trader Joe's", 'ProductNames': ['Garlic', 'Onion', 'Red Bell Pepper']}
 {'Recipe': 'Chicken Thai Red Curry', 'Store': 'Uwajimaya', 'ProductNames': ['Thai basil']}
 {'Recipe': 'Chicken Thai Red Curry', 'Store': 'Madison Co-op', 'ProductNames': ['Boneless Chicken Thighs']}
 {'Recipe': 'Chicken Thai Red Curry', 'Store': 'Hau Hau Market', 'ProductNames': ['Fish sauce']}
@@ -457,8 +457,8 @@ RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS ProductNam
 Results:
 
 ``` example
-{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Safeway', 'ProductNames': ['Full fat coconut milk', 'Light Brown Sugar', 'Ginger', 'Chicken Stock or Water', 'Lemongrass', 'Zucchini']}
-{'Recipe': 'Chicken Thai Red Curry', 'Store': "Trader Joe's", 'ProductNames': ['Onion', 'Red Bell Pepper', 'Garlic']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Safeway', 'ProductNames': ['Full fat coconut milk', 'Light Brown Sugar', 'Chicken Stock or Water', 'Ginger', 'Zucchini', 'Lemongrass']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': "Trader Joe's", 'ProductNames': ['Garlic', 'Onion', 'Red Bell Pepper']}
 {'Recipe': 'Chicken Thai Red Curry', 'Store': 'Uwajimaya', 'ProductNames': ['Thai basil']}
 {'Recipe': 'Chicken Thai Red Curry', 'Store': 'Madison Co-op', 'ProductNames': ['Boneless Chicken Thighs']}
 {'Recipe': 'Chicken Thai Red Curry', 'Store': 'Hau Hau Market', 'ProductNames': ['Fish sauce']}
@@ -488,8 +488,8 @@ RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS ProductNam
 Results:
 
 ``` example
-{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Safeway', 'ProductNames': ['Full fat coconut milk', 'Light Brown Sugar', 'Ginger', 'Chicken Stock or Water', 'Lemongrass', 'Zucchini']}
-{'Recipe': 'Chicken Thai Red Curry', 'Store': "Trader Joe's", 'ProductNames': ['Onion', 'Red Bell Pepper', 'Garlic']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Safeway', 'ProductNames': ['Full fat coconut milk', 'Light Brown Sugar', 'Chicken Stock or Water', 'Ginger', 'Zucchini', 'Lemongrass']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': "Trader Joe's", 'ProductNames': ['Garlic', 'Onion', 'Red Bell Pepper']}
 {'Recipe': 'Chicken Thai Red Curry', 'Store': 'Uwajimaya', 'ProductNames': ['Thai basil']}
 {'Recipe': 'Chicken Thai Red Curry', 'Store': 'Madison Co-op', 'ProductNames': ['Boneless Chicken Thighs']}
 {'Recipe': 'Chicken Thai Red Curry', 'Store': 'Hau Hau Market', 'ProductNames': ['Fish sauce']}
@@ -582,8 +582,8 @@ RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS ProductNam
 Results:
 
 ``` example
-{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Safeway', 'ProductNames': ['Full fat coconut milk', 'Light Brown Sugar', 'Ginger', 'Chicken Stock or Water', 'Lemongrass', 'Zucchini']}
-{'Recipe': 'Chicken Thai Red Curry', 'Store': "Trader Joe's", 'ProductNames': ['Onion', 'Red Bell Pepper', 'Garlic']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Safeway', 'ProductNames': ['Full fat coconut milk', 'Light Brown Sugar', 'Chicken Stock or Water', 'Ginger', 'Zucchini', 'Lemongrass']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': "Trader Joe's", 'ProductNames': ['Garlic', 'Onion', 'Red Bell Pepper']}
 {'Recipe': 'Chicken Thai Red Curry', 'Store': 'Uwajimaya', 'ProductNames': ['Thai basil']}
 {'Recipe': 'Chicken Thai Red Curry', 'Store': 'Madison Co-op', 'ProductNames': ['Boneless Chicken Thighs']}
 {'Recipe': 'Chicken Thai Red Curry', 'Store': 'Hau Hau Market', 'ProductNames': ['Fish sauce']}
@@ -606,8 +606,8 @@ RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p) AS Products;
 Results:
 
 ``` example
-{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Safeway', 'Products': [{'name': 'Full fat coconut milk', 'type': 'Coconut Milk'}, {'name': 'Light Brown Sugar', 'type': 'Brown Sugar'}, {'name': 'Ginger', 'type': 'Ginger'}, {'name': 'Chicken Stock or Water', 'type': 'Chicken Stock'}, {'name': 'Lemongrass', 'type': 'Lemongrass'}, {'name': 'Zucchini', 'type': 'Zucchini'}]}
-{'Recipe': 'Chicken Thai Red Curry', 'Store': "Trader Joe's", 'Products': [{'name': 'Onion', 'type': 'Onion'}, {'name': 'Red Bell Pepper', 'type': 'Bell Pepper'}, {'name': 'Garlic', 'type': 'Garlic'}]}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Safeway', 'Products': [{'name': 'Full fat coconut milk', 'type': 'Coconut Milk'}, {'name': 'Light Brown Sugar', 'type': 'Brown Sugar'}, {'name': 'Chicken Stock or Water', 'type': 'Chicken Stock'}, {'name': 'Ginger', 'type': 'Ginger'}, {'name': 'Zucchini', 'type': 'Zucchini'}, {'name': 'Lemongrass', 'type': 'Lemongrass'}]}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': "Trader Joe's", 'Products': [{'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Onion', 'type': 'Onion'}, {'name': 'Red Bell Pepper', 'type': 'Bell Pepper'}]}
 {'Recipe': 'Chicken Thai Red Curry', 'Store': 'Uwajimaya', 'Products': [{'urls': ['https://www.fredmeyer.com/p/simple-truth-organic-thai-basil/0001111001922'], 'name': 'Thai basil', 'type': 'Herb'}]}
 {'Recipe': 'Chicken Thai Red Curry', 'Store': 'Madison Co-op', 'Products': [{'name': 'Boneless Chicken Thighs', 'type': 'Chicken'}]}
 {'Recipe': 'Chicken Thai Red Curry', 'Store': 'Hau Hau Market', 'Products': [{'name': 'Fish sauce', 'type': 'Fish Sauce'}]}
@@ -832,16 +832,16 @@ ORDER BY RAND();
 Results:
 
 ``` example
-{'ProductName': 'German Mustard medium hot in jar w/ handle'}
-{'ProductName': 'Strong Roots Kale & Quinoa Burger'}
-{'ProductName': 'Boullion - Beef'}
-{'ProductName': 'Tomato Paste - 6 oz can'}
-{'ProductName': 'Tortilla - Flour large diameter Don Pancho or Safeway brand'}
-{'ProductName': 'Turkey (whole)'}
 {'ProductName': 'Oil-packed sun-dried tomatoes'}
-{'ProductName': 'Ice-cold water'}
-{'ProductName': 'Coffee - T - Decaf'}
-{'ProductName': 'Honey in glass jar?'}
+{'ProductName': 'Coconut Milk - 13.5 oz can'}
+{'ProductName': 'Dino Kale (ugly spinach)'}
+{'ProductName': 'Yeast (Active Dry)'}
+{'ProductName': 'Ka-Me Whole Peeled Straw Mushrooms'}
+{'ProductName': 'Semi-pearled Farro'}
+{'ProductName': 'Tomato Sauce - 15 oz can'}
+{'ProductName': 'A.1. Sauce'}
+{'ProductName': 'Whole wheat Flour, all-purpose'}
+{'ProductName': 'Coffee - Taylor - PLU 8868'}
 # ...truncated to 10 for brevity
 ```
 
@@ -1102,12 +1102,12 @@ Results:
 {'ProductName': 'Cleanser - Bon Ami', 'Store': 'Bartell', 'Type': 'Cleanser'}
 {'ProductName': 'Crest', 'Store': 'Bartell', 'Type': 'Toothpaste'}
 {'ProductName': 'ACT Restoring Mouthwash', 'Store': 'Bartell', 'Type': 'Mouthwash'}
-{'ProductName': 'Marketspice Tea Decaf - 2 Oz for Mommy', 'Store': 'Bartell', 'Type': 'Marketspice Tea'}
 {'ProductName': 'Sonicare soft bristles', 'Store': 'Bartell', 'Type': 'Sonicare Bristles'}
+{'ProductName': 'Marketspice Tea Decaf - 2 Oz for Mommy', 'Store': 'Bartell', 'Type': 'Marketspice Tea'}
 {'ProductName': 'Extra Sharp Cheddar Cheese', 'Store': 'dummy place holder', 'Type': 'Cheese'}
-{'ProductName': 'Soy Sauce - Liquid Aminos', 'Store': 'dummy place holder', 'Type': 'Sauce'}
 {'ProductName': 'Kidney Beans - S&W', 'Store': 'dummy place holder', 'Type': 'Kidney Beans'}
 {'ProductName': 'Pancake Mix - Snoqualmie Falls Lodge', 'Store': 'dummy place holder', 'Type': 'Mix'}
+{'ProductName': 'Boullion - Beef', 'Store': 'dummy place holder', 'Type': 'Bouillon'}
 # ...truncated to 10 for brevity
 ```
 
@@ -1360,16 +1360,16 @@ ORDER BY ProductName;
 Results:
 
 ``` example
-{'ProductName': 'Aroy-D Coconut Milk'}
-{'ProductName': 'Fish Sauce'}
+{'ProductName': 'Candlenuts'}
+{'ProductName': 'Dried Thai Chilis'}
+{'ProductName': 'Egg yolk'}
 {'ProductName': 'Mild dried red chilies'}
-{'ProductName': 'Sambal'}
-{'ProductName': 'Sawtooth Coriander'}
-{'ProductName': 'Thai chili'}
-{'ProductName': 'Toasted sesame flakes'}
+{'ProductName': "Newman's Own Sesame Ginger Dressing"}
+{'ProductName': 'Red Curry Paste'}
+{'ProductName': 'Thai Black Soy Sauce'}
+{'ProductName': 'Thai shrimp paste'}
 {'ProductName': 'Tofu puffs'}
 {'ProductName': 'Unsweetened Nut Butter'}
-{'ProductName': 'Yellow Bell Pepper'}
 ```
 
 # BAD: list the entity type the property is assocted with
@@ -1490,7 +1490,7 @@ Results:
 # ...truncated to 5 for brevity
 ```
 
-# list unique CONTAINS relationships
+# list unique CONTAINS relationship properties
 
 ``` example
 MATCH ()-[r:CONTAINS]-()
@@ -1627,15 +1627,15 @@ RETURN s.name AS Store, COLLECT(DISTINCT p.name) AS Products;
 Results:
 
 ``` example
-{'Store': 'Hau Hau Market', 'Products': ['Thai-style Baked Tofu']}
 {'Store': 'Thanh Son Tofu', 'Products': ['Thai-style Baked Tofu']}
+{'Store': 'Hau Hau Market', 'Products': ['Thai-style Baked Tofu']}
 {'Store': 'Safeway', 'Products': ['Ginger', 'Corn Starch', 'Broccolini', 'Rice Wine Vinegar - Kikkoman Mirin', 'Soy sauce']}
-{'Store': 'Uwajimaya', 'Products': ['Rice']}
+{'Store': 'Uwajimaya', 'Products': ['Rice', 'Rice Wine Vinegar - Kikkoman Mirin']}
 {'Store': 'dummy place holder', 'Products': ['Water']}
 {'Store': 'Madison Co-op', 'Products': ['Chicken Thighs']}
 {'Store': "Trader Joe's", 'Products': ['Red Onion', 'Garlic', 'Red Pepper']}
-{'Store': 'PCC', 'Products': ['Sesame Seeds']}
 {'Store': 'Naked Grocer', 'Products': ['Sesame Seeds']}
+{'Store': 'PCC', 'Products': ['Sesame Seeds']}
 {'Store': 'M2M Mart', 'Products': ['Rice Wine Vinegar - Kikkoman Mirin', 'Sake Wine']}
 ```
 
@@ -1700,7 +1700,7 @@ Results:
 {'Products': ['Tsuyu', 'Korean Wild Sesame Oil'], 'Stores': []}
 {'Products': ['Chili Oil', 'Soba Noodles', 'Toasted Seaweed'], 'Stores': ['M2M Mart']}
 {'Products': ['Toasted Sesame Seeds'], 'Stores': ['Madison Co-op']}
-{'Products': ['Sesame Seeds'], 'Stores': ['PCC', 'Naked Grocer']}
+{'Products': ['Sesame Seeds'], 'Stores': ['Naked Grocer', 'PCC']}
 {'Products': ['Green Onion', 'Red Chilli Peppers'], 'Stores': ['Safeway']}
 ```
 
@@ -1721,7 +1721,7 @@ Results:
 
 ``` example
 {'r': {'urls': ['https://www.food.com/recipe/easy-black-bean-soup-59796?ftab=reviews#activity-feed'], 'name': 'Easy Black Bean Soup'}, 'products': [{'name': 'Extra Virgin Olive Oil', 'type': 'Olive Oil'}, {'name': 'Salt', 'type': 'Salt'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Ground Cumin', 'type': 'Cumin'}, {'name': 'Onion', 'type': 'Onion'}, {'name': 'Red Onion', 'type': 'Red Onion'}, {'name': 'Black Beans', 'type': 'Black Beans'}, {'name': 'Cilantro', 'type': 'Cilantro'}, {'name': 'Black Pepper', 'type': 'Black Pepper'}, {'name': 'Chicken Broth', 'type': 'Broth'}]}
-{'r': {'urls': ['https://theflavoursofkitchen.com/wprm_print/104534'], 'name': 'Chicken Thai Red Curry'}, 'products': [{'name': 'Full fat coconut milk', 'type': 'Coconut Milk'}, {'name': 'Light Brown Sugar', 'type': 'Brown Sugar'}, {'name': 'Cooking Oil', 'type': 'Cooking Oil'}, {'name': 'Onion', 'type': 'Onion'}, {'name': 'Ginger', 'type': 'Ginger'}, {'name': 'Red Bell Pepper', 'type': 'Bell Pepper'}, {'name': 'Garlic', 'type': 'Garlic'}, {'urls': ['https://www.fredmeyer.com/p/simple-truth-organic-thai-basil/0001111001922'], 'name': 'Thai basil', 'type': 'Herb'}, {'name': 'Boneless Chicken Thighs', 'type': 'Chicken'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'name': 'Chicken Stock or Water', 'type': 'Chicken Stock'}, {'name': 'Lemongrass', 'type': 'Lemongrass'}, {'name': 'Zucchini', 'type': 'Zucchini'}, {'name': 'Red Curry Paste', 'type': 'Curry Paste'}, {'name': 'Lemon Juice', 'type': 'Lemon Juice'}]}
+{'r': {'urls': ['https://theflavoursofkitchen.com/wprm_print/104534'], 'name': 'Chicken Thai Red Curry'}, 'products': [{'name': 'Full fat coconut milk', 'type': 'Coconut Milk'}, {'name': 'Light Brown Sugar', 'type': 'Brown Sugar'}, {'name': 'Cooking Oil', 'type': 'Cooking Oil'}, {'name': 'Chicken Stock or Water', 'type': 'Chicken Stock'}, {'name': 'Ginger', 'type': 'Ginger'}, {'name': 'Zucchini', 'type': 'Zucchini'}, {'name': 'Garlic', 'type': 'Garlic'}, {'urls': ['https://www.fredmeyer.com/p/simple-truth-organic-thai-basil/0001111001922'], 'name': 'Thai basil', 'type': 'Herb'}, {'name': 'Boneless Chicken Thighs', 'type': 'Chicken'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'name': 'Onion', 'type': 'Onion'}, {'name': 'Lemongrass', 'type': 'Lemongrass'}, {'name': 'Red Bell Pepper', 'type': 'Bell Pepper'}, {'name': 'Red Curry Paste', 'type': 'Curry Paste'}, {'name': 'Lemon Juice', 'type': 'Lemon Juice'}]}
 {'r': {'urls': ['https://food52.com/recipes/print/86501', 'https://www.youtube.com/watch?v=VpAS3RarPi8'], 'name': 'Cold Soba With Periall Oil dresssing'}, 'products': [{'urls': ['https://www.amazon.com/gp/product/B00101YEBO', 'https://veggiekinsblog.com/2020/01/13/vegan-zaru-soba/'], 'name': 'Buckwheat Soba Nodles', 'type': 'Noodle'}, {'urls': ['https://www.google.com/search?client=emacs&sca_esv=577922779&sxsrf=AM9HkKkUxzT-KjHg9ziVgvqz5Zsqmn7xdw:1698703946500&q=Japanese+nori&tbm=isch&source=lnms&sa=X&ved=2ahUKEwi647yq5Z6CAxVxMjQIHRW8BBYQ0pQJegQIChAB&biw=1440&bih=758&dpr=2'], 'name': 'Japanese Nori', 'type': 'Nori'}, {'urls': ['https://www.youtube.com/watch?v=VpAS3RarPi8', 'https://megakfood.com/products/8801045448503', 'https://photos.google.com/photo/AF1QipNe7d-KXSpC90FJ1uJNMnH1fMFZ6E8Qlzr_j3Q0', 'https://photos.google.com/photo/AF1QipOLrXnJ8Bj20xFh5lg5yhm71ApUoRlT1z6_ZqnB', 'https://photos.google.com/photo/AF1QipP8OZZvarZPkNnnaOOv3k_ng9doQzMeVZgONlxK'], 'name': 'Perilla Oil', 'type': 'Oil'}]}
 {'r': {'urls': ['https://cleananddelicious.com/wprm_print/26940'], 'name': 'Crispy Baked Tofu'}, 'products': [{'name': 'Tamari', 'type': 'Tamari'}, {'name': 'Extra Firm Tofu', 'type': 'Tofu'}, {'name': 'Black Pepper', 'type': 'Black Pepper'}, {'name': 'Corn Starch', 'type': 'Corn Starch'}, {'name': 'Avocado Oil', 'type': 'Avocado Oil'}, {'name': 'Morton Salt Kosher Coarse', 'type': 'Kosher Salt'}, {'name': 'Garlic Powder', 'type': 'Garlic'}]}
 {'r': {'urls': ['https://seonkyounglongest.com/drunken-noodles/', 'https://seonkyounglongest.com/drunken-noodles/print/27100/'], 'name': 'The Best Drunken Noodles'}, 'products': [{'name': 'Chinese Broccoli', 'type': 'Broccoli'}, {'name': 'Thai chili', 'type': 'Chilies'}, {'name': 'Soy sauce', 'type': 'Soy sauce'}, {'name': 'Shrimp', 'type': 'Shrimp'}, {'name': 'Shallots', 'type': 'Shallots'}, {'name': 'Shrimp', 'type': 'Shrimp'}, {'name': 'White pepper', 'type': 'White pepper'}, {'name': 'Basil', 'type': 'Basil'}, {'name': 'Lime', 'type': 'Lime'}, {'name': 'Pork', 'type': 'Pork'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'search': ['Rice noodle sheets'], 'urls': ['https://www.google.com/search?sca_esv=579554252&sxsrf=AM9HkKlaWKZFra1JEJmQLagqVwu7lOpvPA:1699161392487&q=rice+paper&tbm=isch&source=lnms&sa=X&sqi=2&ved=2ahUKEwjyhdy5jayCAxWmADQIHTJBBhUQ0pQJegQIDxAB&biw=1440&bih=758&dpr=2', 'https://balancewithjess.com/hu-tieu-ap-chao/', 'https://www.google.com/search?q=hu+tieu+xao+rice+sheets&tbm=isch&ved=2ahUKEwjExZejjayCAxU_JjQIHf97ACQQ2-cCegQIABAA&oq=hu+tieu+xao+rice+sheets&gs_lcp=CgNpbWcQAzoECCMQJzoFCAAQgAQ6BwgAEIoFEEM6BwgAEBgQgARQvQRYpRdgxRpoAHAAeACAATmIAecEkgECMTOYAQCgAQGqAQtnd3Mtd2l6LWltZ8ABAQ&sclient=img&ei=ASVHZYTBDb_M0PEP__eBoAI&bih=758&biw=1440#imgrc=il_S9C1t9kGChM', 'https://www.foodsofjane.com/recipes/steamed-rice-rolls', 'https://www.google.com/search?client=emacs&sca_esv=579554252&sxsrf=AM9HkKkMHZcCbxpmpXqsj48WrwEW--xssw:1699161240321&q=Rice+noodle+sheets&tbm=isch&source=lnms&sa=X&ved=2ahUKEwiPypTxjKyCAxW_MDQIHVJjDeYQ0pQJegQIDBAB&biw=1440&bih=758&dpr=2#imgrc=Vw7_7S7XaN_v6M', 'https://photos.google.com/photo/AF1QipPM6Ts-zLh2dl10ono15alL7hCGwSCHhbOyav6v', 'https://phohoa.com/', 'https://www.google.com/search?q=pho+hoa+seattle&oq=pho+hoa+seatt&gs_lcrp=EgZjaHJvbWUqCggAEAAY4wIYgAQyCggAEAAY4wIYgAQyEAgBEC4YrwEYxwEYgAQYjgUyBggCEEUYOTIICAMQABgWGB4yCAgEEC4YFhgeMgoIBRAAGIYDGIoFMgYIBhBFGEDSAQg1Mjk1ajBqN6gCALACAA&sourceid=chrome&ie=UTF-8#lpg=cid:CgIgAQ%3D%3D,ik:CAoSLEFGMVFpcE40MXM4TXJDSzlDcFVRZWxBRHZPNUZXb1h5LWtIVFpaeHNnZm03', 'https://timeline.google.com/maps/timeline?pli=1&rapt=AEjHL4MhNWvrl4xjhvtinEYv8V8WTyxNYgSR-reE9VJgys6Ba7GccWm6B2Xi6Xa3uKxuR9rkftCXiinZ4f3LvAJGF9CnnqgrtUIGNdtCmaP1EhTNElp4eko&pb=!1m2!1m1!1s2023-11-04', 'https://www.google.com/search?client=emacs&sca_esv=579833118&sxsrf=AM9HkKmyvTZJVTjaoB4T2Is_emhNvlG1og:1699290431734&q=rice+paper&tbm=isch&source=lnms&sa=X&ved=2ahUKEwimz7aU7q-CAxVkFjQIHXrWCSgQ0pQJegQIDhAB&biw=1440&bih=758&dpr=2', 'https://i0.wp.com/www.wokandkin.com/wp-content/uploads/2021/04/Rice-Paper-saved-for-web-1200-px.png?w=1200&ssl=1'], 'name': 'Rice noodle sheets', 'type': 'Rice noodle sheets'}, {'name': 'Red Chilli Peppers', 'type': 'Chilli Pepper'}, {'name': 'Dark soy sauce', 'type': 'Soy Sauce'}, {'name': 'Oyster Sauce', 'type': 'Oyster Sauce'}, {'name': 'Chicken', 'type': 'Chicken'}, {'name': 'Thai-style Baked Tofu', 'type': 'Tofu'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Cooking Oil', 'type': 'Cooking Oil'}, {'name': 'Palm Sugar', 'type': 'Sugar'}]}
@@ -1729,16 +1729,16 @@ Results:
 {'r': {'urls': ['https://www.meghanlivingstone.com/ginger-sesame-dressing/', 'https://www.meghanlivingstone.com/wprm_print/2060'], 'name': 'Ginger Sesame Dressing'}, 'products': [{'name': 'Toasted Sesame Oil', 'type': 'Sesame Oil'}, {'name': 'Maple Syrup', 'type': 'Maple Syrup'}, {'name': 'Ginger Powder', 'type': 'Ginger Powder'}, {'name': 'Apple Cider Vinegar', 'type': 'Apple Cider Vinegar'}, {'name': 'Coconut Aminos', 'type': 'Soy Sauce Alternative'}, {'name': 'Unsweetened Nut Butter', 'type': 'Unsweetened Nut Butter'}]}
 {'r': {'urls': ['https://www.ambitiouskitchen.com/wprm_print/24776'], 'name': 'The Easiest Chickpea Greek Salad'}, 'products': [{'name': 'Salt', 'type': 'Salt'}, {'name': 'Black Pepper', 'type': 'Black Pepper'}, {'name': 'Feta Cheese', 'type': 'Cheese'}, {'name': 'Extra Virgin Olive Oil', 'type': 'Olive Oil'}, {'name': 'Lemon Juice', 'type': 'Lemon Juice'}, {'name': 'Grape Tomatoes', 'type': 'Tomatoes'}, {'name': 'Red Onion', 'type': 'Red Onion'}, {'name': 'Kalamata Olives', 'type': 'Olives'}, {'name': 'Yellow Bell Pepper', 'type': 'Bell Pepper'}, {'name': 'Red Bell Pepper', 'type': 'Bell Pepper'}, {'name': 'Green Bell Pepper', 'type': 'Bell Pepper'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Cucumber', 'type': 'Cucumber'}, {'name': 'Oregano', 'type': 'Oregano'}, {'name': 'Chickpeas', 'type': 'Chickpeas'}]}
 {'r': {'urls': ['https://seonkyounglongest.com/korean-sesame-noodles/print/46266/'], 'name': 'Korean Sesame Noodles'}, 'products': [{'name': 'Green Onion', 'type': 'Onion'}, {'name': 'Chili Oil', 'type': 'Chili Oil'}, {'urls': ['https://www.google.com/search?q=tsuyu+soup+seasoning+sauce&oq=tsuyu+soup+seasoning+sauce'], 'search': ['tsuyu soup seasoning sauce'], 'name': 'Tsuyu', 'type': 'Tsuyu'}, {'name': 'Red Chilli Peppers', 'type': 'Chilli Pepper'}, {'name': 'Soba Noodles', 'type': 'Soba Noodles'}, {'name': 'Sesame Seeds', 'type': 'Sesame Seeds'}, {'name': 'Green Onion', 'type': 'Onion'}, {'name': 'Toasted Sesame Seeds', 'type': 'Sesame Seeds'}, {'name': 'Toasted Seaweed', 'type': 'Seaweed'}, {'name': 'Korean Wild Sesame Oil', 'type': 'Sesame Oil'}]}
-{'r': {'urls': ['https://hot-thai-kitchen.com/singaporean-laksa/print/7645/', 'https://hot-thai-kitchen.com/singaporean-laksa/', 'https://www.youtube.com/watch?v=cWtnFKFiB_0'], 'name': 'Laksa'}, 'products': [{'name': 'Galangal', 'type': 'Galangal'}, {'urls': ['https://youtu.be/cWtnFKFiB_0?t=458'], 'name': 'Fish cakes', 'type': 'Seafood'}, {'name': 'Garlic', 'type': 'Garlic'}, {'urls': ['https://photos.google.com/photo/AF1QipMJV_m1w-qezTjSZAmu6Vam_PKMR6GICW6TJ883', 'https://www.google.com/search?sca_esv=579651652&sxsrf=AM9HkKlBKUS5rDWtKoKSgxss4PSHC4u0jA:1699211859653&q=bdmp+dried+shrimp&tbm=isch&source=lnms&sa=X&sqi=2&ved=2ahUKEwiUtKu6ya2CAxVFIjQIHXeICOQQ0pQJegQIDRAB&biw=1440&bih=758&dpr=2#imgrc=_WqiWb3wPqLdYM', 'https://www.youtube.com/watch?v=dBSmCwUXZF0'], 'name': 'Dried Shrimp', 'type': 'Seafood'}, {'name': 'Thai chilies', 'type': 'Pepper'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'urls': ['https://thewoksoflife.com/shrimp-paste-sauce/'], 'name': 'Fermented shrimp paste', 'type': 'Fermented shrimp paste'}, {'name': 'Shallots', 'type': 'Shallots'}, {'name': 'Mung Bean Sprouts', 'type': 'Mung Bean Sprouts'}, {'name': 'Tofu puffs', 'type': 'Tofu'}, {'name': 'Lemongrass', 'type': 'Lemongrass'}, {'urls': ['https://www.google.com/search?client=emacs&sca_esv=580758711&sxsrf=AM9HkKmwGL8OAnRZ8-PJqCLp_VU9-SlJfg:1699507479310&q=Candlenuts&tbm=isch&source=lnms&sa=X&ved=2ahUKEwiwsOPclraCAxVVETQIHabkCi0Q0pQJegQIDRAB&biw=1440&bih=754&dpr=2#imgrc=7uHbBToP7aPjSM'], 'name': 'Candlenuts', 'type': 'Candlenuts'}, {'name': 'Granulated Sugar', 'type': 'Granulated Sugar'}, {'name': 'Turmeric', 'type': 'Turmeric'}, {'name': 'Laksa leaves', 'type': 'Herb'}, {'name': 'Mild dried red chilies', 'type': 'Dry Chilies'}, {'name': 'Shrimp', 'type': 'Shrimp'}, {'name': 'Clams', 'type': 'Clams'}, {'name': 'Water', 'type': 'Water'}, {'name': 'Sambal', 'type': 'Condiment'}, {'name': 'Full fat coconut milk', 'type': 'Coconut Milk'}, {'name': 'Dry rice noodles', 'type': 'Rice Noodles'}]}
-{'r': {'urls': ['https://www.youtube.com/watch?v=Ohy1DELF4is', 'https://hot-thai-kitchen.com/pad-see-ew-new/#tasty-recipes-6669-jump-target', 'https://hot-thai-kitchen.com/pad-see-ew-new/print/6669/'], 'name': 'Pad See Ew 2'}, 'products': [{'urls': ['https://www.amazon.com/Kwong-Hung-Seng-Black-Sauce/dp/B081ZC8STN/ref=asc_df_B081ZC8STN/?tag=hyprod-20&linkCode=df0&hvadid=475718186634&hvpos=&hvnetw=g&hvrand=2457386826081397744&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9061293&hvtargid=pla-1187985835872&th=1', 'https://youtu.be/Ohy1DELF4is?t=120'], 'name': 'Kwong Hung Seng Black Soy Sauce', 'details': "Don't get one with blue cap, must be orange cap", 'type': 'Kwong Hung Seng Black Soy Sauce', 'brand': 'Dragon Fly'}, {'urls': ['https://youtu.be/Ohy1DELF4is?t=189', 'https://www.google.com/search?sca_esv=581639650&sxsrf=AM9HkKnNSg_CXeb5rL6VVewE6ryVhODJhg:1699766709342&q=ho+fun+sheet&tbm=isch&source=lnms&sa=X&ved=2ahUKEwi68aS33L2CAxXULzQIHXMzBS4Q0pQJegQICxAB&biw=1440&bih=754&dpr=2#imgrc=eu2r6ySa6xkfhM', 'https://youtu.be/5odVRW9ldzU?t=323'], 'name': 'Wide rice noodles', 'details': 'Ho Fun Sheets', 'type': 'Rice Noodles'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'name': 'Granulated Sugar', 'type': 'Granulated Sugar'}, {'urls': ['https://www.google.com/search?q=Golden+Mountain+Sauce+near+me&tbm=isch&ved=2ahUKEwiSop3T172CAxWmJjQIHUbyAcwQ2-cCegQIABAA&oq=Golden+Mountain+Sauce+near+me&gs_lcp=CgNpbWcQAzIHCAAQGBCABDoECCMQJzoHCAAQigUQQzoFCAAQgAQ6BggAEAcQHjoGCAAQCBAeOgQIABAeOgYIABAFEB5QqwRY8xBggBRoAHAAeACAAT6IAd4DkgEBOZgBAKABAaoBC2d3cy13aXotaW1nwAEB&sclient=img&ei=sVxQZdKFLqbN0PEPxuSH4Aw&bih=754&biw=1440&client=emacs#imgrc=bhSiLxLZI-38DM', 'https://youtu.be/Ohy1DELF4is?t=112', 'https://youtu.be/Ohy1DELF4is?t=86', 'https://www.google.com/search?client=emacs&sca_esv=581632289&sxsrf=AM9HkKlt749Qe7wh-onttGBzKpSH612ZhQ:1699765017124&q=Golden+Mountain+Sauce&tbm=isch&source=lnms&sa=X&ved=2ahUKEwjGirCQ1r2CAxXfHDQIHXE7B-8Q0pQJegQIDhAB&biw=1440&bih=754&dpr=2'], 'name': 'Golden Mountain Sauce', 'type': 'Golden Mountain Sauce'}, {'name': 'Oyster Sauce', 'type': 'Oyster Sauce'}, {'name': 'Eggs', 'type': 'Eggs'}, {'name': 'Chinese Broccoli', 'type': 'Broccoli'}, {'name': 'Vegetable Oil', 'type': 'Vegetable Oil'}, {'name': 'Thai-style Baked Tofu', 'type': 'Tofu'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'White pepper', 'type': 'White pepper'}, {'name': 'Thai Black Soy Sauce', 'type': 'Thai Black Soy Sauce'}]}
+{'r': {'urls': ['https://hot-thai-kitchen.com/singaporean-laksa/print/7645/', 'https://hot-thai-kitchen.com/singaporean-laksa/', 'https://www.youtube.com/watch?v=cWtnFKFiB_0'], 'name': 'Laksa'}, 'products': [{'name': 'Galangal', 'type': 'Galangal'}, {'urls': ['https://youtu.be/cWtnFKFiB_0?t=458'], 'name': 'Fish cakes', 'type': 'Seafood'}, {'name': 'Garlic', 'type': 'Garlic'}, {'urls': ['https://photos.google.com/photo/AF1QipMJV_m1w-qezTjSZAmu6Vam_PKMR6GICW6TJ883', 'https://www.google.com/search?sca_esv=579651652&sxsrf=AM9HkKlBKUS5rDWtKoKSgxss4PSHC4u0jA:1699211859653&q=bdmp+dried+shrimp&tbm=isch&source=lnms&sa=X&sqi=2&ved=2ahUKEwiUtKu6ya2CAxVFIjQIHXeICOQQ0pQJegQIDRAB&biw=1440&bih=758&dpr=2#imgrc=_WqiWb3wPqLdYM', 'https://www.youtube.com/watch?v=dBSmCwUXZF0'], 'name': 'Dried Shrimp', 'type': 'Seafood'}, {'name': 'Thai chilies', 'type': 'Pepper'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'urls': ['https://thewoksoflife.com/shrimp-paste-sauce/'], 'name': 'Fermented shrimp paste', 'type': 'Fermented shrimp paste'}, {'name': 'Shallots', 'type': 'Shallots'}, {'name': 'Mung Bean Sprouts', 'type': 'Mung Bean Sprouts'}, {'name': 'Tofu puffs', 'type': 'Tofu'}, {'name': 'Granulated Sugar', 'type': 'Granulated Sugar'}, {'urls': ['https://www.google.com/search?client=emacs&sca_esv=580758711&sxsrf=AM9HkKmwGL8OAnRZ8-PJqCLp_VU9-SlJfg:1699507479310&q=Candlenuts&tbm=isch&source=lnms&sa=X&ved=2ahUKEwiwsOPclraCAxVVETQIHabkCi0Q0pQJegQIDRAB&biw=1440&bih=754&dpr=2#imgrc=7uHbBToP7aPjSM'], 'name': 'Candlenuts', 'type': 'Candlenuts'}, {'name': 'Clams', 'type': 'Clams'}, {'name': 'Turmeric', 'type': 'Turmeric'}, {'name': 'Laksa leaves', 'type': 'Herb'}, {'name': 'Mild dried red chilies', 'type': 'Dry Chilies'}, {'name': 'Shrimp', 'type': 'Shrimp'}, {'name': 'Lemongrass', 'type': 'Lemongrass'}, {'name': 'Water', 'type': 'Water'}, {'name': 'Sambal', 'type': 'Condiment'}, {'name': 'Full fat coconut milk', 'type': 'Coconut Milk'}, {'name': 'Dry rice noodles', 'type': 'Rice Noodles'}]}
+{'r': {'urls': ['https://www.youtube.com/watch?v=Ohy1DELF4is', 'https://hot-thai-kitchen.com/pad-see-ew-new/#tasty-recipes-6669-jump-target', 'https://hot-thai-kitchen.com/pad-see-ew-new/print/6669/'], 'name': 'Pad See Ew 2'}, 'products': [{'urls': ['https://youtu.be/Ohy1DELF4is?t=189', 'https://www.google.com/search?sca_esv=581639650&sxsrf=AM9HkKnNSg_CXeb5rL6VVewE6ryVhODJhg:1699766709342&q=ho+fun+sheet&tbm=isch&source=lnms&sa=X&ved=2ahUKEwi68aS33L2CAxXULzQIHXMzBS4Q0pQJegQICxAB&biw=1440&bih=754&dpr=2#imgrc=eu2r6ySa6xkfhM', 'https://youtu.be/5odVRW9ldzU?t=323'], 'name': 'Wide rice noodles', 'details': 'Ho Fun Sheets', 'type': 'Rice Noodles'}, {'urls': ['https://www.amazon.com/Kwong-Hung-Seng-Black-Sauce/dp/B081ZC8STN/ref=asc_df_B081ZC8STN/?tag=hyprod-20&linkCode=df0&hvadid=475718186634&hvpos=&hvnetw=g&hvrand=2457386826081397744&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9061293&hvtargid=pla-1187985835872&th=1', 'https://youtu.be/Ohy1DELF4is?t=120'], 'name': 'Kwong Hung Seng Black Soy Sauce', 'details': "Don't get one with blue cap, must be orange cap", 'type': 'Kwong Hung Seng Black Soy Sauce', 'brand': 'Dragon Fly'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'name': 'Granulated Sugar', 'type': 'Granulated Sugar'}, {'urls': ['https://www.google.com/search?q=Golden+Mountain+Sauce+near+me&tbm=isch&ved=2ahUKEwiSop3T172CAxWmJjQIHUbyAcwQ2-cCegQIABAA&oq=Golden+Mountain+Sauce+near+me&gs_lcp=CgNpbWcQAzIHCAAQGBCABDoECCMQJzoHCAAQigUQQzoFCAAQgAQ6BggAEAcQHjoGCAAQCBAeOgQIABAeOgYIABAFEB5QqwRY8xBggBRoAHAAeACAAT6IAd4DkgEBOZgBAKABAaoBC2d3cy13aXotaW1nwAEB&sclient=img&ei=sVxQZdKFLqbN0PEPxuSH4Aw&bih=754&biw=1440&client=emacs#imgrc=bhSiLxLZI-38DM', 'https://youtu.be/Ohy1DELF4is?t=112', 'https://youtu.be/Ohy1DELF4is?t=86', 'https://www.google.com/search?client=emacs&sca_esv=581632289&sxsrf=AM9HkKlt749Qe7wh-onttGBzKpSH612ZhQ:1699765017124&q=Golden+Mountain+Sauce&tbm=isch&source=lnms&sa=X&ved=2ahUKEwjGirCQ1r2CAxXfHDQIHXE7B-8Q0pQJegQIDhAB&biw=1440&bih=754&dpr=2'], 'name': 'Golden Mountain Sauce', 'type': 'Golden Mountain Sauce'}, {'name': 'Oyster Sauce', 'type': 'Oyster Sauce'}, {'name': 'Eggs', 'type': 'Eggs'}, {'name': 'Chinese Broccoli', 'type': 'Broccoli'}, {'name': 'Vegetable Oil', 'type': 'Vegetable Oil'}, {'name': 'Thai-style Baked Tofu', 'type': 'Tofu'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'White pepper', 'type': 'White pepper'}, {'name': 'Thai Black Soy Sauce', 'type': 'Thai Black Soy Sauce'}]}
 {'r': {'urls': ['https://www.foodandwine.com/pad-see-ew-7559639?print'], 'name': 'Pad See Ew'}, 'products': [{'urls': ['https://youtu.be/Ohy1DELF4is?t=189', 'https://www.google.com/search?sca_esv=581639650&sxsrf=AM9HkKnNSg_CXeb5rL6VVewE6ryVhODJhg:1699766709342&q=ho+fun+sheet&tbm=isch&source=lnms&sa=X&ved=2ahUKEwi68aS33L2CAxXULzQIHXMzBS4Q0pQJegQICxAB&biw=1440&bih=754&dpr=2#imgrc=eu2r6ySa6xkfhM', 'https://youtu.be/5odVRW9ldzU?t=323'], 'name': 'Wide rice noodles', 'details': 'Ho Fun Sheets', 'type': 'Rice Noodles'}, {'name': 'Granulated Sugar', 'type': 'Granulated Sugar'}, {'name': 'Dark soy sauce', 'type': 'Soy Sauce'}, {'name': 'Eggs', 'type': 'Eggs'}, {'name': 'Distilled white vinegar', 'type': 'Vinegar'}, {'name': 'Chinese Broccoli', 'type': 'Broccoli'}, {'name': 'White pepper', 'type': 'White pepper'}, {'name': 'Corn Starch', 'type': 'Corn Starch'}, {'urls': ['https://en.wikipedia.org/wiki/Bird%27s_eye_chili', 'https://www.google.com/search?client=emacs&sca_esv=579702589&sxsrf=AM9HkKlqpOqf2K4ex4TTB1e3ix-WBqYAKQ:1699243036206&q=Thai+bird+chiles&tbm=isch&source=lnms&sa=X&ved=2ahUKEwjHnL3Mva6CAxVaCjQIHdJRCxEQ0pQJegQIDxAB&biw=1440&bih=758&dpr=2#imgrc=u6dinAhHDxTfaM'], 'name': 'Thai bird chiles', 'type': 'Chilies'}, {'name': 'Soy sauce', 'type': 'Soy sauce'}, {'name': 'Oyster Sauce', 'type': 'Oyster Sauce'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Skirt steak', 'type': 'Beef'}, {'name': 'Vegetable Oil', 'type': 'Vegetable Oil'}]}
 {'r': {'urls': ['https://www.foodnetwork.com/recipes/pad-thai-7112938?soc=youtube'], 'name': 'Pad Thai'}, 'products': [{'name': 'Shrimp', 'type': 'Shrimp'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'name': 'Dry-Roasted Peanuts', 'type': 'Peanuts'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Granulated Sugar', 'type': 'Granulated Sugar'}, {'urls': ['https://www.amazon.com/8oz-Salted-Turnip-Pack/dp/B01578SHHW'], 'name': 'Salted Turnip', 'type': 'Salted Turnip'}, {'name': 'Lime', 'type': 'Lime'}, {'urls': ['https://www.youtube.com/watch?v=dBSmCwUXZF0'], 'name': 'Garlic Chives', 'type': 'Chives'}, {'name': 'Chicken', 'type': 'Chicken'}, {'name': 'Banana Leaf', 'type': 'Banana Leaf'}, {'name': 'Tamarind Paste', 'type': 'Tamarind Paste'}, {'name': 'Sweet Paprika', 'type': 'Paprika'}, {'name': 'Lime juice', 'type': 'Lime juice'}, {'urls': ['https://photos.google.com/photo/AF1QipMJV_m1w-qezTjSZAmu6Vam_PKMR6GICW6TJ883', 'https://www.google.com/search?sca_esv=579651652&sxsrf=AM9HkKlBKUS5rDWtKoKSgxss4PSHC4u0jA:1699211859653&q=bdmp+dried+shrimp&tbm=isch&source=lnms&sa=X&sqi=2&ved=2ahUKEwiUtKu6ya2CAxVFIjQIHXeICOQQ0pQJegQIDRAB&biw=1440&bih=758&dpr=2#imgrc=_WqiWb3wPqLdYM', 'https://www.youtube.com/watch?v=dBSmCwUXZF0'], 'name': 'Dried Shrimp', 'type': 'Seafood'}, {'urls': ['https://thewoksoflife.com/wp-content/uploads/2020/07/chili-oil-recipe-18.jpg', 'https://www.amazon.com/%E8%80%81%E5%B9%B2%E5%A6%88%E9%A6%99%E8%BE%A3%E8%84%86%E6%B2%B9%E8%BE%A3%E6%A4%92-Spicy-Chili-Crisp-7-41/dp/B07VHKTTR3/ref=asc_df_B07VHKTTR3/?tag=hyprod-20&linkCode=df0&hvadid=642112947349&hvpos=&hvnetw=g&hvrand=12580253979732381700&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9061293&hvtargid=pla-1951193779579&psc=1', 'https://www.google.com/search?sca_esv=580857096&sxsrf=AM9HkKmLh9FDQ0x5jNY12kJCSSbwO6Q3FA:1699539552211&q=thai+and+true+hot+chili&tbm=isch&source=lnms&sa=X&ved=2ahUKEwiJ8KiajreCAxWqAjQIHaMBDKYQ0pQJegQIDBAB&biw=1440&bih=754&dpr=2#imgrc=KDhcVOHe9yNjkM', 'https://photos.google.com/photo/AF1QipMQPtIdU1_m3SkgBWs5RcE2QXFs2OnbbJAdaG9M'], 'name': 'Chili Sauce', 'type': 'Chili Sauce'}, {'name': 'Mung Bean Sprouts', 'type': 'Mung Bean Sprouts'}, {'name': 'Vegetable Oil', 'type': 'Vegetable Oil'}, {'name': 'Eggs', 'type': 'Eggs'}, {'urls': ['https://www.google.com/search?q=Rice%20Sticks'], 'name': 'Rice Sticks', 'type': 'Rice Noodles'}, {'name': 'Rice Wine Vinegar', 'type': 'Rice Wine Vinegar'}, {'name': 'Thai-style Baked Tofu', 'type': 'Tofu'}]}
 {'r': {'urls': ['https://www.youtube.com/watch?v=9ANH-tkkBrg'], 'name': 'Pad Thai'}, 'products': [{'name': 'Shrimp', 'type': 'Shrimp'}, {'name': 'Lime', 'type': 'Lime'}, {'name': 'Grounded Roasted Peanuts', 'type': 'Peanuts'}, {'urls': ['https://photos.google.com/photo/AF1QipMJV_m1w-qezTjSZAmu6Vam_PKMR6GICW6TJ883', 'https://www.google.com/search?sca_esv=579651652&sxsrf=AM9HkKlBKUS5rDWtKoKSgxss4PSHC4u0jA:1699211859653&q=bdmp+dried+shrimp&tbm=isch&source=lnms&sa=X&sqi=2&ved=2ahUKEwiUtKu6ya2CAxVFIjQIHXeICOQQ0pQJegQIDRAB&biw=1440&bih=758&dpr=2#imgrc=_WqiWb3wPqLdYM', 'https://www.youtube.com/watch?v=dBSmCwUXZF0'], 'name': 'Dried Shrimp', 'type': 'Seafood'}, {'name': 'Rice Stick Noodles', 'type': 'Rice Noodles'}, {'urls': ['https://www.youtube.com/watch?v=dBSmCwUXZF0'], 'name': 'Garlic Chives', 'type': 'Chives'}, {'name': 'Palm Sugar', 'type': 'Sugar'}, {'urls': ['https://photos.google.com/photo/AF1QipMTNoAmEBIUBgJiziw2Tl16y2KscVqpjfDGlS-q', 'https://photos.google.com/photo/AF1QipPd47xo0JnbBdfR9pbd6FgvPRvxghQoP_wmWxph'], 'name': 'Tamarind Liquid', 'type': 'Tamarind Liquid'}, {'name': 'Pressed Tofu', 'type': 'Tofu'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Shallots', 'type': 'Shallots'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'urls': ['https://www.google.com/search?q=Sweetened+Radish&tbm=isch&chips=q:sweet+radish,g_1:pad+thai:jagT0YaAv9M%3D&client=emacs&hl=en&sa=X&ved=2ahUKEwj-mLvS56-CAxWKFjQIHTmHCrEQ4lYoAHoECAEQNQ&biw=1440&bih=758#imgrc=8T2ZeEeH0IL-QM'], 'name': 'Sweetened Radish', 'type': 'Sweetened Radish'}, {'name': 'Mung Bean Sprouts', 'type': 'Mung Bean Sprouts'}, {'name': 'Eggs', 'type': 'Eggs'}, {'name': 'Roasted Chili Flakes', 'type': 'Chili Flakes'}]}
-{'r': {'urls': ['https://www.evolvingtable.com/peanut-sauce/'], 'name': 'Peanut Sauce'}, 'products': [{'name': 'Rice vinegar', 'type': 'Vinegar'}, {'name': 'Sriracha', 'type': 'Sriracha'}, {'name': 'Water', 'type': 'Water'}, {'name': 'Adams Peanut Butter', 'type': 'Peanut Butter'}, {'name': 'Soy sauce', 'type': 'Soy sauce'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Brown Sugar', 'type': 'Sugar'}]}
+{'r': {'urls': ['https://www.evolvingtable.com/peanut-sauce/'], 'name': 'Peanut Sauce'}, 'products': [{'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Sriracha', 'type': 'Sriracha'}, {'name': 'Water', 'type': 'Water'}, {'name': 'Adams Peanut Butter', 'type': 'Peanut Butter'}, {'name': 'Soy sauce', 'type': 'Soy sauce'}, {'name': 'Rice vinegar', 'type': 'Vinegar'}, {'name': 'Brown Sugar', 'type': 'Sugar'}]}
 {'r': {'urls': ['https://www.hwcmagazine.com/wprm_print/13492', 'https://youtu.be/Ohy1DELF4is?t=482', 'https://www.google.com/search?sca_esv=581639650&sxsrf=AM9HkKkIVmtaHAvtXzMyyTNYWk6-7CtF8g:1699767680259&q=white+vinegar+thai+chilis&tbm=isch&source=lnms&sa=X&ved=2ahUKEwjd-qCG4L2CAxWaLzQIHUzuAtoQ0pQJegQICBAB&biw=1440&bih=754&dpr=2#imgrc=m_93K5cwN3hNnM', 'https://www.hwcmagazine.com/recipe/prik-nam-pla/'], 'name': 'Prik Nam Pla'}, 'products': [{'name': 'Lime juice', 'type': 'Lime juice'}, {'urls': ['https://www.youtube.com/watch?v=dBSmCwUXZF0'], 'name': 'Garlic Chives', 'type': 'Chives'}, {'name': 'Fish sauce', 'type': 'Fish Sauce'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Brown Sugar', 'type': 'Sugar'}, {'name': 'Cilantro', 'type': 'Cilantro'}, {'urls': ['https://en.wikipedia.org/wiki/Bird%27s_eye_chili', 'https://www.google.com/search?client=emacs&sca_esv=579702589&sxsrf=AM9HkKlqpOqf2K4ex4TTB1e3ix-WBqYAKQ:1699243036206&q=Thai+bird+chiles&tbm=isch&source=lnms&sa=X&ved=2ahUKEwjHnL3Mva6CAxVaCjQIHdJRCxEQ0pQJegQIDxAB&biw=1440&bih=758&dpr=2#imgrc=u6dinAhHDxTfaM'], 'name': 'Thai bird chiles', 'type': 'Chilies'}]}
 {'r': {'urls': ['https://hot-thai-kitchen.com/red-curry-paste/print/6752/'], 'name': 'Vegan Thai Red Curry'}, 'products': [{'name': 'Cumin seeds', 'type': 'Cumin '}, {'urls': ['https://www.google.com/search?client=emacs&sca_esv=579520937&sxsrf=AM9HkKlUrnbTZeiuHkGuxjA6wsla9_IkfQ:1699140927441&q=Makrut+Lime&tbm=isch&source=lnms&sa=X&ved=2ahUKEwir5pybwauCAxXfLTQIHYj1DqQQ0pQJegQICxAB&biw=1440&bih=758&dpr=2'], 'name': 'Makrut lime zest', 'type': 'Makrut Lime'}, {'name': 'Shallots', 'type': 'Shallots'}, {'name': 'Coriander seeds', 'type': 'Spice'}, {'name': 'Spicy dried red chilies', 'type': 'Dry Chilies'}, {'name': 'Cilantro roots', 'type': 'Cilantro'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Mild dried red chilies', 'type': 'Dry Chilies'}, {'name': 'Galangal', 'type': 'Galangal'}, {'name': 'Lemongrass', 'type': 'Lemongrass'}, {'name': 'White Peppercorns', 'type': 'White Peppercorns'}, {'name': 'Shrimp Paste', 'type': 'Shrimp Paste'}]}
-{'r': {'urls': ['https://www.seriouseats.com/the-best-roast-potatoes-ever-recipe'], 'name': 'The Best Crispy Roast Potatoes Ever'}, 'products': [{'name': 'Parsley', 'type': 'Parsley'}, {'name': 'Rosemary', 'type': 'Rosemary'}, {'name': 'Baking soda', 'type': 'Baking Soda'}, {'name': 'Extra Virgin Olive Oil', 'type': 'Olive Oil'}, {'name': 'Russet Potatoes', 'type': 'Russet Potatoe'}, {'name': 'Garlic', 'type': 'Garlic'}]}
 {'r': {'urls': ['https://www.loveandlemons.com/roasted-broccoli/'], 'name': 'Roasted Broccoli'}, 'products': [{'name': 'Extra Virgin Olive Oil', 'type': 'Olive Oil'}, {'name': 'Morton Salt Kosher Coarse', 'type': 'Kosher Salt'}, {'name': 'Black Pepper', 'type': 'Black Pepper'}, {'name': 'Broccoli', 'type': 'Broccoli'}, {'name': 'Spicy Red Pepper Flakes', 'type': 'Spicy Red Pepper Flakes'}]}
+{'r': {'urls': ['https://www.seriouseats.com/the-best-roast-potatoes-ever-recipe'], 'name': 'The Best Crispy Roast Potatoes Ever'}, 'products': [{'name': 'Parsley', 'type': 'Parsley'}, {'name': 'Rosemary', 'type': 'Rosemary'}, {'name': 'Baking soda', 'type': 'Baking Soda'}, {'name': 'Extra Virgin Olive Oil', 'type': 'Olive Oil'}, {'name': 'Russet Potatoes', 'type': 'Russet Potatoe'}, {'name': 'Garlic', 'type': 'Garlic'}]}
 {'r': {'urls': ['https://www.simplyrecipes.com/recipes/tomatillo_salsa_verde/?print'], 'name': 'Tomatillo Salsa Verde'}, 'products': [{'name': 'Tomatillos', 'type': 'Tomatillos'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Lime juice', 'type': 'Lime juice'}, {'name': 'Cilantro', 'type': 'Cilantro'}, {'name': 'Salt', 'type': 'Salt'}, {'name': 'White Onion', 'type': 'Onion'}, {'name': 'Jalapeno Pepper', 'type': 'Pepper'}]}
 {'r': {'urls': ['https://cookieandkate.com/sugar-snap-pea-and-carrot-soba-noodles/print/23556/'], 'name': 'Sugar Snap Pea and Carrot Soba Noodles'}, 'products': [{'name': 'Bell Pepper', 'type': 'Bell Pepper'}, {'name': 'Soba Noodles', 'type': 'Soba Noodles'}, {'name': 'Sweet White Miso', 'type': 'Miso'}, {'name': 'Tamari', 'type': 'Tamari'}, {'name': 'Peanut Oil', 'type': 'Oil'}, {'name': 'Sriracha', 'type': 'Sriracha'}, {'name': 'Honey', 'type': 'Honey'}, {'name': 'Carrots', 'type': 'Carrots'}, {'name': 'Soba Noodles', 'type': 'Soba Noodles'}, {'name': 'Lime', 'type': 'Lime'}, {'name': 'Soba Noodles', 'type': 'Soba Noodles'}, {'name': 'Toasted Sesame Oil', 'type': 'Sesame Oil'}, {'name': 'Tamari', 'type': 'Tamari'}, {'name': 'Edamame', 'type': 'Edamame'}, {'name': 'Cilantro', 'type': 'Cilantro'}, {'name': 'Bell Pepper', 'type': 'Bell Pepper'}, {'name': 'Sesame Seeds', 'type': 'Sesame Seeds'}, {'name': 'Tamari', 'type': 'Tamari'}, {'name': 'Edamame', 'type': 'Edamame'}, {'name': 'Sugar Snap Peas', 'type': 'Sugar Snap Peas'}, {'name': 'Ginger', 'type': 'Ginger'}, {'name': 'Sesame Seeds', 'type': 'Sesame Seeds'}, {'name': 'Cilantro', 'type': 'Cilantro'}, {'name': 'Soba Noodles', 'type': 'Soba Noodles'}, {'name': 'Lime', 'type': 'Lime'}, {'name': 'Sugar Snap Peas', 'type': 'Sugar Snap Peas'}, {'name': 'Tamari', 'type': 'Tamari'}]}
 {'r': {'urls': ['https://youtu.be/HJPRPEJY2WM?t=265', 'https://natashaskitchen.com/fresh-spring-rolls/', 'https://natashaskitchen.com/wprm_print/72895', 'https://www.youtube.com/shorts/lECNJqSXk64'], 'name': 'Fresh Spring Rolls'}, 'products': [{'name': 'Romaine Lettuce', 'type': 'Romaine'}, {'name': 'Dry rice noodles', 'type': 'Rice Noodles'}, {'name': 'Carrots', 'type': 'Carrots'}, {'name': 'Toasted Sesame Oil', 'type': 'Sesame Oil'}, {'name': 'Rice Wine Vinegar', 'type': 'Rice Wine Vinegar'}, {'urls': ['https://www.google.com/search?client=emacs&sca_esv=581269367&sxsrf=AM9HkKkz3fh-g6VKFw7SQLjSbKO7bO0n2g:1699640340645&q=Chili+Garlic+Sauce&tbm=isch&source=lnms&sa=X&ved=2ahUKEwjB3P_VhbqCAxW9FjQIHQ6rDewQ0pQJegQIDRAB&biw=1440&bih=754&dpr=2'], 'name': 'Huy Fong Chili Garlic Sauce', 'type': 'Chili Garlic Sauce'}, {'name': 'Lime juice', 'type': 'Lime juice'}, {'name': 'Round Rice Paper Sheets', 'type': 'Round Rice Paper Sheets'}, {'name': 'Granulated Sugar', 'type': 'Granulated Sugar'}, {'name': 'Three Crabs Fish Sauce', 'type': 'Three Crabs Fish Sauce'}, {'name': 'Water', 'type': 'Water'}, {'name': 'Cucumber', 'type': 'Cucumber'}, {'name': 'Garlic', 'type': 'Garlic'}, {'name': 'Shredded Carrot', 'type': 'Shredded Carrot'}, {'name': 'Frozen Shrimp', 'type': 'Shrimp'}, {'name': 'Cilantro', 'type': 'Cilantro'}]}
@@ -1823,7 +1823,7 @@ ORDER BY toLower(recipe.name);
 Results:
 
 ``` example
-{'Recipe': 'Chicken Thai Red Curry', 'RecipeURLs': ['https://theflavoursofkitchen.com/wprm_print/104534'], 'AllIngredients': ['Full fat coconut milk', 'Light Brown Sugar', 'Cooking Oil', 'Onion', 'Ginger', 'Red Bell Pepper', 'Garlic', 'Thai basil', 'Boneless Chicken Thighs', 'Fish sauce', 'Chicken Stock or Water', 'Lemongrass', 'Zucchini', 'Red Curry Paste', 'Lemon Juice']}
+{'Recipe': 'Chicken Thai Red Curry', 'RecipeURLs': ['https://theflavoursofkitchen.com/wprm_print/104534'], 'AllIngredients': ['Full fat coconut milk', 'Light Brown Sugar', 'Cooking Oil', 'Chicken Stock or Water', 'Ginger', 'Zucchini', 'Garlic', 'Thai basil', 'Boneless Chicken Thighs', 'Fish sauce', 'Onion', 'Lemongrass', 'Red Bell Pepper', 'Red Curry Paste', 'Lemon Juice']}
 {'Recipe': 'Thai Eggplant Recipe', 'RecipeURLs': ['https://www.myfoodchannel.com/thai-eggplant-recipe/', 'https://www.youtube.com/watch?v=7a0IAC7pCgA'], 'AllIngredients': ['Coriander powder', 'Red Bell Pepper', 'Lime juice', 'Salt', 'Ginger', 'Lemongrass', 'Thai basil', 'Onion', 'Garlic cloves', 'Full fat coconut milk', 'Chili powder', 'Coconut Oil', 'Chicken stock', 'Thai Eggplant', 'Thai chilies', 'Turmeric']}
 {'Recipe': 'The Best Green Curry', 'RecipeURLs': ['https://www.joshuaweissman.com/post/easy-authentic-thai-green-curry', 'https://photos.google.com/photo/AF1QipMJV_m1w-qezTjSZAmu6Vam_PKMR6GICW6TJ883'], 'AllIngredients': ['Garlic cloves', 'Thai basil', 'White Peppercorns', 'Kaffir lime leaves', 'Galangal', 'Thai Eggplant', 'Chicken Thighs', 'Fried shallots', 'Serranos', 'Lime', 'Kaffir Lime', 'Lemongrass', 'Shallots', 'Cilantro', 'Palm Sugar', 'Fish sauce', 'Thai shrimp paste', 'Cumin seeds', 'Coriander seeds', 'Full fat coconut milk', 'Chicken stock', 'Snow peas']}
 ```
@@ -1927,7 +1927,7 @@ Results:
 We're hoping for empty result list. If the result set is empty, then
 I've already cleaned up the data.
 
-# find stores for recipe ingredients: explore purchases
+# find stores for recipe ingredients
 
 If I were to make Crispy Baked Tofu, Roasted Broccoli and Fresh Spring
 Rolls, then where would I need to go to get the ingredients?
@@ -1935,49 +1935,49 @@ Rolls, then where would I need to go to get the ingredients?
 ``` example
 MATCH (store:Store)-[:PURCHASE_AT]-(purchasedProduct:Product)-[:CONTAINS]-(recipe:Recipe)
 WHERE recipe.name IN ['Crispy Baked Tofu', 'Roasted Broccoli', 'Fresh Spring Rolls']
-WITH DISTINCT recipe.name AS Recipe, store.name AS Store, purchasedProduct.name AS Product
-RETURN Recipe, Store, Product
-ORDER BY toLower(Store);
+WITH DISTINCT recipe.name AS RecipeName, store.name AS StoreName, purchasedProduct.name AS ProductName
+RETURN RecipeName, StoreName, ProductName
+ORDER BY toLower(StoreName);
 ```
 
 Results:
 
 ``` example
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'dummy place holder', 'Product': 'Water'}
-{'Recipe': 'Roasted Broccoli', 'Store': 'Grocery Outlet', 'Product': 'Extra Virgin Olive Oil'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'Grocery Outlet', 'Product': 'Frozen Shrimp'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'M2M Mart', 'Product': 'Dry rice noodles'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'M2M Mart', 'Product': 'Toasted Sesame Oil'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'M2M Mart', 'Product': 'Huy Fong Chili Garlic Sauce'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'M2M Mart', 'Product': 'Round Rice Paper Sheets'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'M2M Mart', 'Product': 'Three Crabs Fish Sauce'}
-{'Recipe': 'Crispy Baked Tofu', 'Store': 'Madison Co-op', 'Product': 'Black Pepper'}
-{'Recipe': 'Crispy Baked Tofu', 'Store': 'Madison Co-op', 'Product': 'Garlic Powder'}
-{'Recipe': 'Roasted Broccoli', 'Store': 'Madison Co-op', 'Product': 'Black Pepper'}
-{'Recipe': 'Roasted Broccoli', 'Store': 'Madison Co-op', 'Product': 'Spicy Red Pepper Flakes'}
-{'Recipe': 'Crispy Baked Tofu', 'Store': 'PCC', 'Product': 'Tamari'}
-{'Recipe': 'Crispy Baked Tofu', 'Store': 'PCC', 'Product': 'Avocado Oil'}
-{'Recipe': 'Roasted Broccoli', 'Store': 'PCC', 'Product': 'Extra Virgin Olive Oil'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'QFC', 'Product': 'Huy Fong Chili Garlic Sauce'}
-{'Recipe': 'Crispy Baked Tofu', 'Store': 'Safeway', 'Product': 'Tamari'}
-{'Recipe': 'Crispy Baked Tofu', 'Store': 'Safeway', 'Product': 'Extra Firm Tofu'}
-{'Recipe': 'Crispy Baked Tofu', 'Store': 'Safeway', 'Product': 'Corn Starch'}
-{'Recipe': 'Crispy Baked Tofu', 'Store': 'Safeway', 'Product': 'Morton Salt Kosher Coarse'}
-{'Recipe': 'Roasted Broccoli', 'Store': 'Safeway', 'Product': 'Morton Salt Kosher Coarse'}
-{'Recipe': 'Roasted Broccoli', 'Store': 'Safeway', 'Product': 'Broccoli'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'Safeway', 'Product': 'Romaine Lettuce'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'Safeway', 'Product': 'Carrots'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'Safeway', 'Product': 'Granulated Sugar'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'Safeway', 'Product': 'Cucumber'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'Safeway', 'Product': 'Shredded Carrot'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'Safeway', 'Product': 'Cilantro'}
-{'Recipe': 'Crispy Baked Tofu', 'Store': "Trader Joe's", 'Product': 'Extra Firm Tofu'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': "Trader Joe's", 'Product': 'Garlic'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'Uwajimaya', 'Product': 'Dry rice noodles'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'Uwajimaya', 'Product': 'Rice Wine Vinegar'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'Uwajimaya', 'Product': 'Three Crabs Fish Sauce'}
-{'Recipe': 'Crispy Baked Tofu', 'Store': 'Whole Foods', 'Product': 'Avocado Oil'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'Whole Foods', 'Product': 'Toasted Sesame Oil'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'Whole Foods', 'Product': 'Lime juice'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'Whole Foods', 'Product': 'Frozen Shrimp'}
+{'RecipeName': 'Fresh Spring Rolls', 'StoreName': 'dummy place holder', 'ProductName': 'Water'}
+{'RecipeName': 'Roasted Broccoli', 'StoreName': 'Grocery Outlet', 'ProductName': 'Extra Virgin Olive Oil'}
+{'RecipeName': 'Fresh Spring Rolls', 'StoreName': 'Grocery Outlet', 'ProductName': 'Frozen Shrimp'}
+{'RecipeName': 'Fresh Spring Rolls', 'StoreName': 'M2M Mart', 'ProductName': 'Dry rice noodles'}
+{'RecipeName': 'Fresh Spring Rolls', 'StoreName': 'M2M Mart', 'ProductName': 'Toasted Sesame Oil'}
+{'RecipeName': 'Fresh Spring Rolls', 'StoreName': 'M2M Mart', 'ProductName': 'Huy Fong Chili Garlic Sauce'}
+{'RecipeName': 'Fresh Spring Rolls', 'StoreName': 'M2M Mart', 'ProductName': 'Round Rice Paper Sheets'}
+{'RecipeName': 'Fresh Spring Rolls', 'StoreName': 'M2M Mart', 'ProductName': 'Three Crabs Fish Sauce'}
+{'RecipeName': 'Crispy Baked Tofu', 'StoreName': 'Madison Co-op', 'ProductName': 'Black Pepper'}
+{'RecipeName': 'Crispy Baked Tofu', 'StoreName': 'Madison Co-op', 'ProductName': 'Garlic Powder'}
+{'RecipeName': 'Roasted Broccoli', 'StoreName': 'Madison Co-op', 'ProductName': 'Black Pepper'}
+{'RecipeName': 'Roasted Broccoli', 'StoreName': 'Madison Co-op', 'ProductName': 'Spicy Red Pepper Flakes'}
+{'RecipeName': 'Crispy Baked Tofu', 'StoreName': 'PCC', 'ProductName': 'Tamari'}
+{'RecipeName': 'Crispy Baked Tofu', 'StoreName': 'PCC', 'ProductName': 'Avocado Oil'}
+{'RecipeName': 'Roasted Broccoli', 'StoreName': 'PCC', 'ProductName': 'Extra Virgin Olive Oil'}
+{'RecipeName': 'Fresh Spring Rolls', 'StoreName': 'QFC', 'ProductName': 'Huy Fong Chili Garlic Sauce'}
+{'RecipeName': 'Crispy Baked Tofu', 'StoreName': 'Safeway', 'ProductName': 'Tamari'}
+{'RecipeName': 'Crispy Baked Tofu', 'StoreName': 'Safeway', 'ProductName': 'Extra Firm Tofu'}
+{'RecipeName': 'Crispy Baked Tofu', 'StoreName': 'Safeway', 'ProductName': 'Corn Starch'}
+{'RecipeName': 'Crispy Baked Tofu', 'StoreName': 'Safeway', 'ProductName': 'Morton Salt Kosher Coarse'}
+{'RecipeName': 'Roasted Broccoli', 'StoreName': 'Safeway', 'ProductName': 'Morton Salt Kosher Coarse'}
+{'RecipeName': 'Roasted Broccoli', 'StoreName': 'Safeway', 'ProductName': 'Broccoli'}
+{'RecipeName': 'Fresh Spring Rolls', 'StoreName': 'Safeway', 'ProductName': 'Romaine Lettuce'}
+{'RecipeName': 'Fresh Spring Rolls', 'StoreName': 'Safeway', 'ProductName': 'Carrots'}
+{'RecipeName': 'Fresh Spring Rolls', 'StoreName': 'Safeway', 'ProductName': 'Granulated Sugar'}
+{'RecipeName': 'Fresh Spring Rolls', 'StoreName': 'Safeway', 'ProductName': 'Cucumber'}
+{'RecipeName': 'Fresh Spring Rolls', 'StoreName': 'Safeway', 'ProductName': 'Shredded Carrot'}
+{'RecipeName': 'Fresh Spring Rolls', 'StoreName': 'Safeway', 'ProductName': 'Cilantro'}
+{'RecipeName': 'Crispy Baked Tofu', 'StoreName': "Trader Joe's", 'ProductName': 'Extra Firm Tofu'}
+{'RecipeName': 'Fresh Spring Rolls', 'StoreName': "Trader Joe's", 'ProductName': 'Garlic'}
+{'RecipeName': 'Fresh Spring Rolls', 'StoreName': 'Uwajimaya', 'ProductName': 'Dry rice noodles'}
+{'RecipeName': 'Fresh Spring Rolls', 'StoreName': 'Uwajimaya', 'ProductName': 'Rice Wine Vinegar'}
+{'RecipeName': 'Fresh Spring Rolls', 'StoreName': 'Uwajimaya', 'ProductName': 'Three Crabs Fish Sauce'}
+{'RecipeName': 'Crispy Baked Tofu', 'StoreName': 'Whole Foods', 'ProductName': 'Avocado Oil'}
+{'RecipeName': 'Fresh Spring Rolls', 'StoreName': 'Whole Foods', 'ProductName': 'Toasted Sesame Oil'}
+{'RecipeName': 'Fresh Spring Rolls', 'StoreName': 'Whole Foods', 'ProductName': 'Lime juice'}
+{'RecipeName': 'Fresh Spring Rolls', 'StoreName': 'Whole Foods', 'ProductName': 'Frozen Shrimp'}
 ```
