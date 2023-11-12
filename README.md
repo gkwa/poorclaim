@@ -448,9 +448,9 @@ Results:
 {'RecipeName': 'Chicken Thai Red Curry', 'StoreName': 'Madison Co-op', 'Ingredients': ['Boneless Chicken Thighs']}
 {'RecipeName': 'Chicken Thai Red Curry', 'StoreName': 'Hau Hau Market', 'Ingredients': ['Fish sauce']}
 {'RecipeName': 'Chicken Thai Red Curry', 'StoreName': 'Whole Foods', 'Ingredients': ['Lemon Juice']}
-{'RecipeName': 'Pad Thai', 'StoreName': 'Hau Hau Market', 'Ingredients': ['Shrimp', 'Fish sauce', 'Garlic Chives', 'Mung Bean Sprouts', 'Rice Sticks', 'Thai-style Baked Tofu', 'Rice Stick Noodles', 'Roasted Chili Flakes']}
+{'RecipeName': 'Pad Thai', 'StoreName': 'Hau Hau Market', 'Ingredients': ['Shrimp', 'Fish sauce', 'Garlic Chives', 'Mung Bean Sprouts', 'Rice Sticks', 'Thai-style Baked Tofu', 'Rice Stick Noodles', 'Pressed Tofu', 'Roasted Chili Flakes']}
 {'RecipeName': 'Pad Thai', 'StoreName': 'PCC', 'Ingredients': ['Dry-Roasted Peanuts', 'Sweet Paprika', 'Grounded Roasted Peanuts']}
-{'RecipeName': 'Pad Thai', 'StoreName': "Trader Joe's", 'Ingredients': ['Garlic', 'Lime', 'Chicken', 'Eggs']}
+{'RecipeName': 'Pad Thai', 'StoreName': "Trader Joe's", 'Ingredients': ['Garlic', 'Lime', 'Chicken', 'Eggs', 'Pressed Tofu']}
 {'RecipeName': 'Pad Thai', 'StoreName': 'Safeway', 'Ingredients': ['Granulated Sugar', 'Dried Shrimp', 'Mung Bean Sprouts', 'Vegetable Oil', 'Shallots']}
 {'RecipeName': 'Pad Thai', 'StoreName': 'Viet-Wah Asian Food Market', 'Ingredients': ['Banana Leaf']}
 {'RecipeName': 'Pad Thai', 'StoreName': 'Whole Foods', 'Ingredients': ['Lime juice']}
@@ -487,6 +487,7 @@ Results:
 {'RecipeName': 'Yellow Curry with Chicken', 'StoreName': "Trader Joe's", 'Ingredients': ['Chicken', 'Garlic']}
 {'RecipeName': 'Yellow Curry with Chicken', 'StoreName': 'Safeway', 'Ingredients': ['Shallots', 'Potatoes', 'Full fat coconut milk', 'Ginger', 'Lemongrass', 'Yellow Curry Paste']}
 {'RecipeName': 'Yellow Curry with Chicken', 'StoreName': 'Hau Hau Market', 'Ingredients': ['Fish sauce']}
+{'RecipeName': 'Yellow Curry with Chicken', 'StoreName': 'M2M Mart', 'Ingredients': ['Yellow Curry Paste']}
 {'RecipeName': 'Yellow Curry with Chicken', 'StoreName': 'Uwajimaya', 'Ingredients': ['Galangal']}
 ```
 
@@ -759,16 +760,16 @@ ORDER BY RAND();
 Results:
 
 ``` example
-{'ProductName': 'Aroy-D Coconut Milk'}
-{'ProductName': 'Coffee - BB - PLU 8875 (less yums than 8863)'}
-{'ProductName': 'Kikkoman Japanese Noodle Soup Base (Hon Tsuyu)'}
-{'ProductName': 'Boullion - Vegetable Broth Powdered'}
-{'ProductName': 'Boullion - Beef'}
-{'ProductName': 'Semi-pearled Farro'}
-{'ProductName': 'Oil-packed sun-dried tomatoes'}
+{'ProductName': 'Signature Select Garbanzo Beans - 15 Oz'}
+{'ProductName': 'Sweet BBQ Pre-Marinated Super Firm Baked Tofu'}
 {'ProductName': 'Coffee - MTM - PLU 1859 - Fidalgo Bay Organic Fair Trade French Roast - Extra Dark'}
-{'ProductName': "Cornstarch Baby Powder (not Johnson's, they're baddies)"}
-{'ProductName': 'Turkey (whole)'}
+{'ProductName': 'Chicken Broth - 32 Oz'}
+{'ProductName': 'Coffee / MTM / PLU 8368 / Decaf / Decaf / Decaf Kind Unknown'}
+{'ProductName': 'Strong Roots Kale & Quinoa Burger'}
+{'ProductName': "Coffee / BB's 1st preference / BB / PLU 8863 / Equal Exchange / Peruvian"}
+{'ProductName': 'Coffee - T - Decaf'}
+{'ProductName': 'Coconut Milk - 13.5 oz can'}
+{'ProductName': 'Black Beans (15 oz can)'}
 # ...truncated to 10 for brevity
 ```
 
@@ -1022,12 +1023,12 @@ Results:
 ``` example
 {'ProductName': 'Gochugaru', 'StoreName': 'Amazon', 'Type': 'Gochugaru'}
 {'ProductName': 'Crest', 'StoreName': 'Bartell', 'Type': 'Toothpaste'}
-{'ProductName': 'Marketspice Tea Decaf - 2 Oz for Mommy', 'StoreName': 'Bartell', 'Type': 'Marketspice Tea'}
-{'ProductName': 'ACT Restoring Mouthwash', 'StoreName': 'Bartell', 'Type': 'Mouthwash'}
 {'ProductName': 'Cleanser - Bon Ami', 'StoreName': 'Bartell', 'Type': 'Cleanser'}
+{'ProductName': 'ACT Restoring Mouthwash', 'StoreName': 'Bartell', 'Type': 'Mouthwash'}
 {'ProductName': 'Sonicare soft bristles', 'StoreName': 'Bartell', 'Type': 'Sonicare Bristles'}
+{'ProductName': 'Marketspice Tea Decaf - 2 Oz for Mommy', 'StoreName': 'Bartell', 'Type': 'Marketspice Tea'}
+{'ProductName': 'Tuna Steak', 'StoreName': 'dummy place holder', 'Type': 'Seafood'}
 {'ProductName': 'Pillsbury Brownie Mix', 'StoreName': 'dummy place holder', 'Type': 'Baking Mix'}
-{'ProductName': 'Canned Salmon', 'StoreName': 'dummy place holder', 'Type': 'Salmon'}
 {'ProductName': 'Dino Kale (ugly spinach)', 'StoreName': 'dummy place holder', 'Type': 'Kale'}
 {'ProductName': 'Clams', 'StoreName': 'dummy place holder', 'Type': 'Clams'}
 # ...truncated to 10 for brevity
@@ -1062,21 +1063,16 @@ Results:
 {'ProductName': 'Fish Sauce'}
 {'ProductName': 'Fresno chilies'}
 {'ProductName': 'Fried shallots'}
-{'ProductName': 'Grape Tomatoes'}
-{'ProductName': 'Green Bell Pepper'}
 {'ProductName': 'Ice-cold water'}
 {'ProductName': 'Kaffir Lime'}
 {'ProductName': 'Kalamata Olives'}
 {'ProductName': 'Korean Wild Sesame Oil'}
 {'ProductName': 'Laksa leaves'}
-{'ProductName': 'Mae Ploy Red Curry Paste'}
 {'ProductName': 'Makrut lime zest'}
 {'ProductName': 'Mild dried red chilies'}
-{'ProductName': 'Mirin'}
 {'ProductName': 'Miso'}
 {'ProductName': "Newman's Own Sesame Ginger Dressing"}
 {'ProductName': 'Oil-packed sun-dried tomatoes'}
-{'ProductName': 'Pressed Tofu'}
 {'ProductName': 'Red Curry Paste'}
 {'ProductName': 'Rice vinegar'}
 {'ProductName': 'Rosemary'}
@@ -1103,8 +1099,9 @@ Results:
 # dammit this is tedious, how much cleanup remains?
 
 When I check out where to buy stuff, I find lots of things I have no
-clue where to get. Count how many of those mystery product locations I
-need to figure out.
+clue where to get.
+
+Count how many of those mystery product locations I need to figure out.
 
 ``` example
 MATCH (p:Product)
@@ -1115,7 +1112,7 @@ RETURN COUNT(p) AS ProductCount;
 Results:
 
 ``` example
-{'ProductCount': 50}
+{'ProductCount': 45}
 ```
 
 # find purchasing info for 10 products
@@ -1180,16 +1177,16 @@ ORDER BY ProductName;
 Results:
 
 ``` example
+{'ProductName': 'Candlenuts'}
+{'ProductName': 'Coconut Aminos'}
+{'ProductName': 'Cooking Oil'}
 {'ProductName': 'Dashi'}
-{'ProductName': 'Green Bell Pepper'}
-{'ProductName': 'Kaffir Lime'}
-{'ProductName': 'Kalamata Olives'}
-{'ProductName': 'Mirin'}
-{'ProductName': 'Red Curry Paste'}
+{'ProductName': 'Fish Sauce'}
+{'ProductName': 'Korean Wild Sesame Oil'}
 {'ProductName': 'Salt and pepper'}
-{'ProductName': 'Sambal'}
-{'ProductName': 'Spicy dried red chilies'}
+{'ProductName': 'Salted Turnip'}
 {'ProductName': 'Thai shrimp paste'}
+{'ProductName': 'Toasted sesame flakes'}
 ```
 
 # BAD: list the entity type the property is assocted with
@@ -1421,12 +1418,12 @@ Results:
 {'Ingredients': ['Water'], 'Stores': ['dummy place holder']}
 {'Ingredients': ['Shrimp'], 'Stores': ['Hau Hau Market']}
 {'Ingredients': ['Rice vermicelli'], 'Stores': ["Lam's Seafood Asian Market"]}
-{'Ingredients': ['Mint leaves'], 'Stores': ['M2M Mart', 'Uwajimaya']}
 {'Ingredients': ['Dry-Roasted Peanuts'], 'Stores': ['PCC']}
 {'Ingredients': ['Lee Kum Kee Sauce Hoisin'], 'Stores': ['QFC']}
 {'Ingredients': ['Ginger', 'Adams Peanut Butter', 'Romaine Lettuce', 'Shallots', 'Vegetable Oil'], 'Stores': ['Safeway']}
 {'Ingredients': ['Garlic'], 'Stores': ["Trader Joe's"]}
 {'Ingredients': ['Rice paper'], 'Stores': ['Uwajimaya']}
+{'Ingredients': ['Mint leaves'], 'Stores': ['Uwajimaya', 'M2M Mart']}
 ```
 
 # find stores for Chicken Teriyaki ingredients
@@ -1443,15 +1440,15 @@ RETURN s.name AS StoreName, COLLECT(DISTINCT p.name) AS Ingredients;
 Results:
 
 ``` example
-{'StoreName': 'Hau Hau Market', 'Ingredients': ['Thai-style Baked Tofu']}
 {'StoreName': 'Thanh Son Tofu', 'Ingredients': ['Thai-style Baked Tofu']}
+{'StoreName': 'Hau Hau Market', 'Ingredients': ['Thai-style Baked Tofu']}
 {'StoreName': 'Safeway', 'Ingredients': ['Ginger', 'Corn Starch', 'Broccolini', 'Rice Wine Vinegar - Kikkoman Mirin', 'Soy sauce']}
 {'StoreName': 'Uwajimaya', 'Ingredients': ['Rice']}
 {'StoreName': 'dummy place holder', 'Ingredients': ['Water']}
 {'StoreName': 'Madison Co-op', 'Ingredients': ['Chicken Thighs']}
 {'StoreName': "Trader Joe's", 'Ingredients': ['Red Onion', 'Garlic', 'Red Pepper']}
-{'StoreName': 'PCC', 'Ingredients': ['Sesame Seeds']}
 {'StoreName': 'Naked Grocer', 'Ingredients': ['Sesame Seeds']}
+{'StoreName': 'PCC', 'Ingredients': ['Sesame Seeds']}
 {'StoreName': 'M2M Mart', 'Ingredients': ['Sake Wine']}
 ```
 
@@ -1478,16 +1475,16 @@ Results:
 {'Ingredients': ['Sawtooth Coriander'], 'Stores': []}
 {'Ingredients': ['Water'], 'Stores': ['dummy place holder']}
 {'Ingredients': ['Fish sauce', 'Shrimp'], 'Stores': ['Hau Hau Market']}
-{'Ingredients': ['Kaffir lime leaves'], 'Stores': ['Hau Hau Market', 'Uwajimaya']}
 {'Ingredients': ['Rice vermicelli'], 'Stores': ["Lam's Seafood Asian Market"]}
 {'Ingredients': ['Mae Ploy Thai Chili Paste in Oil'], 'Stores': ['M2M Mart']}
-{'Ingredients': ['Mint leaves'], 'Stores': ['M2M Mart', 'Uwajimaya']}
 {'Ingredients': ['Jasmine Rice', 'Dry-Roasted Peanuts'], 'Stores': ['PCC']}
 {'Ingredients': ['Lee Kum Kee Sauce Hoisin'], 'Stores': ['QFC']}
 {'Ingredients': ['Lemongrass', 'Evaporated Milk', 'Oyster Mushrooms', 'Ginger', 'Adams Peanut Butter', 'Romaine Lettuce', 'Shallots', 'Vegetable Oil'], 'Stores': ['Safeway']}
 {'Ingredients': ['Garlic'], 'Stores': ["Trader Joe's"]}
 {'Ingredients': ['Galangal', 'Rice paper'], 'Stores': ['Uwajimaya']}
+{'Ingredients': ['Kaffir lime leaves'], 'Stores': ['Uwajimaya', 'Hau Hau Market']}
 {'Ingredients': ['Thai chilies'], 'Stores': ['Uwajimaya', "Lam's Seafood Asian Market"]}
+{'Ingredients': ['Mint leaves'], 'Stores': ['Uwajimaya', 'M2M Mart']}
 {'Ingredients': ['Lime juice'], 'Stores': ['Whole Foods']}
 ```
 
@@ -1516,7 +1513,7 @@ Results:
 {'Ingredients': ['Tsuyu', 'Korean Wild Sesame Oil'], 'Stores': []}
 {'Ingredients': ['Chili Oil', 'Soba Noodles', 'Toasted Seaweed'], 'Stores': ['M2M Mart']}
 {'Ingredients': ['Toasted Sesame Seeds'], 'Stores': ['Madison Co-op']}
-{'Ingredients': ['Sesame Seeds'], 'Stores': ['PCC', 'Naked Grocer']}
+{'Ingredients': ['Sesame Seeds'], 'Stores': ['Naked Grocer', 'PCC']}
 {'Ingredients': ['Green Onion', 'Red Chilli Peppers'], 'Stores': ['Safeway']}
 ```
 

@@ -389,8 +389,10 @@
   title: find product purchasing info
 - comment: |
     When I check out where to buy stuff, I find lots of things I have
-    no clue where to get. Count how many of those mystery product locations I
-    need to figure out.
+    no clue where to get.
+
+    Count how many of those mystery product locations I need to figure
+    out.
   cypher_query: |
     MATCH (p:Product)
     WHERE NOT (p)-[:PURCHASE_AT]->(:Store)
