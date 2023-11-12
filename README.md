@@ -66,7 +66,7 @@ https://www.google.com/search?q=cypher+cheat+sheet
 * [find product purchasing info](#find-product-purchasing-info)
 * [dammit this is tedious, how much cleanup remains?](#dammit-this-is-tedious-how-much-cleanup-remains)
 * [list count of items not associated with a store](#list-count-of-items-not-associated-with-a-store)
-* [items not associated with a store (count)](#items-not-associated-with-a-store-count)
+* [BAD: items not associated with a store (count)](#bad-items-not-associated-with-a-store-count)
 * [find purchasing info for 10 products](#find-purchasing-info-for-10-products)
 * [BAD: list the entity type the property is assocted with](#bad-list-the-entity-type-the-property-is-assocted-with)
 * [GOOD: list the entity type the property is assocted with](#good-list-the-entity-type-the-property-is-assocted-with)
@@ -762,16 +762,16 @@ ORDER BY RAND();
 Results:
 
 ``` example
-{'ProductName': 'Malt-o-Meal'}
-{'ProductName': 'Nonfat Yogurt (Plain/Blue Bucket)'}
-{'ProductName': 'German Mustard medium hot in jar w/ handle'}
-{'ProductName': 'Coffee - T - PLU 8853'}
-{'ProductName': 'Coffee - BB - PLU 8875 (less yums than 8863)'}
-{'ProductName': 'Rice - Wild'}
-{'ProductName': 'Coffee / MTM / PLU 5820 / Kivu / Kivu Dark French Roast'}
-{'ProductName': 'Almonds - bulk roasted or raw -- whichever is cheaper'}
-{'ProductName': 'Chicken Broth - 32 Oz'}
-{'ProductName': 'Boullion - Beef'}
+{'ProductName': 'Garlic Chives (alternative: chives)'}
+{'ProductName': 'WEL-PAC Dashi Kombu Dried Seaweed'}
+{'ProductName': 'Coffee - MTM - PLU 1859 - Fidalgo Bay Organic Fair Trade French Roast - Extra Dark'}
+{'ProductName': 'Chili Pepper, Chipotle, Ground'}
+{'ProductName': 'A.1. Sauce'}
+{'ProductName': 'Small, Green Cabbage'}
+{'ProductName': "Newman's Own Sesame Ginger Dressing"}
+{'ProductName': 'Sun Dried Tomatoes - sun dried - real big jar'}
+{'ProductName': 'Fresh flat-leaf parsley'}
+{'ProductName': 'Chicken Broth - 16 Oz'}
 # ...truncated to 10 for brevity
 ```
 
@@ -1179,7 +1179,7 @@ Results:
 {'ItemNumber': 45, 'ProductName': 'Yellow Bell Pepper'}
 ```
 
-# items not associated with a store (count)
+# BAD: items not associated with a store (count)
 
 ``` example
 MATCH (p:Product)
@@ -1303,16 +1303,16 @@ ORDER BY ProductName;
 Results:
 
 ``` example
+{'ProductName': 'Aroy-D Coconut Milk'}
+{'ProductName': 'Coconut Aminos'}
 {'ProductName': 'Coconut Oil'}
-{'ProductName': 'Cooking Oil'}
-{'ProductName': 'Dashi'}
 {'ProductName': 'Fermented shrimp paste'}
-{'ProductName': 'Fish Sauce'}
-{'ProductName': 'Fresno chilies'}
-{'ProductName': 'Kaffir Lime'}
-{'ProductName': 'Laksa leaves'}
-{'ProductName': 'Sawtooth Coriander'}
-{'ProductName': 'Tamarind Paste'}
+{'ProductName': 'Kalamata Olives'}
+{'ProductName': 'Mild dried red chilies'}
+{'ProductName': "Newman's Own Sesame Ginger Dressing"}
+{'ProductName': 'Rosemary'}
+{'ProductName': 'Thai shrimp paste'}
+{'ProductName': 'Tofu puffs'}
 ```
 
 # BAD: list the entity type the property is assocted with

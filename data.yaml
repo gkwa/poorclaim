@@ -417,7 +417,7 @@
     WITH COLLECT({ProductName: ProductName, Count: Count}) AS products
     UNWIND RANGE(0, SIZE(products)-1) AS ItemNumber
     RETURN (ItemNumber + 1) + '. ' + products[ItemNumber].ProductName
-  title: items not associated with a store (count)
+  title: 'BAD: items not associated with a store (count)'
 - comment: |
     list products that don't have a store associated with them, but
     limit to 10
