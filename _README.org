@@ -342,60 +342,60 @@ Results:
 MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
 WHERE r.name =~ '(?i).*(Thai|Curry).*'
 MATCH (p)-[:PURCHASE_AT]->(s:Store)
-RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS Products;
+RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS ProductNames;
 #+end_example
 
 Results:
 #+begin_example
-{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Safeway', 'Products': ['Full fat coconut milk', 'Light Brown Sugar', 'Ginger', 'Chicken Stock or Water', 'Lemongrass', 'Zucchini']}
-{'Recipe': 'Chicken Thai Red Curry', 'Store': "Trader Joe's", 'Products': ['Onion', 'Red Bell Pepper', 'Garlic']}
-{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Uwajimaya', 'Products': ['Thai basil']}
-{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Madison Co-op', 'Products': ['Boneless Chicken Thighs']}
-{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Hau Hau Market', 'Products': ['Fish sauce']}
-{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Whole Foods', 'Products': ['Lemon Juice']}
-{'Recipe': 'Pad Thai', 'Store': 'Hau Hau Market', 'Products': ['Shrimp', 'Fish sauce', 'Garlic Chives', 'Mung Bean Sprouts', 'Rice Sticks', 'Thai-style Baked Tofu', 'Rice Stick Noodles', 'Pressed Tofu', 'Roasted Chili Flakes']}
-{'Recipe': 'Pad Thai', 'Store': 'PCC', 'Products': ['Dry-Roasted Peanuts', 'Tamarind Paste', 'Sweet Paprika', 'Grounded Roasted Peanuts']}
-{'Recipe': 'Pad Thai', 'Store': "Trader Joe's", 'Products': ['Garlic', 'Lime', 'Chicken', 'Eggs', 'Pressed Tofu']}
-{'Recipe': 'Pad Thai', 'Store': 'Safeway', 'Products': ['Granulated Sugar', 'Dried Shrimp', 'Mung Bean Sprouts', 'Vegetable Oil', 'Shallots']}
-{'Recipe': 'Pad Thai', 'Store': 'Viet-Wah Asian Food Market', 'Products': ['Banana Leaf']}
-{'Recipe': 'Pad Thai', 'Store': 'Whole Foods', 'Products': ['Lime juice']}
-{'Recipe': 'Pad Thai', 'Store': "Lam's Seafood Asian Market", 'Products': ['Dried Shrimp']}
-{'Recipe': 'Pad Thai', 'Store': 'M2M Mart', 'Products': ['Chili Sauce', 'Mung Bean Sprouts']}
-{'Recipe': 'Pad Thai', 'Store': 'Spice SPC', 'Products': ['Chili Sauce', 'Tamarind Liquid']}
-{'Recipe': 'Pad Thai', 'Store': 'Uwajimaya', 'Products': ['Rice Wine Vinegar', 'Palm Sugar', 'Tamarind Liquid', 'Sweetened Radish']}
-{'Recipe': 'Pad Thai', 'Store': 'Thanh Son Tofu', 'Products': ['Thai-style Baked Tofu']}
-{'Recipe': 'Phad Thai', 'Store': 'PCC', 'Products': ['Roasted Unsalted Peanuts']}
-{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Madison Co-op', 'Products': ['Cumin seeds', 'Coriander seeds', 'White Peppercorns']}
-{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Safeway', 'Products': ['Shallots', 'Cilantro roots', 'Lemongrass']}
-{'Recipe': 'Vegan Thai Red Curry', 'Store': "Trader Joe's", 'Products': ['Garlic']}
-{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Uwajimaya', 'Products': ['Galangal']}
-{'Recipe': 'The Best Green Curry', 'Store': "Trader Joe's", 'Products': ['Garlic cloves', 'Lime']}
-{'Recipe': 'The Best Green Curry', 'Store': 'Uwajimaya', 'Products': ['Thai basil', 'Kaffir lime leaves', 'Galangal', 'Thai Eggplant', 'Palm Sugar', 'Snow peas']}
-{'Recipe': 'The Best Green Curry', 'Store': 'Madison Co-op', 'Products': ['White Peppercorns', 'Chicken Thighs', 'Cumin seeds', 'Coriander seeds']}
-{'Recipe': 'The Best Green Curry', 'Store': 'Hau Hau Market', 'Products': ['Kaffir lime leaves', 'Fish sauce']}
-{'Recipe': 'The Best Green Curry', 'Store': 'Safeway', 'Products': ['Serranos', 'Lemongrass', 'Shallots', 'Cilantro', 'Full fat coconut milk', 'Chicken stock']}
-{'Recipe': 'Thai Eggplant Recipe', 'Store': 'Madison Co-op', 'Products': ['Coriander powder', 'Chili powder']}
-{'Recipe': 'Thai Eggplant Recipe', 'Store': "Trader Joe's", 'Products': ['Red Bell Pepper', 'Onion', 'Garlic cloves']}
-{'Recipe': 'Thai Eggplant Recipe', 'Store': 'Whole Foods', 'Products': ['Lime juice']}
-{'Recipe': 'Thai Eggplant Recipe', 'Store': 'QFC', 'Products': ['Salt']}
-{'Recipe': 'Thai Eggplant Recipe', 'Store': 'Safeway', 'Products': ['Ginger', 'Lemongrass', 'Full fat coconut milk', 'Coconut Oil', 'Chicken stock']}
-{'Recipe': 'Thai Eggplant Recipe', 'Store': 'Uwajimaya', 'Products': ['Thai basil', 'Thai Eggplant', 'Thai chilies']}
-{'Recipe': 'Thai Eggplant Recipe', 'Store': 'PCC', 'Products': ['Coconut Oil']}
-{'Recipe': 'Thai Eggplant Recipe', 'Store': "Lam's Seafood Asian Market", 'Products': ['Thai chilies']}
-{'Recipe': 'Yellow Coconut Curry Chicken', 'Store': 'Madison Co-op', 'Products': ['Yellow Curry Powder']}
-{'Recipe': 'Yellow Coconut Curry Chicken', 'Store': 'Safeway', 'Products': ['Carrots', 'Russet Potatoes', 'Brown Sugar', 'Full fat coconut milk', 'Coconut Oil', 'Chicken Broth', 'Cilantro']}
-{'Recipe': 'Yellow Coconut Curry Chicken', 'Store': 'Whole Foods', 'Products': ['Maesri Thai Red Curry Paste']}
-{'Recipe': 'Yellow Coconut Curry Chicken', 'Store': "Trader Joe's", 'Products': ['Garlic', 'Yellow Onion']}
-{'Recipe': 'Yellow Coconut Curry Chicken', 'Store': 'QFC', 'Products': ['Chicken Breast']}
-{'Recipe': 'Yellow Coconut Curry Chicken', 'Store': 'Uwajimaya', 'Products': ['Rice']}
-{'Recipe': 'Yellow Coconut Curry Chicken', 'Store': 'PCC', 'Products': ['Coconut Oil']}
-{'Recipe': 'Yellow Coconut Curry Chicken', 'Store': 'Hau Hau Market', 'Products': ['Fish sauce']}
-{'Recipe': 'Yellow Curry with Chicken', 'Store': 'Madison Co-op', 'Products': ['Curry Powder', 'Cumin seeds', 'Coriander seeds']}
-{'Recipe': 'Yellow Curry with Chicken', 'Store': "Trader Joe's", 'Products': ['Chicken', 'Garlic']}
-{'Recipe': 'Yellow Curry with Chicken', 'Store': 'Safeway', 'Products': ['Shallots', 'Potatoes', 'Full fat coconut milk', 'Ginger', 'Lemongrass', 'Yellow Curry Paste']}
-{'Recipe': 'Yellow Curry with Chicken', 'Store': 'Hau Hau Market', 'Products': ['Fish sauce']}
-{'Recipe': 'Yellow Curry with Chicken', 'Store': 'M2M Mart', 'Products': ['Yellow Curry Paste']}
-{'Recipe': 'Yellow Curry with Chicken', 'Store': 'Uwajimaya', 'Products': ['Galangal']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Safeway', 'ProductNames': ['Full fat coconut milk', 'Light Brown Sugar', 'Ginger', 'Chicken Stock or Water', 'Lemongrass', 'Zucchini']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': "Trader Joe's", 'ProductNames': ['Onion', 'Red Bell Pepper', 'Garlic']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Uwajimaya', 'ProductNames': ['Thai basil']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Madison Co-op', 'ProductNames': ['Boneless Chicken Thighs']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Hau Hau Market', 'ProductNames': ['Fish sauce']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Whole Foods', 'ProductNames': ['Lemon Juice']}
+{'Recipe': 'Pad Thai', 'Store': 'Hau Hau Market', 'ProductNames': ['Shrimp', 'Fish sauce', 'Garlic Chives', 'Mung Bean Sprouts', 'Rice Sticks', 'Thai-style Baked Tofu', 'Rice Stick Noodles', 'Pressed Tofu', 'Roasted Chili Flakes']}
+{'Recipe': 'Pad Thai', 'Store': 'PCC', 'ProductNames': ['Dry-Roasted Peanuts', 'Tamarind Paste', 'Sweet Paprika', 'Grounded Roasted Peanuts']}
+{'Recipe': 'Pad Thai', 'Store': "Trader Joe's", 'ProductNames': ['Garlic', 'Lime', 'Chicken', 'Eggs', 'Pressed Tofu']}
+{'Recipe': 'Pad Thai', 'Store': 'Safeway', 'ProductNames': ['Granulated Sugar', 'Dried Shrimp', 'Mung Bean Sprouts', 'Vegetable Oil', 'Shallots']}
+{'Recipe': 'Pad Thai', 'Store': 'Viet-Wah Asian Food Market', 'ProductNames': ['Banana Leaf']}
+{'Recipe': 'Pad Thai', 'Store': 'Whole Foods', 'ProductNames': ['Lime juice']}
+{'Recipe': 'Pad Thai', 'Store': "Lam's Seafood Asian Market", 'ProductNames': ['Dried Shrimp']}
+{'Recipe': 'Pad Thai', 'Store': 'M2M Mart', 'ProductNames': ['Chili Sauce', 'Mung Bean Sprouts']}
+{'Recipe': 'Pad Thai', 'Store': 'Spice SPC', 'ProductNames': ['Chili Sauce', 'Tamarind Liquid']}
+{'Recipe': 'Pad Thai', 'Store': 'Uwajimaya', 'ProductNames': ['Rice Wine Vinegar', 'Palm Sugar', 'Tamarind Liquid', 'Sweetened Radish']}
+{'Recipe': 'Pad Thai', 'Store': 'Thanh Son Tofu', 'ProductNames': ['Thai-style Baked Tofu']}
+{'Recipe': 'Phad Thai', 'Store': 'PCC', 'ProductNames': ['Roasted Unsalted Peanuts']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Madison Co-op', 'ProductNames': ['Cumin seeds', 'Coriander seeds', 'White Peppercorns']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Safeway', 'ProductNames': ['Shallots', 'Cilantro roots', 'Lemongrass']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': "Trader Joe's", 'ProductNames': ['Garlic']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Uwajimaya', 'ProductNames': ['Galangal']}
+{'Recipe': 'The Best Green Curry', 'Store': "Trader Joe's", 'ProductNames': ['Garlic cloves', 'Lime']}
+{'Recipe': 'The Best Green Curry', 'Store': 'Uwajimaya', 'ProductNames': ['Thai basil', 'Kaffir lime leaves', 'Galangal', 'Thai Eggplant', 'Palm Sugar', 'Snow peas']}
+{'Recipe': 'The Best Green Curry', 'Store': 'Madison Co-op', 'ProductNames': ['White Peppercorns', 'Chicken Thighs', 'Cumin seeds', 'Coriander seeds']}
+{'Recipe': 'The Best Green Curry', 'Store': 'Hau Hau Market', 'ProductNames': ['Kaffir lime leaves', 'Fish sauce']}
+{'Recipe': 'The Best Green Curry', 'Store': 'Safeway', 'ProductNames': ['Serranos', 'Lemongrass', 'Shallots', 'Cilantro', 'Full fat coconut milk', 'Chicken stock']}
+{'Recipe': 'Thai Eggplant Recipe', 'Store': 'Madison Co-op', 'ProductNames': ['Coriander powder', 'Chili powder']}
+{'Recipe': 'Thai Eggplant Recipe', 'Store': "Trader Joe's", 'ProductNames': ['Red Bell Pepper', 'Onion', 'Garlic cloves']}
+{'Recipe': 'Thai Eggplant Recipe', 'Store': 'Whole Foods', 'ProductNames': ['Lime juice']}
+{'Recipe': 'Thai Eggplant Recipe', 'Store': 'QFC', 'ProductNames': ['Salt']}
+{'Recipe': 'Thai Eggplant Recipe', 'Store': 'Safeway', 'ProductNames': ['Ginger', 'Lemongrass', 'Full fat coconut milk', 'Coconut Oil', 'Chicken stock']}
+{'Recipe': 'Thai Eggplant Recipe', 'Store': 'Uwajimaya', 'ProductNames': ['Thai basil', 'Thai Eggplant', 'Thai chilies']}
+{'Recipe': 'Thai Eggplant Recipe', 'Store': 'PCC', 'ProductNames': ['Coconut Oil']}
+{'Recipe': 'Thai Eggplant Recipe', 'Store': "Lam's Seafood Asian Market", 'ProductNames': ['Thai chilies']}
+{'Recipe': 'Yellow Coconut Curry Chicken', 'Store': 'Madison Co-op', 'ProductNames': ['Yellow Curry Powder']}
+{'Recipe': 'Yellow Coconut Curry Chicken', 'Store': 'Safeway', 'ProductNames': ['Carrots', 'Russet Potatoes', 'Brown Sugar', 'Full fat coconut milk', 'Coconut Oil', 'Chicken Broth', 'Cilantro']}
+{'Recipe': 'Yellow Coconut Curry Chicken', 'Store': 'Whole Foods', 'ProductNames': ['Maesri Thai Red Curry Paste']}
+{'Recipe': 'Yellow Coconut Curry Chicken', 'Store': "Trader Joe's", 'ProductNames': ['Garlic', 'Yellow Onion']}
+{'Recipe': 'Yellow Coconut Curry Chicken', 'Store': 'QFC', 'ProductNames': ['Chicken Breast']}
+{'Recipe': 'Yellow Coconut Curry Chicken', 'Store': 'Uwajimaya', 'ProductNames': ['Rice']}
+{'Recipe': 'Yellow Coconut Curry Chicken', 'Store': 'PCC', 'ProductNames': ['Coconut Oil']}
+{'Recipe': 'Yellow Coconut Curry Chicken', 'Store': 'Hau Hau Market', 'ProductNames': ['Fish sauce']}
+{'Recipe': 'Yellow Curry with Chicken', 'Store': 'Madison Co-op', 'ProductNames': ['Curry Powder', 'Cumin seeds', 'Coriander seeds']}
+{'Recipe': 'Yellow Curry with Chicken', 'Store': "Trader Joe's", 'ProductNames': ['Chicken', 'Garlic']}
+{'Recipe': 'Yellow Curry with Chicken', 'Store': 'Safeway', 'ProductNames': ['Shallots', 'Potatoes', 'Full fat coconut milk', 'Ginger', 'Lemongrass', 'Yellow Curry Paste']}
+{'Recipe': 'Yellow Curry with Chicken', 'Store': 'Hau Hau Market', 'ProductNames': ['Fish sauce']}
+{'Recipe': 'Yellow Curry with Chicken', 'Store': 'M2M Mart', 'ProductNames': ['Yellow Curry Paste']}
+{'Recipe': 'Yellow Curry with Chicken', 'Store': 'Uwajimaya', 'ProductNames': ['Galangal']}
 #+end_example
 
 * find Thai Curry using cypher IN [] query format
@@ -686,16 +686,16 @@ ORDER BY RAND();
 
 Results:
 #+begin_example
-{'ProductName': 'Rice - Wild'}
-{'ProductName': 'Boullion - Beef'}
-{'ProductName': 'Large Shrimp (not frozen)'}
+{'ProductName': 'Red, Organic Kidney Beans, 15 Oz'}
+{'ProductName': 'Blueberries - frozen uponina bag'}
+{'ProductName': 'Chicken (3-4 lb)'}
+{'ProductName': 'Turkey (whole)'}
+{'ProductName': "Newman's Own Sesame Ginger Dressing"}
+{'ProductName': "Dave's Seed Bread"}
 {'ProductName': 'Ice-cold water'}
-{'ProductName': 'Aroy-D Red Curry Paste'}
-{'ProductName': 'Nonfat Yogurt (Plain/Blue Bucket)'}
-{'ProductName': 'chardonnay - terres dorees'}
-{'ProductName': 'Small, Green Cabbage'}
-{'ProductName': 'Dry-Roasted Peanuts'}
-{'ProductName': 'Coffee - T - PLU 8852 T likes it, BB says YUX!'}
+{'ProductName': 'Coffee - MTM - Kivu Dark Espresso Roast'}
+{'ProductName': "Coffee / BB's 1st preference / BB / PLU 8863 / Equal Exchange / Peruvian"}
+{'ProductName': 'Soy Sauce - Liquid Aminos'}
 # ...truncated to 10 for brevity
 #+end_example
 
@@ -1206,16 +1206,16 @@ ORDER BY ProductName;
 
 Results:
 #+begin_example
-{'ProductName': 'Black beans'}
-{'ProductName': 'Cooking Oil'}
-{'ProductName': 'Egg yolk'}
-{'ProductName': 'Fried shallots'}
-{'ProductName': 'Ice-cold water'}
-{'ProductName': 'Sawtooth Coriander'}
-{'ProductName': 'Sea Salt'}
+{'ProductName': 'Kaffir Lime'}
+{'ProductName': 'Korean Wild Sesame Oil'}
+{'ProductName': 'Laksa leaves'}
+{'ProductName': 'Makrut lime zest'}
+{'ProductName': 'Mild dried red chilies'}
+{'ProductName': "Newman's Own Sesame Ginger Dressing"}
+{'ProductName': 'Salt and pepper'}
+{'ProductName': 'Salted Turnip'}
 {'ProductName': 'Spicy dried red chilies'}
-{'ProductName': 'Tsuyu'}
-{'ProductName': 'Yellow Bell Pepper'}
+{'ProductName': 'Thai chili'}
 #+end_example
 
 * BAD: list the entity type the property is assocted with

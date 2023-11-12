@@ -126,7 +126,7 @@
     MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
     WHERE r.name =~ '(?i).*(Thai|Curry).*'
     MATCH (p)-[:PURCHASE_AT]->(s:Store)
-    RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS Products;
+    RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS ProductNames;
   title: find recipes with either Thai or Curry
 - cypher_query: |
     MATCH (r:Recipe)
