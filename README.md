@@ -362,16 +362,16 @@ Results:
 ``` example
 MATCH (r:Recipe {name: 'Vegan Thai Red Curry'})-[:CONTAINS]->(p:Product)
 MATCH (p)-[:PURCHASE_AT]->(s:Store)
-RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS Products;
+RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS ProductNames;
 ```
 
 Results:
 
 ``` example
-{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Madison Co-op', 'Products': ['Cumin seeds', 'Coriander seeds', 'White Peppercorns']}
-{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Safeway', 'Products': ['Shallots', 'Cilantro roots', 'Lemongrass']}
-{'Recipe': 'Vegan Thai Red Curry', 'Store': "Trader Joe's", 'Products': ['Garlic']}
-{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Uwajimaya', 'Products': ['Galangal']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Madison Co-op', 'ProductNames': ['Cumin seeds', 'Coriander seeds', 'White Peppercorns']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Safeway', 'ProductNames': ['Shallots', 'Cilantro roots', 'Lemongrass']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': "Trader Joe's", 'ProductNames': ['Garlic']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Uwajimaya', 'ProductNames': ['Galangal']}
 ```
 
 # find Thai Red Curry without specifying exact title
@@ -383,22 +383,22 @@ here.
 MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
 WHERE r.name CONTAINS 'Thai Red Curry'
 MATCH (p)-[:PURCHASE_AT]->(s:Store)
-RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS Products;
+RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS ProductNames;
 ```
 
 Results:
 
 ``` example
-{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Safeway', 'Products': ['Full fat coconut milk', 'Light Brown Sugar', 'Ginger', 'Chicken Stock or Water', 'Lemongrass', 'Zucchini']}
-{'Recipe': 'Chicken Thai Red Curry', 'Store': "Trader Joe's", 'Products': ['Onion', 'Red Bell Pepper', 'Garlic']}
-{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Uwajimaya', 'Products': ['Thai basil']}
-{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Madison Co-op', 'Products': ['Boneless Chicken Thighs']}
-{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Hau Hau Market', 'Products': ['Fish sauce']}
-{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Whole Foods', 'Products': ['Lemon Juice']}
-{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Madison Co-op', 'Products': ['Cumin seeds', 'Coriander seeds', 'White Peppercorns']}
-{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Safeway', 'Products': ['Shallots', 'Cilantro roots', 'Lemongrass']}
-{'Recipe': 'Vegan Thai Red Curry', 'Store': "Trader Joe's", 'Products': ['Garlic']}
-{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Uwajimaya', 'Products': ['Galangal']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Safeway', 'ProductNames': ['Full fat coconut milk', 'Light Brown Sugar', 'Ginger', 'Chicken Stock or Water', 'Lemongrass', 'Zucchini']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': "Trader Joe's", 'ProductNames': ['Onion', 'Red Bell Pepper', 'Garlic']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Uwajimaya', 'ProductNames': ['Thai basil']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Madison Co-op', 'ProductNames': ['Boneless Chicken Thighs']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Hau Hau Market', 'ProductNames': ['Fish sauce']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Whole Foods', 'ProductNames': ['Lemon Juice']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Madison Co-op', 'ProductNames': ['Cumin seeds', 'Coriander seeds', 'White Peppercorns']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Safeway', 'ProductNames': ['Shallots', 'Cilantro roots', 'Lemongrass']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': "Trader Joe's", 'ProductNames': ['Garlic']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Uwajimaya', 'ProductNames': ['Galangal']}
 ```
 
 # find Thai Curry with regex
@@ -407,22 +407,22 @@ Results:
 MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
 WHERE r.name =~ '.*Thai.*Curry.*'
 MATCH (p)-[:PURCHASE_AT]->(s:Store)
-RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS Products;
+RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS ProductNames;
 ```
 
 Results:
 
 ``` example
-{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Safeway', 'Products': ['Full fat coconut milk', 'Light Brown Sugar', 'Ginger', 'Chicken Stock or Water', 'Lemongrass', 'Zucchini']}
-{'Recipe': 'Chicken Thai Red Curry', 'Store': "Trader Joe's", 'Products': ['Onion', 'Red Bell Pepper', 'Garlic']}
-{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Uwajimaya', 'Products': ['Thai basil']}
-{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Madison Co-op', 'Products': ['Boneless Chicken Thighs']}
-{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Hau Hau Market', 'Products': ['Fish sauce']}
-{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Whole Foods', 'Products': ['Lemon Juice']}
-{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Madison Co-op', 'Products': ['Cumin seeds', 'Coriander seeds', 'White Peppercorns']}
-{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Safeway', 'Products': ['Shallots', 'Cilantro roots', 'Lemongrass']}
-{'Recipe': 'Vegan Thai Red Curry', 'Store': "Trader Joe's", 'Products': ['Garlic']}
-{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Uwajimaya', 'Products': ['Galangal']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Safeway', 'ProductNames': ['Full fat coconut milk', 'Light Brown Sugar', 'Ginger', 'Chicken Stock or Water', 'Lemongrass', 'Zucchini']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': "Trader Joe's", 'ProductNames': ['Onion', 'Red Bell Pepper', 'Garlic']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Uwajimaya', 'ProductNames': ['Thai basil']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Madison Co-op', 'ProductNames': ['Boneless Chicken Thighs']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Hau Hau Market', 'ProductNames': ['Fish sauce']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Whole Foods', 'ProductNames': ['Lemon Juice']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Madison Co-op', 'ProductNames': ['Cumin seeds', 'Coriander seeds', 'White Peppercorns']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Safeway', 'ProductNames': ['Shallots', 'Cilantro roots', 'Lemongrass']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': "Trader Joe's", 'ProductNames': ['Garlic']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Uwajimaya', 'ProductNames': ['Galangal']}
 ```
 
 # find recipes with either Thai or Curry
@@ -432,7 +432,7 @@ Results:
 // MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
 // WHERE r.name =~ '(?i).*Thai.*|(?i).*Curry.*'
 // MATCH (p)-[:PURCHASE_AT]->(s:Store)
-// RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS Products;
+// RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS ProductNames;
 
 // better:
 MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
@@ -518,7 +518,7 @@ Why does this return no results?
 MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
 WHERE 'Thai' IN r.name AND 'Curry' IN r.name
 MATCH (p)-[:PURCHASE_AT]->(s:Store)
-RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS Products;
+RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS ProductNames;
 ```
 
 Results:
@@ -532,22 +532,22 @@ Results:
 MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
 WHERE r.name =~ '(?i).*thai.*curry.*'
 MATCH (p)-[:PURCHASE_AT]->(s:Store)
-RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS Products;
+RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS ProductNames;
 ```
 
 Results:
 
 ``` example
-{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Safeway', 'Products': ['Full fat coconut milk', 'Light Brown Sugar', 'Ginger', 'Chicken Stock or Water', 'Lemongrass', 'Zucchini']}
-{'Recipe': 'Chicken Thai Red Curry', 'Store': "Trader Joe's", 'Products': ['Onion', 'Red Bell Pepper', 'Garlic']}
-{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Uwajimaya', 'Products': ['Thai basil']}
-{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Madison Co-op', 'Products': ['Boneless Chicken Thighs']}
-{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Hau Hau Market', 'Products': ['Fish sauce']}
-{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Whole Foods', 'Products': ['Lemon Juice']}
-{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Madison Co-op', 'Products': ['Cumin seeds', 'Coriander seeds', 'White Peppercorns']}
-{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Safeway', 'Products': ['Shallots', 'Cilantro roots', 'Lemongrass']}
-{'Recipe': 'Vegan Thai Red Curry', 'Store': "Trader Joe's", 'Products': ['Garlic']}
-{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Uwajimaya', 'Products': ['Galangal']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Safeway', 'ProductNames': ['Full fat coconut milk', 'Light Brown Sugar', 'Ginger', 'Chicken Stock or Water', 'Lemongrass', 'Zucchini']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': "Trader Joe's", 'ProductNames': ['Onion', 'Red Bell Pepper', 'Garlic']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Uwajimaya', 'ProductNames': ['Thai basil']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Madison Co-op', 'ProductNames': ['Boneless Chicken Thighs']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Hau Hau Market', 'ProductNames': ['Fish sauce']}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Whole Foods', 'ProductNames': ['Lemon Juice']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Madison Co-op', 'ProductNames': ['Cumin seeds', 'Coriander seeds', 'White Peppercorns']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Safeway', 'ProductNames': ['Shallots', 'Cilantro roots', 'Lemongrass']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': "Trader Joe's", 'ProductNames': ['Garlic']}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Uwajimaya', 'ProductNames': ['Galangal']}
 ```
 
 # find Thai Curry with regex case insensitively, output full product details
@@ -788,16 +788,16 @@ ORDER BY RAND();
 Results:
 
 ``` example
-{'ProductName': 'Filters - Coffee size #2'}
-{'ProductName': 'Beans - Kidney (Bulk)'}
-{'ProductName': 'Avocados (not in bag stupid)'}
-{'ProductName': 'Garlic Chives (alternative: chives)'}
-{'ProductName': 'Almonds - bulk roasted or raw -- whichever is cheaper'}
-{'ProductName': 'Strong Roots Kale & Quinoa Burger'}
-{'ProductName': 'Marketspice Tea Decaf - 2 Oz for Mommy'}
-{'ProductName': 'Black, Beluga Lentils'}
-{'ProductName': 'Tomato Sauce - 29 oz can'}
-{'ProductName': "Granola 'cookies'"}
+{'ProductName': 'Rice - Wild'}
+{'ProductName': 'Boullion - Beef'}
+{'ProductName': 'Large Shrimp (not frozen)'}
+{'ProductName': 'Ice-cold water'}
+{'ProductName': 'Aroy-D Red Curry Paste'}
+{'ProductName': 'Nonfat Yogurt (Plain/Blue Bucket)'}
+{'ProductName': 'chardonnay - terres dorees'}
+{'ProductName': 'Small, Green Cabbage'}
+{'ProductName': 'Dry-Roasted Peanuts'}
+{'ProductName': 'Coffee - T - PLU 8852 T likes it, BB says YUX!'}
 # ...truncated to 10 for brevity
 ```
 
@@ -1316,16 +1316,16 @@ ORDER BY ProductName;
 Results:
 
 ``` example
-{'ProductName': 'Corn on cob'}
-{'ProductName': 'Dashi'}
+{'ProductName': 'Black beans'}
+{'ProductName': 'Cooking Oil'}
+{'ProductName': 'Egg yolk'}
+{'ProductName': 'Fried shallots'}
 {'ProductName': 'Ice-cold water'}
-{'ProductName': 'Korean Wild Sesame Oil'}
-{'ProductName': 'Laksa leaves'}
-{'ProductName': 'Makrut lime zest'}
-{'ProductName': 'Rosemary'}
-{'ProductName': 'Salt and pepper'}
-{'ProductName': 'Toasted sesame flakes'}
-{'ProductName': 'Unsweetened Nut Butter'}
+{'ProductName': 'Sawtooth Coriander'}
+{'ProductName': 'Sea Salt'}
+{'ProductName': 'Spicy dried red chilies'}
+{'ProductName': 'Tsuyu'}
+{'ProductName': 'Yellow Bell Pepper'}
 ```
 
 # BAD: list the entity type the property is assocted with

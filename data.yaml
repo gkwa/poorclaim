@@ -98,13 +98,13 @@
 - cypher_query: |
     MATCH (r:Recipe {name: 'Vegan Thai Red Curry'})-[:CONTAINS]->(p:Product)
     MATCH (p)-[:PURCHASE_AT]->(s:Store)
-    RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS Products
+    RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS ProductNames;
   title: find Vegan Thai Red Curry
 - cypher_query: |
     MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
     WHERE r.name CONTAINS 'Thai Red Curry'
     MATCH (p)-[:PURCHASE_AT]->(s:Store)
-    RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS Products;
+    RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS ProductNames;
   title: find Thai Red Curry without specifying exact title
   comment: |
     Substring matching with CONTAINS. We didn't specify Vegan Thai Red
@@ -113,14 +113,14 @@
     MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
     WHERE r.name =~ '.*Thai.*Curry.*'
     MATCH (p)-[:PURCHASE_AT]->(s:Store)
-    RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS Products;
+    RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS ProductNames;
   title: find Thai Curry with regex
 - cypher_query: |
     // ok:
     // MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
     // WHERE r.name =~ '(?i).*Thai.*|(?i).*Curry.*'
     // MATCH (p)-[:PURCHASE_AT]->(s:Store)
-    // RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS Products;
+    // RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS ProductNames;
 
     // better:
     MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
@@ -139,7 +139,7 @@
     MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
     WHERE 'Thai' IN r.name AND 'Curry' IN r.name
     MATCH (p)-[:PURCHASE_AT]->(s:Store)
-    RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS Products;
+    RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS ProductNames;
   title: find Thai Curry with multiple substings
   comment: |
     Why does this return no results?
@@ -147,7 +147,7 @@
     MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
     WHERE r.name =~ '(?i).*thai.*curry.*'
     MATCH (p)-[:PURCHASE_AT]->(s:Store)
-    RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS Products;
+    RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS ProductNames;
   title: find Thai Curry with regex case insensitively
 - cypher_query: |
     MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
