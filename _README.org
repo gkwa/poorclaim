@@ -658,16 +658,16 @@ ORDER BY RAND();
 
 Results:
 #+begin_example
-{'ProductName': 'Salmon - Still Frozen in the Shrink Wrap, 2 or 3 lbs'}
-{'ProductName': 'Nonfat Yogurt (Plain/Blue Bucket)'}
-{'ProductName': 'Cocoa Powder, Unsweetened, Hersheys Natural - 8 Oz'}
-{'ProductName': 'Large Shrimp (not frozen)'}
-{'ProductName': 'Oil-packed sun-dried tomatoes'}
-{'ProductName': 'Coffee / MTM / PLU 8368 / Decaf / Decaf / Decaf Kind Unknown'}
-{'ProductName': 'Cleanser - Bon Ami'}
+{'ProductName': 'Tomato Sauce - 29 oz can'}
+{'ProductName': 'Marketspice Tea Decaf - 2 Oz for Mommy'}
 {'ProductName': 'German Mustard medium hot in jar w/ handle'}
-{'ProductName': 'Coffee - BB - PLU 8875 (less yums than 8863)'}
-{'ProductName': "Dave's Seed Bread"}
+{'ProductName': "Coffee / BB's 2nd preference / BB / PLU 3794 / Kalani Coffee / Indonesian Enyana Sumatra"}
+{'ProductName': 'Red, Organic Kidney Beans, 15 Oz'}
+{'ProductName': "Cornstarch Baby Powder (not Johnson's, they're baddies)"}
+{'ProductName': 'Reynolds Parchment Paper Genuine Non-Stick 45 Sq. Ft.'}
+{'ProductName': 'Salmon - Still Frozen in the Shrink Wrap, 2 or 3 lbs'}
+{'ProductName': 'Black Beans (15 oz can)'}
+{'ProductName': 'One Percent or 2 Percent Milk in Glass Jar (Not Red Cap Whole Milk)'}
 # ...truncated to 10 for brevity
 #+end_example
 
@@ -1070,16 +1070,16 @@ ORDER BY ProductName;
 
 Results:
 #+begin_example
-{'ProductName': 'Fermented shrimp paste'}
+{'ProductName': 'Aroy-D Coconut Milk'}
+{'ProductName': 'Corn on cob'}
+{'ProductName': 'Dried Thai Chilis'}
 {'ProductName': 'Fish Sauce'}
-{'ProductName': 'Fried shallots'}
-{'ProductName': 'Green Bell Pepper'}
 {'ProductName': 'Mild dried red chilies'}
-{'ProductName': 'Oil-packed sun-dried tomatoes'}
-{'ProductName': 'Salt and pepper'}
-{'ProductName': 'Salted Turnip'}
+{'ProductName': 'Mirin'}
+{'ProductName': 'Miso'}
+{'ProductName': 'Rice vinegar'}
 {'ProductName': 'Tofu puffs'}
-{'ProductName': 'Tsuyu'}
+{'ProductName': 'Yellow Bell Pepper'}
 #+end_example
 
 * BAD: list the entity type the property is assocted with
@@ -1554,7 +1554,8 @@ RETURN recipe.name;
 Results:
 #+begin_example
 #+end_example
-We're hoping for empty result list.
+We're hoping for empty result list. If the result set is empty,
+then I've already cleaned up the data.
 
 * recipe with unknown products
 
@@ -1568,7 +1569,8 @@ RETURN DISTINCT recipe.name, r.quantity;
 Results:
 #+begin_example
 #+end_example
-We're hoping for empty result list.
+We're hoping for empty result list. If the result set is empty,
+then I've already cleaned up the data.
 
 * cleanup data, find recipes with unknown products
 
@@ -1592,7 +1594,8 @@ RETURN recipe.name, allProducts.name;
 Results:
 #+begin_example
 #+end_example
-We're hoping for empty result list.
+We're hoping for empty result list. If the result set is empty,
+then I've already cleaned up the data.
 
 * fixing data for a single recipe
 
@@ -1608,7 +1611,8 @@ RETURN recipe, allProducts;
 Results:
 #+begin_example
 #+end_example
-We're hoping for empty result list.
+We're hoping for empty result list. If the result set is empty,
+then I've already cleaned up the data.
 
 * find stores for recipe ingredients: explore purchases
 

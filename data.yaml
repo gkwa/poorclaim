@@ -641,14 +641,16 @@
     Black Beans has cumin, but we don't have cumin listed in the
     database...for example.
   result_comment: |
-    We're hoping for empty result list.
+    We're hoping for empty result list. If the result set is empty,
+    then I've already cleaned up the data.
 - cypher_query: |
     MATCH (recipe)-[r:CONTAINS]->(product)
     WHERE product.name IS NULL
     RETURN DISTINCT recipe.name, r.quantity;
   title: recipe with unknown products
   result_comment: |
-    We're hoping for empty result list.
+    We're hoping for empty result list. If the result set is empty,
+    then I've already cleaned up the data.
 - cypher_query: |
     MATCH (recipe)-[:CONTAINS]->(product)
     WHERE product.name IS NULL
@@ -666,7 +668,8 @@
     associated with this recipe.  We will need to compare that list.
   title: cleanup data, find recipes with unknown products
   result_comment: |
-    We're hoping for empty result list.
+    We're hoping for empty result list. If the result set is empty,
+    then I've already cleaned up the data.
 - cypher_query: |
     MATCH (recipe)-[:CONTAINS]->(product)
     WHERE product.name IS NULL AND recipe.name = 'Chicken Thai Red Curry'
@@ -675,7 +678,8 @@
     RETURN recipe, allProducts;
   title: fixing data for a single recipe
   result_comment: |
-    We're hoping for empty result list.
+    We're hoping for empty result list. If the result set is empty,
+    then I've already cleaned up the data.
 - cypher_query: |
     MATCH (store:Store)-[:PURCHASE_AT]-(purchasedProduct:Product)-[:CONTAINS]-(recipe:Recipe)
     WHERE recipe.name IN ['Crispy Baked Tofu', 'Roasted Broccoli', 'Fresh Spring Rolls']
