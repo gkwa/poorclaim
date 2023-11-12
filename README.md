@@ -558,22 +558,22 @@ Results:
 MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
 WHERE r.name =~ '(?i).*thai.*curry.*'
 MATCH (p)-[:PURCHASE_AT]->(s:Store)
-RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p) AS Ingredients;
+RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p) AS Products;
 ```
 
 Results:
 
 ``` example
-{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Safeway', 'Ingredients': [{'name': 'Full fat coconut milk', 'type': 'Coconut Milk'}, {'name': 'Light Brown Sugar', 'type': 'Brown Sugar'}, {'name': 'Ginger', 'type': 'Ginger'}, {'name': 'Chicken Stock or Water', 'type': 'Chicken Stock'}, {'name': 'Lemongrass', 'type': 'Lemongrass'}, {'name': 'Zucchini', 'type': 'Zucchini'}]}
-{'Recipe': 'Chicken Thai Red Curry', 'Store': "Trader Joe's", 'Ingredients': [{'name': 'Onion', 'type': 'Onion'}, {'name': 'Red Bell Pepper', 'type': 'Bell Pepper'}, {'name': 'Garlic', 'type': 'Garlic'}]}
-{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Uwajimaya', 'Ingredients': [{'urls': ['https://www.fredmeyer.com/p/simple-truth-organic-thai-basil/0001111001922'], 'name': 'Thai basil', 'type': 'Herb'}]}
-{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Madison Co-op', 'Ingredients': [{'name': 'Boneless Chicken Thighs', 'type': 'Chicken'}]}
-{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Hau Hau Market', 'Ingredients': [{'name': 'Fish sauce', 'type': 'Fish Sauce'}]}
-{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Whole Foods', 'Ingredients': [{'name': 'Lemon Juice', 'type': 'Lemon Juice'}]}
-{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Madison Co-op', 'Ingredients': [{'name': 'Cumin seeds', 'type': 'Cumin '}, {'name': 'Coriander seeds', 'type': 'Spice'}, {'name': 'White Peppercorns', 'type': 'White Peppercorns'}]}
-{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Safeway', 'Ingredients': [{'name': 'Shallots', 'type': 'Shallots'}, {'name': 'Cilantro roots', 'type': 'Cilantro'}, {'name': 'Lemongrass', 'type': 'Lemongrass'}]}
-{'Recipe': 'Vegan Thai Red Curry', 'Store': "Trader Joe's", 'Ingredients': [{'name': 'Garlic', 'type': 'Garlic'}]}
-{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Uwajimaya', 'Ingredients': [{'name': 'Galangal', 'type': 'Galangal'}]}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Safeway', 'Products': [{'name': 'Full fat coconut milk', 'type': 'Coconut Milk'}, {'name': 'Light Brown Sugar', 'type': 'Brown Sugar'}, {'name': 'Ginger', 'type': 'Ginger'}, {'name': 'Chicken Stock or Water', 'type': 'Chicken Stock'}, {'name': 'Lemongrass', 'type': 'Lemongrass'}, {'name': 'Zucchini', 'type': 'Zucchini'}]}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': "Trader Joe's", 'Products': [{'name': 'Onion', 'type': 'Onion'}, {'name': 'Red Bell Pepper', 'type': 'Bell Pepper'}, {'name': 'Garlic', 'type': 'Garlic'}]}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Uwajimaya', 'Products': [{'urls': ['https://www.fredmeyer.com/p/simple-truth-organic-thai-basil/0001111001922'], 'name': 'Thai basil', 'type': 'Herb'}]}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Madison Co-op', 'Products': [{'name': 'Boneless Chicken Thighs', 'type': 'Chicken'}]}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Hau Hau Market', 'Products': [{'name': 'Fish sauce', 'type': 'Fish Sauce'}]}
+{'Recipe': 'Chicken Thai Red Curry', 'Store': 'Whole Foods', 'Products': [{'name': 'Lemon Juice', 'type': 'Lemon Juice'}]}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Madison Co-op', 'Products': [{'name': 'Cumin seeds', 'type': 'Cumin '}, {'name': 'Coriander seeds', 'type': 'Spice'}, {'name': 'White Peppercorns', 'type': 'White Peppercorns'}]}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Safeway', 'Products': [{'name': 'Shallots', 'type': 'Shallots'}, {'name': 'Cilantro roots', 'type': 'Cilantro'}, {'name': 'Lemongrass', 'type': 'Lemongrass'}]}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': "Trader Joe's", 'Products': [{'name': 'Garlic', 'type': 'Garlic'}]}
+{'Recipe': 'Vegan Thai Red Curry', 'Store': 'Uwajimaya', 'Products': [{'name': 'Galangal', 'type': 'Galangal'}]}
 ```
 
 # list products by type
@@ -790,16 +790,16 @@ ORDER BY RAND();
 Results:
 
 ``` example
-{'ProductName': 'Ice-cold water'}
-{'ProductName': "Dave's Seed Bread"}
-{'ProductName': "Duke's Mayonnaise"}
-{'ProductName': 'Coffee - MTM - PLU 1859 - Fidalgo Bay Organic Fair Trade French Roast - Extra Dark'}
-{'ProductName': 'Signature Select Garbanzo Beans - 15 Oz'}
 {'ProductName': 'Marketspice Tea Decaf - 2 Oz for Mommy'}
-{'ProductName': 'Kidney Beans - S&W'}
-{'ProductName': 'Black Beans (15 oz can)'}
-{'ProductName': 'Rice Wine Vinegar - Kikkoman Mirin'}
-{'ProductName': 'Red, Organic Kidney Beans, 15 Oz'}
+{'ProductName': 'Whole wheat Flour, all-purpose'}
+{'ProductName': 'Coffee - T - PLU 8853'}
+{'ProductName': 'Black, Beluga Lentils'}
+{'ProductName': 'Pancake Mix - Snoqualmie Falls Lodge'}
+{'ProductName': 'Raisins - Bulk baby, bulk'}
+{'ProductName': 'Aroy-D Red Curry Paste'}
+{'ProductName': 'Coffee / MTM / PLU 8368 / Decaf / Decaf / Decaf Kind Unknown'}
+{'ProductName': 'One Percent or 2 Percent Milk in Glass Jar (Not Red Cap Whole Milk)'}
+{'ProductName': 'Coconut Milk - 13.5 oz can'}
 # ...truncated to 10 for brevity
 ```
 
@@ -1318,16 +1318,16 @@ ORDER BY ProductName;
 Results:
 
 ``` example
-{'ProductName': 'Aroy-D Coconut Milk'}
-{'ProductName': 'Black beans'}
-{'ProductName': 'Candlenuts'}
-{'ProductName': 'Dashi'}
+{'ProductName': 'Cooking Oil'}
+{'ProductName': 'Ice-cold water'}
 {'ProductName': 'Kalamata Olives'}
-{'ProductName': 'Mild dried red chilies'}
-{'ProductName': 'Salted Turnip'}
-{'ProductName': 'Sea Salt'}
-{'ProductName': 'Shrimp Paste'}
-{'ProductName': 'Spicy dried red chilies'}
+{'ProductName': 'Miso'}
+{'ProductName': "Newman's Own Sesame Ginger Dressing"}
+{'ProductName': 'Salt and pepper'}
+{'ProductName': 'Thai shrimp paste'}
+{'ProductName': 'Toasted sesame flakes'}
+{'ProductName': 'Tsuyu'}
+{'ProductName': 'Yellow Bell Pepper'}
 ```
 
 # BAD: list the entity type the property is assocted with
