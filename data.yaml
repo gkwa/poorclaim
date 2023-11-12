@@ -680,7 +680,8 @@
     MATCH (store:Store)-[:PURCHASE_AT]-(purchasedProduct:Product)-[:CONTAINS]-(recipe:Recipe)
     WHERE recipe.name IN ['Crispy Baked Tofu', 'Roasted Broccoli', 'Fresh Spring Rolls']
     WITH DISTINCT recipe.name AS Recipe, store.name AS Store, purchasedProduct.name AS Product
-    RETURN Recipe, Store, Product;
+    RETURN Recipe, Store, Product
+    ORDER BY toLower(Store)
   title: 'find stores for recipe ingredients: explore purchases'
   comment: |
     If I were to make Crispy Baked Tofu, Roasted Broccoli and Fresh

@@ -658,16 +658,16 @@ ORDER BY RAND();
 
 Results:
 #+begin_example
-{'ProductName': "Duke's Mayonnaise"}
-{'ProductName': 'Rolled Oats / Oats / Old Fashioned / PLU 8490'}
-{'ProductName': "Newman's Own Sesame Ginger Dressing"}
-{'ProductName': 'Rice - Wild'}
-{'ProductName': 'Dino Kale (ugly spinach)'}
-{'ProductName': 'Turkey (whole)'}
-{'ProductName': 'Pancake Mix - Snoqualmie Falls Lodge'}
-{'ProductName': 'Whole wheat Flour, all-purpose'}
-{'ProductName': 'Soy Sauce - Liquid Aminos'}
-{'ProductName': 'Marketspice Tea Decaf - 2 Oz for Mommy'}
+{'ProductName': 'Salmon - Still Frozen in the Shrink Wrap, 2 or 3 lbs'}
+{'ProductName': 'Nonfat Yogurt (Plain/Blue Bucket)'}
+{'ProductName': 'Cocoa Powder, Unsweetened, Hersheys Natural - 8 Oz'}
+{'ProductName': 'Large Shrimp (not frozen)'}
+{'ProductName': 'Oil-packed sun-dried tomatoes'}
+{'ProductName': 'Coffee / MTM / PLU 8368 / Decaf / Decaf / Decaf Kind Unknown'}
+{'ProductName': 'Cleanser - Bon Ami'}
+{'ProductName': 'German Mustard medium hot in jar w/ handle'}
+{'ProductName': 'Coffee - BB - PLU 8875 (less yums than 8863)'}
+{'ProductName': "Dave's Seed Bread"}
 # ...truncated to 10 for brevity
 #+end_example
 
@@ -1070,16 +1070,16 @@ ORDER BY ProductName;
 
 Results:
 #+begin_example
-{'ProductName': 'Cooking Oil'}
+{'ProductName': 'Fermented shrimp paste'}
+{'ProductName': 'Fish Sauce'}
 {'ProductName': 'Fried shallots'}
-{'ProductName': 'Ice-cold water'}
-{'ProductName': 'Kalamata Olives'}
-{'ProductName': 'Makrut lime zest'}
-{'ProductName': 'Miso'}
+{'ProductName': 'Green Bell Pepper'}
+{'ProductName': 'Mild dried red chilies'}
 {'ProductName': 'Oil-packed sun-dried tomatoes'}
-{'ProductName': 'Rice vinegar'}
-{'ProductName': 'Spicy dried red chilies'}
-{'ProductName': 'Thai chili'}
+{'ProductName': 'Salt and pepper'}
+{'ProductName': 'Salted Turnip'}
+{'ProductName': 'Tofu puffs'}
+{'ProductName': 'Tsuyu'}
 #+end_example
 
 * BAD: list the entity type the property is assocted with
@@ -1620,45 +1620,46 @@ ingredients?
 MATCH (store:Store)-[:PURCHASE_AT]-(purchasedProduct:Product)-[:CONTAINS]-(recipe:Recipe)
 WHERE recipe.name IN ['Crispy Baked Tofu', 'Roasted Broccoli', 'Fresh Spring Rolls']
 WITH DISTINCT recipe.name AS Recipe, store.name AS Store, purchasedProduct.name AS Product
-RETURN Recipe, Store, Product;
+RETURN Recipe, Store, Product
+ORDER BY toLower(Store);
 #+end_example
 
 Results:
 #+begin_example
+{'Recipe': 'Fresh Spring Rolls', 'Store': 'dummy place holder', 'Product': 'Water'}
+{'Recipe': 'Roasted Broccoli', 'Store': 'Grocery Outlet', 'Product': 'Extra Virgin Olive Oil'}
+{'Recipe': 'Fresh Spring Rolls', 'Store': 'Grocery Outlet', 'Product': 'Frozen Shrimp'}
+{'Recipe': 'Fresh Spring Rolls', 'Store': 'M2M Mart', 'Product': 'Dry rice noodles'}
+{'Recipe': 'Fresh Spring Rolls', 'Store': 'M2M Mart', 'Product': 'Toasted Sesame Oil'}
+{'Recipe': 'Fresh Spring Rolls', 'Store': 'M2M Mart', 'Product': 'Huy Fong Chili Garlic Sauce'}
+{'Recipe': 'Fresh Spring Rolls', 'Store': 'M2M Mart', 'Product': 'Round Rice Paper Sheets'}
+{'Recipe': 'Fresh Spring Rolls', 'Store': 'M2M Mart', 'Product': 'Three Crabs Fish Sauce'}
 {'Recipe': 'Crispy Baked Tofu', 'Store': 'Madison Co-op', 'Product': 'Garlic Powder'}
-{'Recipe': 'Crispy Baked Tofu', 'Store': 'Whole Foods', 'Product': 'Avocado Oil'}
+{'Recipe': 'Crispy Baked Tofu', 'Store': 'Madison Co-op', 'Product': 'Black Pepper'}
+{'Recipe': 'Roasted Broccoli', 'Store': 'Madison Co-op', 'Product': 'Spicy Red Pepper Flakes'}
+{'Recipe': 'Roasted Broccoli', 'Store': 'Madison Co-op', 'Product': 'Black Pepper'}
 {'Recipe': 'Crispy Baked Tofu', 'Store': 'PCC', 'Product': 'Avocado Oil'}
-{'Recipe': 'Crispy Baked Tofu', 'Store': 'Safeway', 'Product': 'Morton Salt Kosher Coarse'}
 {'Recipe': 'Crispy Baked Tofu', 'Store': 'PCC', 'Product': 'Tamari'}
+{'Recipe': 'Roasted Broccoli', 'Store': 'PCC', 'Product': 'Extra Virgin Olive Oil'}
+{'Recipe': 'Fresh Spring Rolls', 'Store': 'QFC', 'Product': 'Huy Fong Chili Garlic Sauce'}
+{'Recipe': 'Crispy Baked Tofu', 'Store': 'Safeway', 'Product': 'Morton Salt Kosher Coarse'}
 {'Recipe': 'Crispy Baked Tofu', 'Store': 'Safeway', 'Product': 'Tamari'}
 {'Recipe': 'Crispy Baked Tofu', 'Store': 'Safeway', 'Product': 'Corn Starch'}
 {'Recipe': 'Crispy Baked Tofu', 'Store': 'Safeway', 'Product': 'Extra Firm Tofu'}
-{'Recipe': 'Crispy Baked Tofu', 'Store': "Trader Joe's", 'Product': 'Extra Firm Tofu'}
-{'Recipe': 'Crispy Baked Tofu', 'Store': 'Madison Co-op', 'Product': 'Black Pepper'}
-{'Recipe': 'Roasted Broccoli', 'Store': 'Madison Co-op', 'Product': 'Spicy Red Pepper Flakes'}
 {'Recipe': 'Roasted Broccoli', 'Store': 'Safeway', 'Product': 'Broccoli'}
 {'Recipe': 'Roasted Broccoli', 'Store': 'Safeway', 'Product': 'Morton Salt Kosher Coarse'}
-{'Recipe': 'Roasted Broccoli', 'Store': 'PCC', 'Product': 'Extra Virgin Olive Oil'}
-{'Recipe': 'Roasted Broccoli', 'Store': 'Grocery Outlet', 'Product': 'Extra Virgin Olive Oil'}
-{'Recipe': 'Roasted Broccoli', 'Store': 'Madison Co-op', 'Product': 'Black Pepper'}
 {'Recipe': 'Fresh Spring Rolls', 'Store': 'Safeway', 'Product': 'Romaine Lettuce'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'Uwajimaya', 'Product': 'Dry rice noodles'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'M2M Mart', 'Product': 'Dry rice noodles'}
 {'Recipe': 'Fresh Spring Rolls', 'Store': 'Safeway', 'Product': 'Carrots'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'M2M Mart', 'Product': 'Toasted Sesame Oil'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'Whole Foods', 'Product': 'Toasted Sesame Oil'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'Uwajimaya', 'Product': 'Rice Wine Vinegar'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'QFC', 'Product': 'Huy Fong Chili Garlic Sauce'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'M2M Mart', 'Product': 'Huy Fong Chili Garlic Sauce'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'Whole Foods', 'Product': 'Lime juice'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'M2M Mart', 'Product': 'Round Rice Paper Sheets'}
 {'Recipe': 'Fresh Spring Rolls', 'Store': 'Safeway', 'Product': 'Granulated Sugar'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'M2M Mart', 'Product': 'Three Crabs Fish Sauce'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'dummy place holder', 'Product': 'Water'}
 {'Recipe': 'Fresh Spring Rolls', 'Store': 'Safeway', 'Product': 'Cucumber'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': "Trader Joe's", 'Product': 'Garlic'}
 {'Recipe': 'Fresh Spring Rolls', 'Store': 'Safeway', 'Product': 'Shredded Carrot'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'Grocery Outlet', 'Product': 'Frozen Shrimp'}
-{'Recipe': 'Fresh Spring Rolls', 'Store': 'Whole Foods', 'Product': 'Frozen Shrimp'}
 {'Recipe': 'Fresh Spring Rolls', 'Store': 'Safeway', 'Product': 'Cilantro'}
+{'Recipe': 'Crispy Baked Tofu', 'Store': "Trader Joe's", 'Product': 'Extra Firm Tofu'}
+{'Recipe': 'Fresh Spring Rolls', 'Store': "Trader Joe's", 'Product': 'Garlic'}
+{'Recipe': 'Fresh Spring Rolls', 'Store': 'Uwajimaya', 'Product': 'Dry rice noodles'}
+{'Recipe': 'Fresh Spring Rolls', 'Store': 'Uwajimaya', 'Product': 'Rice Wine Vinegar'}
+{'Recipe': 'Crispy Baked Tofu', 'Store': 'Whole Foods', 'Product': 'Avocado Oil'}
+{'Recipe': 'Fresh Spring Rolls', 'Store': 'Whole Foods', 'Product': 'Toasted Sesame Oil'}
+{'Recipe': 'Fresh Spring Rolls', 'Store': 'Whole Foods', 'Product': 'Lime juice'}
+{'Recipe': 'Fresh Spring Rolls', 'Store': 'Whole Foods', 'Product': 'Frozen Shrimp'}
 #+end_example
