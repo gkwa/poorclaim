@@ -164,7 +164,7 @@
     MATCH (r:Recipe)-[c:CONTAINS]->(p:Product)
     WHERE id(p) IS NULL
     RETURN r.name AS RecipeName, c.quantity AS Quantity, c.urls AS RecipeUrls
-  title: details about product urls
+  title: list details about product urls
   comment: |
     What the hell is this one...I've forgotten.
 - comment: |
@@ -676,7 +676,7 @@
     WITH recipe
     MATCH (recipe)-[:CONTAINS]->(allProducts)
     RETURN recipe, allProducts;
-  title: fixing data for a single recipe
+  title: fix data for a single recipe
   result_comment: |
     We're hoping for empty result list. If the result set is empty,
     then I've already cleaned up the data.

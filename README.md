@@ -48,7 +48,7 @@ https://www.google.com/search?q=cypher+cheat+sheet
 * [find Thai Curry with regex case insensitively](#find-thai-curry-with-regex-case-insensitively)
 * [list products by type](#list-products-by-type)
 * [list products that I’ve not yet assiged a type to](#list-products-that-ive-not-yet-assiged-a-type-to)
-* [details about product urls](#details-about-product-urls)
+* [list details about product urls](#list-details-about-product-urls)
 * [BAD: tally products with associated brands](#bad-tally-products-with-associated-brands)
 * [find products without associated brands](#find-products-without-associated-brands)
 * [include product brands](#include-product-brands)
@@ -86,7 +86,7 @@ https://www.google.com/search?q=cypher+cheat+sheet
 * [detecting unknown products in a recipe](#detecting-unknown-products-in-a-recipe)
 * [recipe with unknown products](#recipe-with-unknown-products)
 * [cleanup data, find recipes with unknown products](#cleanup-data-find-recipes-with-unknown-products)
-* [fixing data for a single recipe](#fixing-data-for-a-single-recipe)
+* [fix data for a single recipe](#fix-data-for-a-single-recipe)
 * [find stores for recipe ingredients: explore purchases](#find-stores-for-recipe-ingredients-explore-purchases)
 # list all nodes and relations
 
@@ -584,7 +584,7 @@ Results:
 {'p.name': 'Salt and pepper'}
 ```
 
-# details about product urls
+# list details about product urls
 
 What the hell is this one…I've forgotten.
 
@@ -759,16 +759,16 @@ ORDER BY RAND();
 Results:
 
 ``` example
-{'ProductName': 'Ramen Noodles - Dry'}
-{'ProductName': 'Beans - Kidney (Bulk)'}
-{'ProductName': 'Unsalted Tops (Unsalted Salteens)'}
-{'ProductName': 'Turkey (whole)'}
-{'ProductName': 'Soy Sauce - Liquid Aminos'}
-{'ProductName': 'Blueberries - frozen uponina bag'}
+{'ProductName': 'Aroy-D Coconut Milk'}
+{'ProductName': 'Coffee - BB - PLU 8875 (less yums than 8863)'}
+{'ProductName': 'Kikkoman Japanese Noodle Soup Base (Hon Tsuyu)'}
+{'ProductName': 'Boullion - Vegetable Broth Powdered'}
+{'ProductName': 'Boullion - Beef'}
+{'ProductName': 'Semi-pearled Farro'}
+{'ProductName': 'Oil-packed sun-dried tomatoes'}
+{'ProductName': 'Coffee - MTM - PLU 1859 - Fidalgo Bay Organic Fair Trade French Roast - Extra Dark'}
 {'ProductName': "Cornstarch Baby Powder (not Johnson's, they're baddies)"}
-{'ProductName': 'Whole wheat Flour, all-purpose'}
-{'ProductName': 'Nonfat Yogurt (Plain/Blue Bucket)'}
-{'ProductName': 'Quick Rolled Oats / Oats PLU 8485'}
+{'ProductName': 'Turkey (whole)'}
 # ...truncated to 10 for brevity
 ```
 
@@ -1180,16 +1180,16 @@ ORDER BY ProductName;
 Results:
 
 ``` example
-{'ProductName': 'Coconut Oil'}
-{'ProductName': 'Corn on cob'}
 {'ProductName': 'Dashi'}
-{'ProductName': 'Egg yolk'}
-{'ProductName': 'Laksa leaves'}
+{'ProductName': 'Green Bell Pepper'}
+{'ProductName': 'Kaffir Lime'}
+{'ProductName': 'Kalamata Olives'}
 {'ProductName': 'Mirin'}
-{'ProductName': "Newman's Own Sesame Ginger Dressing"}
-{'ProductName': 'Pressed Tofu'}
-{'ProductName': 'Sawtooth Coriander'}
-{'ProductName': 'Toasted sesame flakes'}
+{'ProductName': 'Red Curry Paste'}
+{'ProductName': 'Salt and pepper'}
+{'ProductName': 'Sambal'}
+{'ProductName': 'Spicy dried red chilies'}
+{'ProductName': 'Thai shrimp paste'}
 ```
 
 # BAD: list the entity type the property is assocted with
@@ -1723,7 +1723,7 @@ Results:
 We're hoping for empty result list. If the result set is empty, then
 I've already cleaned up the data.
 
-# fixing data for a single recipe
+# fix data for a single recipe
 
 ``` example
 MATCH (recipe)-[:CONTAINS]->(product)

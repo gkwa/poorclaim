@@ -486,7 +486,7 @@ Results:
 {'p.name': 'Salt and pepper'}
 #+end_example
 
-* details about product urls
+* list details about product urls
 
 What the hell is this one...I've forgotten.
 
@@ -658,16 +658,16 @@ ORDER BY RAND();
 
 Results:
 #+begin_example
-{'ProductName': 'Ramen Noodles - Dry'}
-{'ProductName': 'Beans - Kidney (Bulk)'}
-{'ProductName': 'Unsalted Tops (Unsalted Salteens)'}
-{'ProductName': 'Turkey (whole)'}
-{'ProductName': 'Soy Sauce - Liquid Aminos'}
-{'ProductName': 'Blueberries - frozen uponina bag'}
+{'ProductName': 'Aroy-D Coconut Milk'}
+{'ProductName': 'Coffee - BB - PLU 8875 (less yums than 8863)'}
+{'ProductName': 'Kikkoman Japanese Noodle Soup Base (Hon Tsuyu)'}
+{'ProductName': 'Boullion - Vegetable Broth Powdered'}
+{'ProductName': 'Boullion - Beef'}
+{'ProductName': 'Semi-pearled Farro'}
+{'ProductName': 'Oil-packed sun-dried tomatoes'}
+{'ProductName': 'Coffee - MTM - PLU 1859 - Fidalgo Bay Organic Fair Trade French Roast - Extra Dark'}
 {'ProductName': "Cornstarch Baby Powder (not Johnson's, they're baddies)"}
-{'ProductName': 'Whole wheat Flour, all-purpose'}
-{'ProductName': 'Nonfat Yogurt (Plain/Blue Bucket)'}
-{'ProductName': 'Quick Rolled Oats / Oats PLU 8485'}
+{'ProductName': 'Turkey (whole)'}
 # ...truncated to 10 for brevity
 #+end_example
 
@@ -1070,16 +1070,16 @@ ORDER BY ProductName;
 
 Results:
 #+begin_example
-{'ProductName': 'Coconut Oil'}
-{'ProductName': 'Corn on cob'}
 {'ProductName': 'Dashi'}
-{'ProductName': 'Egg yolk'}
-{'ProductName': 'Laksa leaves'}
+{'ProductName': 'Green Bell Pepper'}
+{'ProductName': 'Kaffir Lime'}
+{'ProductName': 'Kalamata Olives'}
 {'ProductName': 'Mirin'}
-{'ProductName': "Newman's Own Sesame Ginger Dressing"}
-{'ProductName': 'Pressed Tofu'}
-{'ProductName': 'Sawtooth Coriander'}
-{'ProductName': 'Toasted sesame flakes'}
+{'ProductName': 'Red Curry Paste'}
+{'ProductName': 'Salt and pepper'}
+{'ProductName': 'Sambal'}
+{'ProductName': 'Spicy dried red chilies'}
+{'ProductName': 'Thai shrimp paste'}
 #+end_example
 
 * BAD: list the entity type the property is assocted with
@@ -1597,7 +1597,7 @@ Results:
 We're hoping for empty result list. If the result set is empty,
 then I've already cleaned up the data.
 
-* fixing data for a single recipe
+* fix data for a single recipe
 
 
 #+begin_example
