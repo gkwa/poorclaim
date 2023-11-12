@@ -83,7 +83,7 @@
     WITH p.name AS productName, COUNT(p) AS productCount
     WHERE productCount > 1
     RETURN COUNT(productCount) AS totalDuplicateProducts
-  title: count entities with the same product name
+  title: count products with the same name
 - cypher_query: |
     MATCH (p:Product)
     WITH p.name AS productName, p.urls AS productUrls
@@ -103,6 +103,34 @@
            for each url
               ...
     #+end_example
+- comment: |
+    Ok, so it would be useful too to see what other items have the
+    same name. Thats probably an error.
+  cypher_query: |
+    // fail:
+    // MATCH (n)
+    // WITH n.name AS name, COUNT(n) AS nCount
+    // WHERE nCount > 1
+    // RETURN COUNT(nCount) AS totalDuplicateNs, n as N;
+
+    // ok:
+    MATCH (item)
+    WITH item.name AS itemName, COUNT(item) AS itemCount
+    WHERE itemCount > 1
+    RETURN COUNT(itemCount) AS totalDuplicateItems, COLLECT(itemName) AS duplicateItemNames
+  title: count entities---Product or Store or Recipe---with the same name
+- comment: |
+    Q: Ok, that works great, but now why are the results grouped?
+
+    A: this why we need unwind...i think.
+  cypher_query: |
+    MATCH (item)
+    WITH item.name AS itemName, COUNT(item) AS itemCount
+    WHERE itemCount > 1
+    WITH COUNT(itemCount) AS totalDuplicateItems, COLLECT(itemName) AS duplicateItemNames
+    UNWIND duplicateItemNames AS duplicateItemName
+    RETURN totalDuplicateItems, duplicateItemName
+  title: count entities---Product or Store or Recipe---with the same name as separate record
 - comment: |
     BAD: list relations, not just CONTAINS and show relation
     properties.

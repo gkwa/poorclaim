@@ -40,8 +40,10 @@ https://www.google.com/search?q=cypher+cheat+sheet
 * [list unique node types](#list-unique-node-types)
 * [list products with identical names](#list-products-with-identical-names)
 * [count duplicates for each product](#count-duplicates-for-each-product)
-* [count entities with the same product name](#count-entities-with-the-same-product-name)
+* [count products with the same name](#count-products-with-the-same-name)
 * [list all products with their urls](#list-all-products-with-their-urls)
+* [count entities—Product or Store or Recipe—with the same name](#count-entitiesproduct-or-store-or-recipewith-the-same-name)
+* [count entities—Product or Store or Recipe—with the same name as separate record](#count-entitiesproduct-or-store-or-recipewith-the-same-name-as-separate-record)
 * [BAD: list relation entities with properties](#bad-list-relation-entities-with-properties)
 * [list all relations](#list-all-relations)
 * [find Vegan Thai Red Curry](#find-vegan-thai-red-curry)
@@ -308,7 +310,7 @@ Results:
 {'productName': 'Fish Sauce', 'duplicateCount': 1}
 ```
 
-# count entities with the same product name
+# count products with the same name
 
 In other words how much work do I have to do to cleanup my data?
 
@@ -357,6 +359,53 @@ Results:
 
 [cypher UNWINDing a
 list](https://neo4j.com/docs/cypher-manual/current/clauses/unwind/#unwind-unwinding-a-list)
+
+# count entities—Product or Store or Recipe—with the same name
+
+Ok, so it would be useful too to see what other items have the same
+name. Thats probably an error.
+
+``` example
+// fail:
+// MATCH (n)
+// WITH n.name AS name, COUNT(n) AS nCount
+// WHERE nCount > 1
+// RETURN COUNT(nCount) AS totalDuplicateNs, n as N;
+
+// ok:
+MATCH (item)
+WITH item.name AS itemName, COUNT(item) AS itemCount
+WHERE itemCount > 1
+RETURN COUNT(itemCount) AS totalDuplicateItems, COLLECT(itemName) AS duplicateItemNames;
+```
+
+Results:
+
+``` example
+{'totalDuplicateItems': 3, 'duplicateItemNames': ['Pad Thai', 'Fish Sauce']}
+```
+
+# count entities—Product or Store or Recipe—with the same name as separate record
+
+Q: Ok, that works great, but now why are the results grouped?
+
+A: this why we need unwind…i think.
+
+``` example
+MATCH (item)
+WITH item.name AS itemName, COUNT(item) AS itemCount
+WHERE itemCount > 1
+WITH COUNT(itemCount) AS totalDuplicateItems, COLLECT(itemName) AS duplicateItemNames
+UNWIND duplicateItemNames AS duplicateItemName
+RETURN totalDuplicateItems, duplicateItemName;
+```
+
+Results:
+
+``` example
+{'totalDuplicateItems': 3, 'duplicateItemName': 'Pad Thai'}
+{'totalDuplicateItems': 3, 'duplicateItemName': 'Fish Sauce'}
+```
 
 # BAD: list relation entities with properties
 
@@ -832,16 +881,16 @@ ORDER BY RAND();
 Results:
 
 ``` example
+{'ProductName': 'Rice Wine Vinegar - Kikkoman Mirin'}
+{'ProductName': 'Tomato Paste - 6 oz can'}
+{'ProductName': "Ice cream double-fudge brownie Dreyer's slow-churned"}
+{'ProductName': 'Salmon - Still Frozen in the Shrink Wrap, 2 or 3 lbs'}
+{'ProductName': 'Raisins - Bulk baby, bulk'}
+{'ProductName': 'Rice - Wild'}
 {'ProductName': 'Oil-packed sun-dried tomatoes'}
-{'ProductName': 'Coconut Milk - 13.5 oz can'}
-{'ProductName': 'Dino Kale (ugly spinach)'}
-{'ProductName': 'Yeast (Active Dry)'}
-{'ProductName': 'Ka-Me Whole Peeled Straw Mushrooms'}
-{'ProductName': 'Semi-pearled Farro'}
-{'ProductName': 'Tomato Sauce - 15 oz can'}
-{'ProductName': 'A.1. Sauce'}
-{'ProductName': 'Whole wheat Flour, all-purpose'}
-{'ProductName': 'Coffee - Taylor - PLU 8868'}
+{'ProductName': 'Almonds - bulk roasted or raw -- whichever is cheaper'}
+{'ProductName': 'Red, Organic Kidney Beans, 15 Oz'}
+{'ProductName': 'Reynolds Parchment Paper Genuine Non-Stick 45 Sq. Ft.'}
 # ...truncated to 10 for brevity
 ```
 
@@ -1360,16 +1409,16 @@ ORDER BY ProductName;
 Results:
 
 ``` example
-{'ProductName': 'Candlenuts'}
-{'ProductName': 'Dried Thai Chilis'}
+{'ProductName': 'Corn on cob'}
 {'ProductName': 'Egg yolk'}
-{'ProductName': 'Mild dried red chilies'}
-{'ProductName': "Newman's Own Sesame Ginger Dressing"}
-{'ProductName': 'Red Curry Paste'}
-{'ProductName': 'Thai Black Soy Sauce'}
+{'ProductName': 'Fried shallots'}
+{'ProductName': 'Kaffir Lime'}
+{'ProductName': 'Salt and pepper'}
+{'ProductName': 'Sambal'}
+{'ProductName': 'Thai chili'}
 {'ProductName': 'Thai shrimp paste'}
-{'ProductName': 'Tofu puffs'}
-{'ProductName': 'Unsweetened Nut Butter'}
+{'ProductName': 'Tsuyu'}
+{'ProductName': 'Turmeric'}
 ```
 
 # BAD: list the entity type the property is assocted with
