@@ -12,7 +12,7 @@
     MATCH (p:Product)
     WHERE p.name = 'Ground Cumin'
     RETURN p
-  title: find cumin in my list of proucts
+  title: find cumin in my list of products
 - cypher_query: |
     MATCH (n:Product) RETURN n
   limit: 10
@@ -620,7 +620,7 @@
     MATCH (recipe)-[:CONTAINS]->(allIngredients:Product)
     RETURN recipe.name AS RecipeName, recipe.urls AS RecipeURLs, COLLECT(DISTINCT allIngredients.name) AS AllIngredients
     ORDER BY toLower(recipe.name);
-  title: ingredients for chicken stock recipes
+  title: recipes that call for chicken stock
   comment: |
     Loop over all recipes that call for chicken stock and show their
     ingredients.
@@ -676,3 +676,12 @@
   title: fixing data for a single recipe
   result_comment: |
     We're hoping for empty result list.
+- cypher_query: |
+    MATCH (store:Store)-[:PURCHASE_AT]-(purchasedProduct:Product)-[:CONTAINS]-(recipe:Recipe)
+    WHERE recipe.name IN ['Crispy Baked Tofu', 'Roasted Broccoli', 'Fresh Spring Rolls']
+    RETURN recipe.name, store.name, purchasedProduct.name AS ingredient
+  title: 'find stores for recipe ingredients: explore purchases'
+  comment: |
+    If I were to make Crispy Baked Tofu, Roasted Broccoli and Fresh
+    Spring Rolls, then where would I need to go to get the
+    ingredients?
