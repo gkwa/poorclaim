@@ -399,6 +399,16 @@
     RETURN COUNT(p) AS ProductCount
   title: dammit this is tedious, how much cleanup remains?
 - comment: |
+  cypher_query: |
+    MATCH (p:Product)
+    WHERE NOT (p)-[:PURCHASE_AT]->(:Store)
+    WITH p.name AS ProductName, count(p) AS Count
+    ORDER BY toLower(ProductName)
+    WITH COLLECT({ProductName: ProductName, Count: Count}) AS products
+    UNWIND RANGE(0, SIZE(products)-1) AS ItemNumber
+    RETURN ItemNumber + 1 AS ItemNumber, products[ItemNumber].ProductName AS ProductName
+  title: list count of items not associated with a store
+- comment: |
     list products that don't have a store associated with them, but
     limit to 10
 

@@ -65,6 +65,7 @@ https://www.google.com/search?q=cypher+cheat+sheet
 * [find products with stores for each](#find-products-with-stores-for-each)
 * [find product purchasing info](#find-product-purchasing-info)
 * [dammit this is tedious, how much cleanup remains?](#dammit-this-is-tedious-how-much-cleanup-remains)
+* [list count of items not associated with a store](#list-count-of-items-not-associated-with-a-store)
 * [find purchasing info for 10 products](#find-purchasing-info-for-10-products)
 * [BAD: list the entity type the property is assocted with](#bad-list-the-entity-type-the-property-is-assocted-with)
 * [GOOD: list the entity type the property is assocted with](#good-list-the-entity-type-the-property-is-assocted-with)
@@ -760,16 +761,16 @@ ORDER BY RAND();
 Results:
 
 ``` example
-{'ProductName': 'Signature Select Garbanzo Beans - 15 Oz'}
-{'ProductName': 'Sweet BBQ Pre-Marinated Super Firm Baked Tofu'}
-{'ProductName': 'Coffee - MTM - PLU 1859 - Fidalgo Bay Organic Fair Trade French Roast - Extra Dark'}
-{'ProductName': 'Chicken Broth - 32 Oz'}
-{'ProductName': 'Coffee / MTM / PLU 8368 / Decaf / Decaf / Decaf Kind Unknown'}
-{'ProductName': 'Strong Roots Kale & Quinoa Burger'}
-{'ProductName': "Coffee / BB's 1st preference / BB / PLU 8863 / Equal Exchange / Peruvian"}
-{'ProductName': 'Coffee - T - Decaf'}
-{'ProductName': 'Coconut Milk - 13.5 oz can'}
-{'ProductName': 'Black Beans (15 oz can)'}
+{'ProductName': "Dave's Seed Bread"}
+{'ProductName': 'Cleanser - Bon Ami'}
+{'ProductName': 'Whole wheat Flour, all-purpose'}
+{'ProductName': 'WEL-PAC Dashi Kombu Dried Seaweed'}
+{'ProductName': 'Salmon - Still Frozen in the Shrink Wrap, 2 or 3 lbs'}
+{'ProductName': 'Coffee - BB - PLU 8875 (less yums than 8863)'}
+{'ProductName': 'Kikkoman Japanese Noodle Soup Base (Hon Tsuyu)'}
+{'ProductName': 'Yeast (Active Dry)'}
+{'ProductName': "Ice cream double-fudge brownie Dreyer's slow-churned"}
+{'ProductName': 'Sun Dried Tomatoes - sun dried - real big jar'}
 # ...truncated to 10 for brevity
 ```
 
@@ -1115,6 +1116,68 @@ Results:
 {'ProductCount': 45}
 ```
 
+# list count of items not associated with a store
+
+``` example
+MATCH (p:Product)
+WHERE NOT (p)-[:PURCHASE_AT]->(:Store)
+WITH p.name AS ProductName, count(p) AS Count
+ORDER BY toLower(ProductName)
+WITH COLLECT({ProductName: ProductName, Count: Count}) AS products
+UNWIND RANGE(0, SIZE(products)-1) AS ItemNumber
+RETURN ItemNumber + 1 AS ItemNumber, products[ItemNumber].ProductName AS ProductName;
+```
+
+Results:
+
+``` example
+{'ItemNumber': 1, 'ProductName': 'Aroy-D Coconut Milk'}
+{'ItemNumber': 2, 'ProductName': 'Black beans'}
+{'ItemNumber': 3, 'ProductName': 'Candlenuts'}
+{'ItemNumber': 4, 'ProductName': 'Coconut Aminos'}
+{'ItemNumber': 5, 'ProductName': 'Coconut Oil'}
+{'ItemNumber': 6, 'ProductName': 'Cooking Oil'}
+{'ItemNumber': 7, 'ProductName': 'Corn on cob'}
+{'ItemNumber': 8, 'ProductName': 'Dashi'}
+{'ItemNumber': 9, 'ProductName': 'Dried Thai Chilis'}
+{'ItemNumber': 10, 'ProductName': 'Egg yolk'}
+{'ItemNumber': 11, 'ProductName': 'Fermented shrimp paste'}
+{'ItemNumber': 12, 'ProductName': 'Fish Sauce'}
+{'ItemNumber': 13, 'ProductName': 'Fresno chilies'}
+{'ItemNumber': 14, 'ProductName': 'Fried shallots'}
+{'ItemNumber': 15, 'ProductName': 'Ice-cold water'}
+{'ItemNumber': 16, 'ProductName': 'Kaffir Lime'}
+{'ItemNumber': 17, 'ProductName': 'Kalamata Olives'}
+{'ItemNumber': 18, 'ProductName': 'Korean Wild Sesame Oil'}
+{'ItemNumber': 19, 'ProductName': 'Laksa leaves'}
+{'ItemNumber': 20, 'ProductName': 'Makrut lime zest'}
+{'ItemNumber': 21, 'ProductName': 'Mild dried red chilies'}
+{'ItemNumber': 22, 'ProductName': 'Miso'}
+{'ItemNumber': 23, 'ProductName': "Newman's Own Sesame Ginger Dressing"}
+{'ItemNumber': 24, 'ProductName': 'Oil-packed sun-dried tomatoes'}
+{'ItemNumber': 25, 'ProductName': 'Red Curry Paste'}
+{'ItemNumber': 26, 'ProductName': 'Rice vinegar'}
+{'ItemNumber': 27, 'ProductName': 'Rosemary'}
+{'ItemNumber': 28, 'ProductName': 'Salt and pepper'}
+{'ItemNumber': 29, 'ProductName': 'Salted Turnip'}
+{'ItemNumber': 30, 'ProductName': 'Sambal'}
+{'ItemNumber': 31, 'ProductName': 'Sawtooth Coriander'}
+{'ItemNumber': 32, 'ProductName': 'Sea Salt'}
+{'ItemNumber': 33, 'ProductName': 'Shrimp Paste'}
+{'ItemNumber': 34, 'ProductName': 'Spicy dried red chilies'}
+{'ItemNumber': 35, 'ProductName': 'Straw Mushrooms'}
+{'ItemNumber': 36, 'ProductName': 'Tamarind Paste'}
+{'ItemNumber': 37, 'ProductName': 'Thai chili'}
+{'ItemNumber': 38, 'ProductName': 'Thai shrimp paste'}
+{'ItemNumber': 39, 'ProductName': 'Toasted sesame flakes'}
+{'ItemNumber': 40, 'ProductName': 'Tofu puffs'}
+{'ItemNumber': 41, 'ProductName': 'Tsuyu'}
+{'ItemNumber': 42, 'ProductName': 'Turmeric'}
+{'ItemNumber': 43, 'ProductName': 'Unsweetened Nut Butter'}
+{'ItemNumber': 44, 'ProductName': 'Wasabi'}
+{'ItemNumber': 45, 'ProductName': 'Yellow Bell Pepper'}
+```
+
 # find purchasing info for 10 products
 
 list products that don't have a store associated with them, but limit to
@@ -1177,16 +1240,16 @@ ORDER BY ProductName;
 Results:
 
 ``` example
-{'ProductName': 'Candlenuts'}
-{'ProductName': 'Coconut Aminos'}
-{'ProductName': 'Cooking Oil'}
-{'ProductName': 'Dashi'}
-{'ProductName': 'Fish Sauce'}
+{'ProductName': 'Fermented shrimp paste'}
+{'ProductName': 'Ice-cold water'}
+{'ProductName': 'Kaffir Lime'}
+{'ProductName': 'Kalamata Olives'}
 {'ProductName': 'Korean Wild Sesame Oil'}
 {'ProductName': 'Salt and pepper'}
-{'ProductName': 'Salted Turnip'}
-{'ProductName': 'Thai shrimp paste'}
-{'ProductName': 'Toasted sesame flakes'}
+{'ProductName': 'Shrimp Paste'}
+{'ProductName': 'Straw Mushrooms'}
+{'ProductName': 'Thai chili'}
+{'ProductName': 'Yellow Bell Pepper'}
 ```
 
 # BAD: list the entity type the property is assocted with
