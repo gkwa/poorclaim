@@ -824,16 +824,16 @@ ORDER BY RAND();
 Results:
 
 ``` example
+{'ProductName': 'Soy Sauce - Liquid Aminos'}
+{'ProductName': 'Sweet BBQ Pre-Marinated Super Firm Baked Tofu'}
+{'ProductName': 'Primo Taglio Cheese Goat - 4 Oz'}
+{'ProductName': 'Coffee - MTM - PLU 1859 - Fidalgo Bay Organic Fair Trade French Roast - Extra Dark'}
+{'ProductName': 'Eggs (Dozen)'}
+{'ProductName': 'Lemon Zest (grated lemon rind)'}
 {'ProductName': 'Black Beans (15 oz can)'}
-{'ProductName': 'Blueberries - frozen uponina bag'}
-{'ProductName': 'Kidney Beans - S&W'}
-{'ProductName': 'Salmon - Still Frozen in the Shrink Wrap, 2 or 3 lbs'}
-{'ProductName': 'Coffee - T - PLU 8853'}
-{'ProductName': 'Dry-Roasted Peanuts'}
-{'ProductName': 'Quick Rolled Oats / Oats PLU 8485'}
-{'ProductName': "Duke's Mayonnaise"}
-{'ProductName': 'Chili Pepper, Chipotle, Ground'}
-{'ProductName': 'Sun Dried Tomatoes - sun dried - real big jar'}
+{'ProductName': 'Tomato Sauce - 15 oz can'}
+{'ProductName': 'Coconut Milk - 13.5 oz can'}
+{'ProductName': 'Unsalted Tops (Unsalted Salteens)'}
 # ...truncated to 10 for brevity
 ```
 
@@ -1352,16 +1352,16 @@ ORDER BY ProductName;
 Results:
 
 ``` example
+{'ProductName': 'Aroy-D Coconut Milk'}
 {'ProductName': 'Candlenuts'}
-{'ProductName': 'Egg yolk'}
-{'ProductName': 'Fried shallots'}
-{'ProductName': 'Kalamata Olives'}
+{'ProductName': 'Cooking Oil'}
+{'ProductName': 'Corn on cob'}
+{'ProductName': 'Miso'}
+{'ProductName': 'Red Curry Paste'}
 {'ProductName': 'Rosemary'}
-{'ProductName': 'Salt and pepper'}
-{'ProductName': 'Sambal'}
-{'ProductName': 'Sawtooth Coriander'}
-{'ProductName': 'Spicy dried red chilies'}
-{'ProductName': 'Yellow Bell Pepper'}
+{'ProductName': 'Thai shrimp paste'}
+{'ProductName': 'Tsuyu'}
+{'ProductName': 'Wasabi'}
 ```
 
 # BAD: list the entity type the property is assocted with
