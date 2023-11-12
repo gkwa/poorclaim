@@ -32,6 +32,7 @@ https://memgraph.com/blog/cypher-cheat-sheet
 https://www.google.com/search?q=cypher+cheat+sheet
 * [list all nodes and relations](#list-all-nodes-and-relations)
 * [list all products](#list-all-products)
+* [list all products](#list-all-products-1)
 * [find cumin in my list of products](#find-cumin-in-my-list-of-products)
 * [list product entities with properties](#list-product-entities-with-properties)
 * [list all product names](#list-all-product-names)
@@ -138,6 +139,35 @@ Results:
 {'p': {'name': 'Almond Milk', 'type': 'Almond Milk'}}
 {'p': {'name': 'Almonds - bulk roasted or raw -- whichever is cheaper', 'type': 'Almonds'}}
 {'p': {'name': 'Angkor Cambodian Food Paste Lemongrass', 'type': 'Food Paste'}}
+# ...truncated to 5 for brevity
+```
+
+# list all products
+
+In the realm of cypher, the variable, denoted as 'p' or product, is a
+matter of nomenclature flexibility, allowing for usage in both concise
+or extensive forms, depending on the intricacies of the cypher context.
+
+When engaged in protracted cypher queries, brevity in naming may be
+favored.
+
+However, when interfacing with the Golang driver and conveying results,
+employing more elucidative names, such as 'product,' enhances the
+readability of the Go code.
+
+``` example
+MATCH (product:Product)
+RETURN product;
+```
+
+Results:
+
+``` example
+{'product': {'name': 'A.1. Sauce', 'type': 'A.1. Sauce'}}
+{'product': {'name': 'Allspice', 'type': 'Allspice'}}
+{'product': {'name': 'Almond Milk', 'type': 'Almond Milk'}}
+{'product': {'name': 'Almonds - bulk roasted or raw -- whichever is cheaper', 'type': 'Almonds'}}
+{'product': {'name': 'Angkor Cambodian Food Paste Lemongrass', 'type': 'Food Paste'}}
 # ...truncated to 5 for brevity
 ```
 
@@ -794,16 +824,16 @@ ORDER BY RAND();
 Results:
 
 ``` example
-{'ProductName': 'Rolled Oats / Oats / Old Fashioned / PLU 8490'}
 {'ProductName': 'Black Beans (15 oz can)'}
+{'ProductName': 'Blueberries - frozen uponina bag'}
+{'ProductName': 'Kidney Beans - S&W'}
+{'ProductName': 'Salmon - Still Frozen in the Shrink Wrap, 2 or 3 lbs'}
 {'ProductName': 'Coffee - T - PLU 8853'}
-{'ProductName': 'Large Shrimp (not frozen)'}
-{'ProductName': 'Coffee - MTM - Kivu Dark Espresso Roast'}
+{'ProductName': 'Dry-Roasted Peanuts'}
 {'ProductName': 'Quick Rolled Oats / Oats PLU 8485'}
-{'ProductName': 'Unsalted Tops (Unsalted Salteens)'}
-{'ProductName': 'Aroy-D Red Curry Paste'}
-{'ProductName': 'Marketspice Tea Decaf - 2 Oz for Mommy'}
-{'ProductName': 'Barbecue sauce - Baby Rays bbq sauce'}
+{'ProductName': "Duke's Mayonnaise"}
+{'ProductName': 'Chili Pepper, Chipotle, Ground'}
+{'ProductName': 'Sun Dried Tomatoes - sun dried - real big jar'}
 # ...truncated to 10 for brevity
 ```
 
@@ -1322,15 +1352,15 @@ ORDER BY ProductName;
 Results:
 
 ``` example
-{'ProductName': 'Cooking Oil'}
-{'ProductName': 'Dashi'}
-{'ProductName': 'Makrut lime zest'}
-{'ProductName': 'Mild dried red chilies'}
+{'ProductName': 'Candlenuts'}
+{'ProductName': 'Egg yolk'}
+{'ProductName': 'Fried shallots'}
+{'ProductName': 'Kalamata Olives'}
 {'ProductName': 'Rosemary'}
+{'ProductName': 'Salt and pepper'}
 {'ProductName': 'Sambal'}
-{'ProductName': 'Thai shrimp paste'}
-{'ProductName': 'Turmeric'}
-{'ProductName': 'Unsweetened Nut Butter'}
+{'ProductName': 'Sawtooth Coriander'}
+{'ProductName': 'Spicy dried red chilies'}
 {'ProductName': 'Yellow Bell Pepper'}
 ```
 

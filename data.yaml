@@ -10,8 +10,25 @@
     entities' to connect them.
 - cypher_query: |
     MATCH (p:Product)
-    RETURN p
+    RETURN p;
   limit: 5
+  title: list all products
+- cypher_query: |
+    MATCH (product:Product)
+    RETURN product;
+  limit: 5
+  comment: |
+    In the realm of cypher, the variable, denoted as 'p' or product,
+    is a matter of nomenclature flexibility, allowing for usage in
+    both concise or extensive forms, depending on the intricacies of
+    the cypher context.
+
+    When engaged in protracted cypher queries, brevity in naming may
+    be favored.
+
+    However, when interfacing with the Golang driver and
+    conveying results, employing more elucidative names, such as
+    'product,' enhances the readability of the Go code.
   title: list all products
 - cypher_query: |
     MATCH (p:Product)
