@@ -66,6 +66,7 @@ https://www.google.com/search?q=cypher+cheat+sheet
 * [find product purchasing info](#find-product-purchasing-info)
 * [dammit this is tedious, how much cleanup remains?](#dammit-this-is-tedious-how-much-cleanup-remains)
 * [list count of items not associated with a store](#list-count-of-items-not-associated-with-a-store)
+* [items not associated with a store (count)](#items-not-associated-with-a-store-count)
 * [find purchasing info for 10 products](#find-purchasing-info-for-10-products)
 * [BAD: list the entity type the property is assocted with](#bad-list-the-entity-type-the-property-is-assocted-with)
 * [GOOD: list the entity type the property is assocted with](#good-list-the-entity-type-the-property-is-assocted-with)
@@ -761,16 +762,16 @@ ORDER BY RAND();
 Results:
 
 ``` example
-{'ProductName': "Dave's Seed Bread"}
-{'ProductName': 'Cleanser - Bon Ami'}
-{'ProductName': 'Whole wheat Flour, all-purpose'}
-{'ProductName': 'WEL-PAC Dashi Kombu Dried Seaweed'}
-{'ProductName': 'Salmon - Still Frozen in the Shrink Wrap, 2 or 3 lbs'}
+{'ProductName': 'Malt-o-Meal'}
+{'ProductName': 'Nonfat Yogurt (Plain/Blue Bucket)'}
+{'ProductName': 'German Mustard medium hot in jar w/ handle'}
+{'ProductName': 'Coffee - T - PLU 8853'}
 {'ProductName': 'Coffee - BB - PLU 8875 (less yums than 8863)'}
-{'ProductName': 'Kikkoman Japanese Noodle Soup Base (Hon Tsuyu)'}
-{'ProductName': 'Yeast (Active Dry)'}
-{'ProductName': "Ice cream double-fudge brownie Dreyer's slow-churned"}
-{'ProductName': 'Sun Dried Tomatoes - sun dried - real big jar'}
+{'ProductName': 'Rice - Wild'}
+{'ProductName': 'Coffee / MTM / PLU 5820 / Kivu / Kivu Dark French Roast'}
+{'ProductName': 'Almonds - bulk roasted or raw -- whichever is cheaper'}
+{'ProductName': 'Chicken Broth - 32 Oz'}
+{'ProductName': 'Boullion - Beef'}
 # ...truncated to 10 for brevity
 ```
 
@@ -1178,6 +1179,68 @@ Results:
 {'ItemNumber': 45, 'ProductName': 'Yellow Bell Pepper'}
 ```
 
+# items not associated with a store (count)
+
+``` example
+MATCH (p:Product)
+WHERE NOT (p)-[:PURCHASE_AT]->(:Store)
+WITH p.name AS ProductName, count(p) AS Count
+ORDER BY toLower(ProductName)
+WITH COLLECT({ProductName: ProductName, Count: Count}) AS products
+UNWIND RANGE(0, SIZE(products)-1) AS ItemNumber
+RETURN (ItemNumber + 1) + '. ' + products[ItemNumber].ProductName;
+```
+
+Results:
+
+``` example
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '1. Aroy-D Coconut Milk'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '2. Black beans'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '3. Candlenuts'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '4. Coconut Aminos'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '5. Coconut Oil'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '6. Cooking Oil'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '7. Corn on cob'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '8. Dashi'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '9. Dried Thai Chilis'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '10. Egg yolk'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '11. Fermented shrimp paste'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '12. Fish Sauce'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '13. Fresno chilies'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '14. Fried shallots'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '15. Ice-cold water'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '16. Kaffir Lime'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '17. Kalamata Olives'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '18. Korean Wild Sesame Oil'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '19. Laksa leaves'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '20. Makrut lime zest'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '21. Mild dried red chilies'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '22. Miso'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": "23. Newman's Own Sesame Ginger Dressing"}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '24. Oil-packed sun-dried tomatoes'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '25. Red Curry Paste'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '26. Rice vinegar'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '27. Rosemary'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '28. Salt and pepper'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '29. Salted Turnip'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '30. Sambal'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '31. Sawtooth Coriander'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '32. Sea Salt'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '33. Shrimp Paste'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '34. Spicy dried red chilies'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '35. Straw Mushrooms'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '36. Tamarind Paste'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '37. Thai chili'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '38. Thai shrimp paste'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '39. Toasted sesame flakes'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '40. Tofu puffs'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '41. Tsuyu'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '42. Turmeric'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '43. Unsweetened Nut Butter'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '44. Wasabi'}
+{"(ItemNumber + 1) + '. ' + products[ItemNumber].ProductName": '45. Yellow Bell Pepper'}
+```
+
 # find purchasing info for 10 products
 
 list products that don't have a store associated with them, but limit to
@@ -1240,16 +1303,16 @@ ORDER BY ProductName;
 Results:
 
 ``` example
+{'ProductName': 'Coconut Oil'}
+{'ProductName': 'Cooking Oil'}
+{'ProductName': 'Dashi'}
 {'ProductName': 'Fermented shrimp paste'}
-{'ProductName': 'Ice-cold water'}
+{'ProductName': 'Fish Sauce'}
+{'ProductName': 'Fresno chilies'}
 {'ProductName': 'Kaffir Lime'}
-{'ProductName': 'Kalamata Olives'}
-{'ProductName': 'Korean Wild Sesame Oil'}
-{'ProductName': 'Salt and pepper'}
-{'ProductName': 'Shrimp Paste'}
-{'ProductName': 'Straw Mushrooms'}
-{'ProductName': 'Thai chili'}
-{'ProductName': 'Yellow Bell Pepper'}
+{'ProductName': 'Laksa leaves'}
+{'ProductName': 'Sawtooth Coriander'}
+{'ProductName': 'Tamarind Paste'}
 ```
 
 # BAD: list the entity type the property is assocted with
