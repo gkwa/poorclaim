@@ -769,16 +769,16 @@ ORDER BY RAND();
 
 Results:
 #+begin_example
-{"ProductName": "Eggs - Liquid Egg Whites (Blue Chikn)"}
-{"ProductName": "Duke\u0027s Mayonnaise"}
-{"ProductName": "Coffee - T - PLU 8853"}
+{"ProductName": "Sweet BBQ Pre-Marinated Super Firm Baked Tofu"}
+{"ProductName": "Coffee - BB - PLU 8875 (less yums than 8863)"}
+{"ProductName": "chardonnay - terres dorees"}
 {"ProductName": "Ball powder, smells nice"}
-{"ProductName": "Strong Roots Kale \u0026 Quinoa Burger"}
-{"ProductName": "Flour - White, all-purpose (Unbleached if possible but no bigs)"}
-{"ProductName": "Nonfat Yogurt (Plain/Blue Bucket)"}
-{"ProductName": "Unsalted Tops (Unsalted Salteens)"}
-{"ProductName": "Marketspice Tea Decaf - 2 Oz for Mommy"}
-{"ProductName": "Kikkoman Japanese Noodle Soup Base (Hon Tsuyu)"}
+{"ProductName": "WEL-PAC Dashi Kombu Dried Seaweed"}
+{"ProductName": "Chili Pepper, Ancho, Ground"}
+{"ProductName": "Granola \u0027cookies\u0027"}
+{"ProductName": "Ka-Me Whole Peeled Straw Mushrooms"}
+{"ProductName": "Soy Sauce - Liquid Aminos"}
+{"ProductName": "Chicken Broth - 32 Oz"}
 # ...truncated to 10 for brevity
 #+end_example
 
@@ -1384,16 +1384,16 @@ ORDER BY ProductName;
 
 Results:
 #+begin_example
-{"ProductName": "Black beans"}
+{"ProductName": "Candlenuts"}
 {"ProductName": "Corn on cob"}
-{"ProductName": "Fried shallots"}
-{"ProductName": "Korean Wild Sesame Oil"}
+{"ProductName": "Cotija cheese"}
+{"ProductName": "Dashi"}
+{"ProductName": "Fire roasted diced tomatoes"}
+{"ProductName": "Frozen Salmon"}
 {"ProductName": "Laksa leaves"}
-{"ProductName": "Miso"}
-{"ProductName": "Salt and pepper"}
-{"ProductName": "Sawtooth Coriander"}
-{"ProductName": "Tortilla chips"}
-{"ProductName": "Vegetable broth"}
+{"ProductName": "Olive oil"}
+{"ProductName": "Sliced radishes"}
+{"ProductName": "Turmeric"}
 #+end_example
 
 * BAD: list the entity type the property is assocted with
