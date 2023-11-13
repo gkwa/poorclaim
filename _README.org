@@ -252,7 +252,7 @@ Results:
 
 [[https://neo4j.com/docs/cypher-manual/current/clauses/unwind/#unwind-unwinding-a-list][cypher UNWINDing a list]]
 
-* count entities---Product or Store or Recipe---with the same name
+* count entities namely Product, Store or Recipe(s) with the same name
 
 Ok, so it would be useful too to see what other items have the
 same name. Thats probably an error.
@@ -276,7 +276,7 @@ Results:
 {"duplicateItemNames": ["Pad Thai", "Fish Sauce"], "totalDuplicateItems": 3}
 #+end_example
 
-* count entities---Product or Store or Recipe---with the same name as separate record
+* count entities namely Product, Store or Recipe(s) with the same name as separate record
 
 Q: Ok, that works great, but now why are the results grouped?
 
@@ -769,16 +769,16 @@ ORDER BY RAND();
 
 Results:
 #+begin_example
-{"ProductName": "Quick Rolled Oats / Oats PLU 8485"}
-{"ProductName": "Chili Pepper, Chipotle, Ground"}
-{"ProductName": "Rice Wine Vinegar - Kikkoman Mirin"}
-{"ProductName": "Rolled Oats / Oats / Old Fashioned / PLU 8490"}
-{"ProductName": "Primo Taglio Cheese Goat - 4 Oz"}
-{"ProductName": "Ramen Noodles - Dry"}
-{"ProductName": "Cleanser - Bon Ami"}
-{"ProductName": "Whole wheat Flour, all-purpose"}
-{"ProductName": "Grapes, grape shaped"}
 {"ProductName": "Large Shrimp (not frozen)"}
+{"ProductName": "Eggs (Dozen)"}
+{"ProductName": "Unsalted Tops (Unsalted Salteens)"}
+{"ProductName": "Rice - Wild"}
+{"ProductName": "Semi-pearled Farro"}
+{"ProductName": "Broth - Beef - low sodium"}
+{"ProductName": "Primo Taglio Cheese Goat - 4 Oz"}
+{"ProductName": "Marketspice Tea Decaf - 2 Oz for Mommy"}
+{"ProductName": "Coffee - T - PLU 8852 T likes it, BB says YUX!"}
+{"ProductName": "Honey in glass jar?"}
 # ...truncated to 10 for brevity
 #+end_example
 
@@ -1384,16 +1384,16 @@ ORDER BY ProductName;
 
 Results:
 #+begin_example
-{"ProductName": "Chipotle Powder"}
-{"ProductName": "Fish Sauce"}
+{"ProductName": "Cooking Oil"}
+{"ProductName": "Corn on cob"}
+{"ProductName": "Fire roasted diced tomatoes"}
 {"ProductName": "Fried shallots"}
-{"ProductName": "Newman\u0027s Own Sesame Ginger Dressing"}
 {"ProductName": "Olive oil"}
+{"ProductName": "Rosemary"}
+{"ProductName": "Sambal"}
 {"ProductName": "Sawtooth Coriander"}
-{"ProductName": "Sliced radishes"}
-{"ProductName": "Thai Black Soy Sauce"}
 {"ProductName": "Thai chili"}
-{"ProductName": "Tortilla chips"}
+{"ProductName": "Thai shrimp paste"}
 #+end_example
 
 * BAD: list the entity type the property is assocted with

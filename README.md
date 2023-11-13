@@ -42,8 +42,8 @@ https://www.google.com/search?q=cypher+cheat+sheet
 * [count duplicates for each product](#count-duplicates-for-each-product)
 * [count products with the same name](#count-products-with-the-same-name)
 * [list all products with their urls](#list-all-products-with-their-urls)
-* [count entities—Product or Store or Recipe—with the same name](#count-entitiesproduct-or-store-or-recipewith-the-same-name)
-* [count entities—Product or Store or Recipe—with the same name as separate record](#count-entitiesproduct-or-store-or-recipewith-the-same-name-as-separate-record)
+* [count entities namely Product, Store or Recipe(s) with the same name](#count-entities-namely-product-store-or-recipes-with-the-same-name)
+* [count entities namely Product, Store or Recipe(s) with the same name as separate record](#count-entities-namely-product-store-or-recipes-with-the-same-name-as-separate-record)
 * [BAD: list relation entities with properties](#bad-list-relation-entities-with-properties)
 * [list all relations](#list-all-relations)
 * [find Vegan Thai Red Curry](#find-vegan-thai-red-curry)
@@ -362,7 +362,7 @@ Results:
 [cypher UNWINDing a
 list](https://neo4j.com/docs/cypher-manual/current/clauses/unwind/#unwind-unwinding-a-list)
 
-# count entities—Product or Store or Recipe—with the same name
+# count entities namely Product, Store or Recipe(s) with the same name
 
 Ok, so it would be useful too to see what other items have the same
 name. Thats probably an error.
@@ -387,7 +387,7 @@ Results:
 {"duplicateItemNames": ["Pad Thai", "Fish Sauce"], "totalDuplicateItems": 3}
 ```
 
-# count entities—Product or Store or Recipe—with the same name as separate record
+# count entities namely Product, Store or Recipe(s) with the same name as separate record
 
 Q: Ok, that works great, but now why are the results grouped?
 
@@ -888,16 +888,16 @@ ORDER BY RAND();
 Results:
 
 ``` example
-{"ProductName": "Quick Rolled Oats / Oats PLU 8485"}
-{"ProductName": "Chili Pepper, Chipotle, Ground"}
-{"ProductName": "Rice Wine Vinegar - Kikkoman Mirin"}
-{"ProductName": "Rolled Oats / Oats / Old Fashioned / PLU 8490"}
-{"ProductName": "Primo Taglio Cheese Goat - 4 Oz"}
-{"ProductName": "Ramen Noodles - Dry"}
-{"ProductName": "Cleanser - Bon Ami"}
-{"ProductName": "Whole wheat Flour, all-purpose"}
-{"ProductName": "Grapes, grape shaped"}
 {"ProductName": "Large Shrimp (not frozen)"}
+{"ProductName": "Eggs (Dozen)"}
+{"ProductName": "Unsalted Tops (Unsalted Salteens)"}
+{"ProductName": "Rice - Wild"}
+{"ProductName": "Semi-pearled Farro"}
+{"ProductName": "Broth - Beef - low sodium"}
+{"ProductName": "Primo Taglio Cheese Goat - 4 Oz"}
+{"ProductName": "Marketspice Tea Decaf - 2 Oz for Mommy"}
+{"ProductName": "Coffee - T - PLU 8852 T likes it, BB says YUX!"}
+{"ProductName": "Honey in glass jar?"}
 # ...truncated to 10 for brevity
 ```
 
@@ -1514,16 +1514,16 @@ ORDER BY ProductName;
 Results:
 
 ``` example
-{"ProductName": "Chipotle Powder"}
-{"ProductName": "Fish Sauce"}
+{"ProductName": "Cooking Oil"}
+{"ProductName": "Corn on cob"}
+{"ProductName": "Fire roasted diced tomatoes"}
 {"ProductName": "Fried shallots"}
-{"ProductName": "Newman\u0027s Own Sesame Ginger Dressing"}
 {"ProductName": "Olive oil"}
+{"ProductName": "Rosemary"}
+{"ProductName": "Sambal"}
 {"ProductName": "Sawtooth Coriander"}
-{"ProductName": "Sliced radishes"}
-{"ProductName": "Thai Black Soy Sauce"}
 {"ProductName": "Thai chili"}
-{"ProductName": "Tortilla chips"}
+{"ProductName": "Thai shrimp paste"}
 ```
 
 # BAD: list the entity type the property is assocted with

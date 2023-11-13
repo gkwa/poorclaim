@@ -118,7 +118,7 @@
     WITH item.name AS itemName, COUNT(item) AS itemCount
     WHERE itemCount > 1
     RETURN COUNT(itemCount) AS totalDuplicateItems, COLLECT(itemName) AS duplicateItemNames
-  title: count entities---Product or Store or Recipe---with the same name
+  title: count entities namely Product, Store or Recipe(s) with the same name
 - comment: |
     Q: Ok, that works great, but now why are the results grouped?
 
@@ -130,7 +130,7 @@
     WITH COUNT(itemCount) AS totalDuplicateItems, COLLECT(itemName) AS duplicateItemNames
     UNWIND duplicateItemNames AS duplicateItemName
     RETURN totalDuplicateItems, duplicateItemName
-  title: count entities---Product or Store or Recipe---with the same name as separate record
+  title: count entities namely Product, Store or Recipe(s) with the same name as separate record
 - comment: |
     BAD: list relations, not just CONTAINS and show relation
     properties.
