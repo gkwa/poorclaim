@@ -440,6 +440,13 @@
     RETURN p.name AS ProductName, s.name AS Store, p.type as Type
   limit: 10
   title: find products with stores for each
+- cypher_query: |
+    MATCH (s:Store { name: "dummy place holder" })-[:PURCHASE_AT]->(p:Product)
+    RETURN p.name
+    ORDER BY toLower(p.name)
+  title: list all products you can purchase at dummy store
+  comment: |
+    These items lack a designated source for purchase.
 - comment: |
     Where the hell do I buy this crap? This is list of products that
     I've not yet assiged a store with the PURCHASE-AT relation.
