@@ -888,16 +888,16 @@ ORDER BY RAND();
 Results:
 
 ``` example
-{"ProductName": "Blueberries - frozen uponina bag"}
-{"ProductName": "Ramen Noodles - Dry"}
-{"ProductName": "Eggs - Liquid Egg Whites (Blue Chikn)"}
-{"ProductName": "Boullion - Vegetable Broth Powdered"}
-{"ProductName": "Beans - Kidney (Bulk)"}
-{"ProductName": "Pinot Grigio - Dry White Wine"}
-{"ProductName": "Ice cream double-fudge brownie Dreyer\u0027s slow-churned"}
-{"ProductName": "chardonnay - terres dorees"}
-{"ProductName": "Fresh flat-leaf parsley"}
+{"ProductName": "Broth - Beef - low sodium"}
 {"ProductName": "Quick Rolled Oats / Oats PLU 8485"}
+{"ProductName": "Chicken Broth - 32 Oz"}
+{"ProductName": "Coffee / MTM / PLU 8368 / Decaf / Decaf / Decaf Kind Unknown"}
+{"ProductName": "Enchilada Sauce - Red"}
+{"ProductName": "Ka-Me Whole Peeled Straw Mushrooms"}
+{"ProductName": "Tortilla - Flour large diameter Don Pancho or Safeway brand"}
+{"ProductName": "Coconut Milk - 13.5 oz can"}
+{"ProductName": "Black, Beluga Lentils"}
+{"ProductName": "Chili Pepper, Ancho, Ground"}
 # ...truncated to 10 for brevity
 ```
 
@@ -1171,9 +1171,6 @@ Results:
 
 These items lack a designated source for purchase.
 
-Note the arrow direction here. This query fails to give what we want see
-next query.
-
 ``` example
 MATCH (s:Store { name: "dummy place holder" })-[:PURCHASE_AT]->(p:Product)
 RETURN p.name
@@ -1184,6 +1181,9 @@ Results:
 
 ``` example
 ```
+
+Note the arrow direction here. This query fails to give what we want see
+next query.
 
 # list all products you can purchase at dummy store
 
@@ -1481,15 +1481,15 @@ ORDER BY ProductName;
 Results:
 
 ``` example
-{"ProductName": "Fried shallots"}
-{"ProductName": "Kaffir Lime"}
-{"ProductName": "Laksa leaves"}
-{"ProductName": "Makrut lime zest"}
-{"ProductName": "Red Curry Paste"}
-{"ProductName": "Shrimp Paste"}
-{"ProductName": "Thai chili"}
+{"ProductName": "Aroy-D Coconut Milk"}
+{"ProductName": "Korean Wild Sesame Oil"}
+{"ProductName": "Mild dried red chilies"}
+{"ProductName": "Rosemary"}
+{"ProductName": "Salted Turnip"}
 {"ProductName": "Tofu puffs"}
-{"ProductName": "Tsuyu"}
+{"ProductName": "Turmeric"}
+{"ProductName": "Unsweetened Nut Butter"}
+{"ProductName": "Wasabi"}
 {"ProductName": "Yellow Bell Pepper"}
 ```
 

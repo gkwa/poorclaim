@@ -447,7 +447,7 @@
   title: list all products you can purchase at dummy store
   comment: |
     These items lack a designated source for purchase.
-
+  footer: |
     Note the arrow direction here. This query fails to give what we
     want see next query.
 - cypher_query: |
