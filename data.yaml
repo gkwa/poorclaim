@@ -207,6 +207,10 @@
     MATCH (product)-[:PURCHASE_AT]->(store:Store)
     RETURN recipe.name as RecipeName, store.name AS StoreName, COLLECT(DISTINCT product) AS Products;
   title: find Thai Curry with regex case insensitively, output full product details
+  comment: |
+    We have a map of store to products list. In Go, we can queue the
+    product list up for each store, then loop over stores to show
+    products we'd need to purchase for each store.
 - cypher_query: |
     MATCH (p:Product)-[:PURCHASE_AT]->(s:Store)
     RETURN p.name AS ProductName, s.name AS Store, p.type as Type
