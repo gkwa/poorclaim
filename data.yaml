@@ -760,7 +760,7 @@
     WHERE product.name IS NULL
     WITH recipe
     MATCH (recipe)-[:CONTAINS]->(allProducts)
-    RETURN recipe.name, allProducts.name;
+    RETURN recipe.name AS RecipeName, allProducts.name AS ProductName;
   comment: |
     This is data cleanup task.
 
@@ -779,7 +779,7 @@
     WHERE product.name IS NULL AND recipe.name = 'Chicken Thai Red Curry'
     WITH recipe
     MATCH (recipe)-[:CONTAINS]->(allProducts)
-    RETURN recipe, allProducts;
+    RETURN recipe as RecipeName, allProducts;
   title: fix data for a single recipe
   result_comment: |
     We're hoping for empty result list. If the result set is empty,
