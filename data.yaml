@@ -447,6 +447,19 @@
   title: list all products you can purchase at dummy store
   comment: |
     These items lack a designated source for purchase.
+
+    Note the arrow direction here. This query fails to give what we
+    want see next query.
+- cypher_query: |
+    MATCH (s:Store { name: "dummy place holder" })-[:PURCHASE_AT]-(p:Product)
+    RETURN p.name
+    ORDER BY toLower(p.name)
+  title: list all products you can purchase at dummy store
+  comment: |
+    These items lack a designated source for purchase.
+
+    This gives what we expect. Removing the direction allows this to
+    work as expected.  Ponder this one.
 - comment: |
     Where the hell do I buy this crap? This is list of products that
     I've not yet assiged a store with the PURCHASE-AT relation.

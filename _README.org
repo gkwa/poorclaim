@@ -769,16 +769,16 @@ ORDER BY RAND();
 
 Results:
 #+begin_example
-{"ProductName": "Oil-packed sun-dried tomatoes"}
-{"ProductName": "Strong Roots Kale \u0026 Quinoa Burger"}
-{"ProductName": "Chicken Broth - 32 Oz"}
-{"ProductName": "Coffee - T - PLU 8852 T likes it, BB says YUX!"}
-{"ProductName": "Ice cream double-fudge brownie Dreyer\u0027s slow-churned"}
+{"ProductName": "Blueberries - frozen uponina bag"}
+{"ProductName": "Ramen Noodles - Dry"}
+{"ProductName": "Eggs - Liquid Egg Whites (Blue Chikn)"}
+{"ProductName": "Boullion - Vegetable Broth Powdered"}
 {"ProductName": "Beans - Kidney (Bulk)"}
-{"ProductName": "chicken - electric - rotisserie"}
-{"ProductName": "Cocoa Powder, Unsweetened, Hersheys Natural - 8 Oz"}
-{"ProductName": "Tomato Sauce - 29 oz can"}
-{"ProductName": "Unsalted Tops (Unsalted Salteens)"}
+{"ProductName": "Pinot Grigio - Dry White Wine"}
+{"ProductName": "Ice cream double-fudge brownie Dreyer\u0027s slow-churned"}
+{"ProductName": "chardonnay - terres dorees"}
+{"ProductName": "Fresh flat-leaf parsley"}
+{"ProductName": "Quick Rolled Oats / Oats PLU 8485"}
 # ...truncated to 10 for brevity
 #+end_example
 
@@ -1046,6 +1046,9 @@ Results:
 
 These items lack a designated source for purchase.
 
+Note the arrow direction here. This query fails to give what we
+want see next query.
+
 #+begin_example
 MATCH (s:Store { name: "dummy place holder" })-[:PURCHASE_AT]->(p:Product)
 RETURN p.name
@@ -1054,6 +1057,52 @@ ORDER BY toLower(p.name);
 
 Results:
 #+begin_example
+#+end_example
+
+* list all products you can purchase at dummy store
+
+These items lack a designated source for purchase.
+
+This gives what we expect. Removing the direction allows this to
+work as expected.  Ponder this one.
+
+#+begin_example
+MATCH (s:Store { name: "dummy place holder" })-[:PURCHASE_AT]-(p:Product)
+RETURN p.name
+ORDER BY toLower(p.name);
+#+end_example
+
+Results:
+#+begin_example
+{"p.name": "A.1. Sauce"}
+{"p.name": "Asparagus"}
+{"p.name": "Bay Leaf"}
+{"p.name": "Betty Crocker Brownie Mix"}
+{"p.name": "Boullion - Beef"}
+{"p.name": "Butternut Squash"}
+{"p.name": "Canned Salmon"}
+{"p.name": "Castelvetrano Olives"}
+{"p.name": "Chipotle Chiles in adobo"}
+{"p.name": "Clam Chowder"}
+{"p.name": "Clams"}
+{"p.name": "Dave\u0027s Seed Bread"}
+{"p.name": "Dino Kale (ugly spinach)"}
+{"p.name": "Duke\u0027s Mayonnaise"}
+{"p.name": "Duncan Hines Brownie Mix"}
+{"p.name": "Enchilada Sauce - Red"}
+{"p.name": "Extra Sharp Cheddar Cheese"}
+{"p.name": "Ghirardelli Brownie Mix"}
+{"p.name": "Johnsons Creamy Baby Oil"}
+{"p.name": "Kidney Beans - S\u0026W"}
+{"p.name": "Navy Bean"}
+{"p.name": "Pancake Mix - Snoqualmie Falls Lodge"}
+{"p.name": "Pillsbury Brownie Mix"}
+{"p.name": "Sharp Swiss Cheese"}
+{"p.name": "Smoked Salmon"}
+{"p.name": "Soy Sauce - Liquid Aminos"}
+{"p.name": "Teff flour"}
+{"p.name": "Tuna Steak"}
+{"p.name": "Water"}
 #+end_example
 
 * find product purchasing info
@@ -1303,16 +1352,16 @@ ORDER BY ProductName;
 
 Results:
 #+begin_example
-{"ProductName": "Cooking Oil"}
-{"ProductName": "Dashi"}
-{"ProductName": "Miso"}
-{"ProductName": "Rosemary"}
-{"ProductName": "Sea Salt"}
+{"ProductName": "Fried shallots"}
+{"ProductName": "Kaffir Lime"}
+{"ProductName": "Laksa leaves"}
+{"ProductName": "Makrut lime zest"}
+{"ProductName": "Red Curry Paste"}
 {"ProductName": "Shrimp Paste"}
-{"ProductName": "Spicy dried red chilies"}
 {"ProductName": "Thai chili"}
-{"ProductName": "Thai shrimp paste"}
-{"ProductName": "Wasabi"}
+{"ProductName": "Tofu puffs"}
+{"ProductName": "Tsuyu"}
+{"ProductName": "Yellow Bell Pepper"}
 #+end_example
 
 * BAD: list the entity type the property is assocted with
