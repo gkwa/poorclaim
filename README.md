@@ -42,8 +42,8 @@ https://www.google.com/search?q=cypher+cheat+sheet
 * [count duplicates for each product](#count-duplicates-for-each-product)
 * [count products with the same name](#count-products-with-the-same-name)
 * [list all products with their urls](#list-all-products-with-their-urls)
-* [count entities namely Product, Store or Recipe(s) with the same name](#count-entities-namely-product-store-or-recipes-with-the-same-name)
-* [count entities namely Product, Store or Recipe(s) with the same name as separate record](#count-entities-namely-product-store-or-recipes-with-the-same-name-as-separate-record)
+* [count same-name Product, Store, or Recipe(s)](#count-same-name-product-store-or-recipes)
+* [count same-name Product, Store, or Recipe(s) separately](#count-same-name-product-store-or-recipes-separately)
 * [BAD: list relation entities with properties](#bad-list-relation-entities-with-properties)
 * [list all relations](#list-all-relations)
 * [find Vegan Thai Red Curry](#find-vegan-thai-red-curry)
@@ -52,7 +52,7 @@ https://www.google.com/search?q=cypher+cheat+sheet
 * [find Thai Curry using cypher IN [] query format](#find-thai-curry-using-cypher-in--query-format)
 * [find Thai Curry with multiple substings](#find-thai-curry-with-multiple-substings)
 * [find Thai Curry with regex case insensitively](#find-thai-curry-with-regex-case-insensitively)
-* [find Thai Curry with regex case insensitively, output full product details](#find-thai-curry-with-regex-case-insensitively-output-full-product-details)
+* [search Thai Curry, case-insensitive regex, full details](#search-thai-curry-case-insensitive-regex-full-details)
 * [find recipes with either Thai or Curry](#find-recipes-with-either-thai-or-curry)
 * [list products by type](#list-products-by-type)
 * [list products that I’ve not yet assiged a type to](#list-products-that-ive-not-yet-assiged-a-type-to)
@@ -115,8 +115,6 @@ MATCH (n) RETURN n;
 Results:
 
 ``` example
-{"n": {"name": "Charity Ferreira"}}
-{"n": {"name": "christieathome", "urls": ["https://christieathome.com/"]}}
 {"n": {"name": "Dani Spies", "urls": ["https://cleananddelicious.com/"]}}
 {"n": {"name": "Elise Bauer", "urls": ["https://www.simplyrecipes.com/recipes/tomatillo_salsa_verde/"]}}
 {"n": {"name": "Elle", "urls": ["https://www.cookerru.com/about-me/"]}}
@@ -125,6 +123,8 @@ Results:
 {"n": {"name": "Isabel Eats", "urls": ["https://www.isabeleats.com/about/"]}}
 {"n": {"name": "Jamie", "urls": ["https://drivemehungry.com/zaru-soba-cold-soba-noodles/"]}}
 {"n": {"name": "J. Kenji L\u00f3pez-Alt", "urls": [""]}}
+{"n": {"name": "Joshua Weissman", "urls": ["https://www.youtube.com/@JoshuaWeissman"]}}
+{"n": {"name": "Love and Lemons", "urls": ["https://www.loveandlemons.com/"]}}
 # ...truncated to 10 for brevity
 ```
 
@@ -362,7 +362,9 @@ Results:
 [cypher UNWINDing a
 list](https://neo4j.com/docs/cypher-manual/current/clauses/unwind/#unwind-unwinding-a-list)
 
-# count entities namely Product, Store or Recipe(s) with the same name
+# count same-name Product, Store, or Recipe(s)
+
+count entities namely Product, Store or Recipe(s) with the same name
 
 Ok, so it would be useful too to see what other items have the same
 name. Thats probably an error.
@@ -387,7 +389,10 @@ Results:
 {"duplicateItemNames": ["Pad Thai", "Fish Sauce"], "totalDuplicateItems": 3}
 ```
 
-# count entities namely Product, Store or Recipe(s) with the same name as separate record
+# count same-name Product, Store, or Recipe(s) separately
+
+Entities namely Product, Store or Recipe(s) with the same name as
+separate record
 
 Q: Ok, that works great, but now why are the results grouped?
 
@@ -575,7 +580,10 @@ Results:
 {"ProductNames": ["Galangal"], "Recipe": "Vegan Thai Red Curry", "Store": "Uwajimaya"}
 ```
 
-# find Thai Curry with regex case insensitively, output full product details
+# search Thai Curry, case-insensitive regex, full details
+
+find Thai Curry with regex case insensitively, output full product
+details
 
 We have a map of store to products list. In Go, we can queue the product
 list up for each store, then loop over stores to show products we'd need
@@ -888,16 +896,16 @@ ORDER BY RAND();
 Results:
 
 ``` example
-{"ProductName": "Coffee / MTM / PLU 5820 / Kivu / Kivu Dark French Roast"}
-{"ProductName": "Newman\u0027s Own Sesame Ginger Dressing"}
-{"ProductName": "Coffee - Taylor - PLU 8868"}
-{"ProductName": "Baking Cups in cake mix/flour aisle"}
-{"ProductName": "Coffee - T - PLU 8852 T likes it, BB says YUX!"}
-{"ProductName": "Garlic Chives (alternative: chives)"}
+{"ProductName": "Red, Organic Kidney Beans, 15 Oz"}
+{"ProductName": "Malt-o-Meal"}
 {"ProductName": "Chili Pepper, Chipotle, Ground"}
-{"ProductName": "Yeast (Active Dry)"}
-{"ProductName": "Coffee - T - PLU 8853"}
+{"ProductName": "Rice - Wild"}
+{"ProductName": "Flour - White, all-purpose (Unbleached if possible but no bigs)"}
+{"ProductName": "Newman\u0027s Own Sesame Ginger Dressing"}
+{"ProductName": "Large Shrimp (not frozen)"}
 {"ProductName": "Bird\u0027s Eye Frozen Sweet Corn"}
+{"ProductName": "Broth - Beef - low sodium"}
+{"ProductName": "Coffee - T - PLU 8853"}
 # ...truncated to 10 for brevity
 ```
 
@@ -1163,10 +1171,10 @@ Results:
 {"ProductName": "Sonicare soft bristles", "Store": "Bartell", "Type": "Sonicare Bristles"}
 {"ProductName": "Cleanser - Bon Ami", "Store": "Bartell", "Type": "Cleanser"}
 {"ProductName": "Crest", "Store": "Bartell", "Type": "Toothpaste"}
-{"ProductName": "Banana Leaf", "Store": "Chong Wah Center", "Type": "Banana Leaf"}
-{"ProductName": "Chipotle Chiles in adobo", "Store": "dummy place holder", "Type": "Chipotle Chiles"}
-{"ProductName": "Butternut Squash", "Store": "dummy place holder", "Type": "Squash"}
-{"ProductName": "Canned Salmon", "Store": "dummy place holder", "Type": "Salmon"}
+{"ProductName": "Dry Garbanzo Beans", "Store": "Central Co-op", "Type": "Garbanzo Beans"}
+{"ProductName": "Israeli Couscous", "Store": "Central Co-op", "Type": "Couscous"}
+{"ProductName": "Quick Rolled Oats / Oats PLU 8485", "Store": "Central Co-op", "Type": "Rolled Oats"}
+{"ProductName": "Boullion - Vegetable Broth Powdered", "Store": "Central Co-op", "Type": "Bouillon"}
 # ...truncated to 10 for brevity
 ```
 
@@ -1514,16 +1522,16 @@ ORDER BY ProductName;
 Results:
 
 ``` example
-{"ProductName": "Aroy-D Coconut Milk"}
 {"ProductName": "Coconut Aminos"}
-{"ProductName": "Corn on cob"}
-{"ProductName": "Dried Thai Chilis"}
-{"ProductName": "Makrut lime zest"}
-{"ProductName": "Miso"}
+{"ProductName": "Fish Sauce"}
+{"ProductName": "Fried shallots"}
+{"ProductName": "Kalamata Olives"}
 {"ProductName": "Newman\u0027s Own Sesame Ginger Dressing"}
-{"ProductName": "Rosemary"}
-{"ProductName": "Smoked paprika"}
-{"ProductName": "Wasabi"}
+{"ProductName": "Salted Turnip"}
+{"ProductName": "Thai chili"}
+{"ProductName": "Tofu puffs"}
+{"ProductName": "Tortilla chips"}
+{"ProductName": "Vegetable broth"}
 ```
 
 # BAD: list the entity type the property is assocted with
@@ -1541,7 +1549,6 @@ Results:
 
 ``` example
 {"label": "Person", "propertyName": "name"}
-{"label": "Person", "propertyName": "name"}
 {"label": "Person", "propertyName": "urls"}
 {"label": "Person", "propertyName": "name"}
 {"label": "Person", "propertyName": "urls"}
@@ -1550,6 +1557,7 @@ Results:
 {"label": "Person", "propertyName": "name"}
 {"label": "Person", "propertyName": "urls"}
 {"label": "Person", "propertyName": "name"}
+{"label": "Person", "propertyName": "urls"}
 # ...truncated to 10 for brevity
 ```
 

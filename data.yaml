@@ -104,6 +104,9 @@
               ...
     #+end_example
 - comment: |
+    count entities namely Product, Store or Recipe(s) with the same
+    name
+
     Ok, so it would be useful too to see what other items have the
     same name. Thats probably an error.
   cypher_query: |
@@ -118,8 +121,11 @@
     WITH item.name AS itemName, COUNT(item) AS itemCount
     WHERE itemCount > 1
     RETURN COUNT(itemCount) AS totalDuplicateItems, COLLECT(itemName) AS duplicateItemNames
-  title: count entities namely Product, Store or Recipe(s) with the same name
+  title: count same-name Product, Store, or Recipe(s)
 - comment: |
+    Entities namely Product, Store or Recipe(s) with the same name as
+    separate record
+
     Q: Ok, that works great, but now why are the results grouped?
 
     A: this why we need unwind...i think.
@@ -130,7 +136,7 @@
     WITH COUNT(itemCount) AS totalDuplicateItems, COLLECT(itemName) AS duplicateItemNames
     UNWIND duplicateItemNames AS duplicateItemName
     RETURN totalDuplicateItems, duplicateItemName
-  title: count entities namely Product, Store or Recipe(s) with the same name as separate record
+  title: count same-name Product, Store, or Recipe(s) separately
 - comment: |
     BAD: list relations, not just CONTAINS and show relation
     properties.
@@ -193,8 +199,11 @@
     WHERE recipe.name =~ '(?i).*thai.*curry.*'
     MATCH (product)-[:PURCHASE_AT]->(store:Store)
     RETURN recipe.name as RecipeName, store.name AS StoreName, COLLECT(DISTINCT product) AS Products;
-  title: find Thai Curry with regex case insensitively, output full product details
+  title: search Thai Curry, case-insensitive regex, full details
   comment: |
+    find Thai Curry with regex case insensitively, output full product
+    details
+
     We have a map of store to products list. In Go, we can queue the
     product list up for each store, then loop over stores to show
     products we'd need to purchase for each store.
