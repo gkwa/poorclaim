@@ -168,19 +168,6 @@
     RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS ProductNames;
   title: find Thai Curry with regex
 - cypher_query: |
-    // ok:
-    // MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
-    // WHERE r.name =~ '(?i).*Thai.*|(?i).*Curry.*'
-    // MATCH (p)-[:PURCHASE_AT]->(s:Store)
-    // RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS ProductNames;
-
-    // better:
-    MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
-    WHERE r.name =~ '(?i).*(Thai|Curry).*'
-    MATCH (p)-[:PURCHASE_AT]->(s:Store)
-    RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS ProductNames;
-  title: find recipes with either Thai or Curry
-- cypher_query: |
     MATCH (r:Recipe)
     WHERE 'Thai' IN [r.name] AND 'Curry' IN [r.name]
     RETURN r.name AS Recipe;
@@ -211,6 +198,19 @@
     We have a map of store to products list. In Go, we can queue the
     product list up for each store, then loop over stores to show
     products we'd need to purchase for each store.
+- cypher_query: |
+    // ok:
+    // MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
+    // WHERE r.name =~ '(?i).*Thai.*|(?i).*Curry.*'
+    // MATCH (p)-[:PURCHASE_AT]->(s:Store)
+    // RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS ProductNames;
+
+    // better:
+    MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
+    WHERE r.name =~ '(?i).*(Thai|Curry).*'
+    MATCH (p)-[:PURCHASE_AT]->(s:Store)
+    RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS ProductNames;
+  title: find recipes with either Thai or Curry
 - cypher_query: |
     MATCH (p:Product)-[:PURCHASE_AT]->(s:Store)
     RETURN p.name AS ProductName, s.name AS Store, p.type as Type
