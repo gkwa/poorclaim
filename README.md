@@ -327,10 +327,6 @@ COLLECT](https://www.google.com/search?q=neo4j+cypher+COLLECT+subquery)
 
 # list products with identical names
 
-Same as above but this lists separate records which makes it more clear
-in this github markdown view whereas in Go maybe the above is a better
-view, not sure.
-
 ``` example
 MATCH (p:Product)
 WITH p.name AS productName, COLLECT(p) AS products
@@ -344,8 +340,13 @@ Results:
 {"products": [{"brand": "Red Boat Premium", "name": "Fish Sauce", "type": "Fish Sauce"}, {"brand": "Squid", "name": "Fish Sauce", "type": "Fish Sauce", "urls": ["https://www.google.com/search?Squid+Fish+Sauce"]}]}
 ```
 
-[cypher
-COLLECT](https://www.google.com/search?q=neo4j+cypher+COLLECT+subquery)
+Same as above but this lists separate records which makes it more clear
+in this github markdown view whereas in Go maybe the above is a better
+view, not sure.
+
+Ummm…no, it doesn't.
+
+<https://github.com/taylormonacelli/poorclaim#list-all-products-with-their-urls>
 
 # count duplicates for each product
 
@@ -361,6 +362,12 @@ Results:
 ``` example
 {"duplicateCount": 1, "productName": "Fish Sauce"}
 ```
+
+Ok fish sauce is a duplicate becase there are two brands Red Boat and
+Crab. This is expected.
+
+So…does it mean calling out duplicates is not good way to check for
+clean data? …we should ceck for brand too to check for duplicates?
 
 # count products with the same name
 
@@ -592,7 +599,16 @@ Results:
 
 # find Thai Curry with multiple substings
 
-Why does this return no results?
+FIXME: Why does this return no results?
+
+I see this fixes it, so maybe you can't use ' IN ' unless you have a
+collection on right hand side.
+
+``` example
+MATCH (r:Recipe)
+WHERE r.name CONTAINS 'Thai'
+RETURN r;
+```
 
 ``` example
 MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
@@ -946,16 +962,16 @@ ORDER BY RAND();
 Results:
 
 ``` example
-{"ProductName": "Cornstarch Baby Powder (not Johnson\u0027s, they\u0027re baddies)"}
-{"ProductName": "Coffee - BB - PLU 8875 (less yums than 8863)"}
-{"ProductName": "Malt-o-Meal"}
-{"ProductName": "Thai-style Baked Tofu"}
-{"ProductName": "Savoy Spinach - Ugly Spinach"}
-{"ProductName": "Nonfat Yogurt (Plain/Blue Bucket)"}
-{"ProductName": "German Mustard medium hot in jar w/ handle"}
-{"ProductName": "Coconut Milk - 13.5 oz can"}
-{"ProductName": "One Percent or 2 Percent Milk in Glass Jar (Not Red Cap Whole Milk)"}
-{"ProductName": "Black Beans (15 oz can)"}
+{"ProductName": "Fresh flat-leaf parsley"}
+{"ProductName": "Chicken Broth - 32 Oz"}
+{"ProductName": "A.1. Sauce"}
+{"ProductName": "Potatoes - Baby / Tri Color"}
+{"ProductName": "Barbecue sauce - Baby Rays bbq sauce"}
+{"ProductName": "Tortilla - Flour large diameter Don Pancho or Safeway brand"}
+{"ProductName": "Eggs - Liquid Egg Whites (Blue Chikn)"}
+{"ProductName": "Coffee / MTM / PLU 5820 / Kivu / Kivu Dark French Roast"}
+{"ProductName": "Chicken Broth - Swanson, 14.5 Oz"}
+{"ProductName": "Coffee - T - PLU 8852 T likes it, BB says YUX!"}
 # ...truncated to 10 for brevity
 ```
 
@@ -1572,16 +1588,16 @@ ORDER BY ProductName;
 Results:
 
 ``` example
-{"ProductName": "Aroy-D Coconut Milk"}
+{"ProductName": "Black beans"}
 {"ProductName": "Candlenuts"}
 {"ProductName": "Fish Sauce"}
-{"ProductName": "Frozen Salmon"}
+{"ProductName": "Fried shallots"}
 {"ProductName": "Kalamata Olives"}
 {"ProductName": "Red Curry Paste"}
-{"ProductName": "Sambal"}
 {"ProductName": "Sawtooth Coriander"}
-{"ProductName": "Unsweetened Nut Butter"}
-{"ProductName": "Wasabi"}
+{"ProductName": "Shrimp Paste"}
+{"ProductName": "Thai shrimp paste"}
+{"ProductName": "Tsuyu"}
 ```
 
 # BAD: list the entity type the property is assocted with

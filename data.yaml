@@ -70,24 +70,33 @@
     WHERE SIZE(products) > 1
     RETURN productName, products
   title: list products with identical names
-- comment: |
+- footer: |
     Same as above but this lists separate records which makes it more
     clear in this github markdown view whereas in Go maybe the above
     is a better view, not sure.
+
+    Ummm...no, it doesn't.
+
+    https://github.com/taylormonacelli/poorclaim#list-all-products-with-their-urls
   cypher_query: |
     MATCH (p:Product)
     WITH p.name AS productName, COLLECT(p) AS products
     WHERE SIZE(products) > 1
     RETURN products;
   title: list products with identical names
-  footer: |
-    [[https://www.google.com/search?q=neo4j+cypher+COLLECT+subquery][cypher COLLECT]]
 - cypher_query: |
     MATCH (p:Product)
     WITH p.name AS productName, COLLECT(p) AS products
     WHERE SIZE(products) > 1
     RETURN productName, COUNT(products) AS duplicateCount
   title: count duplicates for each product
+  footer: |
+    Ok fish sauce is a duplicate becase there are two brands Red Boat
+    and Crab.  This is expected.
+
+    So...does it mean calling out duplicates is not good way to check
+    for clean data? ...we should ceck for brand too to check for
+    duplicates?
 - comment: |
     In other words how much work do I have to do to cleanup my data?
   cypher_query: |
@@ -199,7 +208,17 @@
     RETURN r.name as Recipe, s.name AS Store, COLLECT(DISTINCT p.name) AS ProductNames;
   title: find Thai Curry with multiple substings
   comment: |
-    Why does this return no results?
+    FIXME: Why does this return no results?
+
+    I see this fixes it, so maybe you can't use ' IN ' unless you have
+    a collection on right hand side.
+
+    #+begin_example
+    MATCH (r:Recipe)
+    WHERE r.name CONTAINS 'Thai'
+    RETURN r;
+    #+end_example
+
 - cypher_query: |
     MATCH (r:Recipe)-[:CONTAINS]->(p:Product)
     WHERE r.name =~ '(?i).*thai.*curry.*'
