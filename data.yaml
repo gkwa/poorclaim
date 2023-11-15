@@ -36,9 +36,9 @@
     RETURN p
   title: find cumin in my list of products
 - cypher_query: |
-    MATCH (n:Product) RETURN n
-  limit: 10
-  title: list product entities with properties
+    MATCH (p:Product) RETURN p
+  limit: 5
+  title: list products and include thier properties
 - cypher_query: |
     MATCH (p:Product)
     RETURN p.name
@@ -47,7 +47,7 @@
   title: list all product names sorted
 - cypher_query: |
     MATCH (p:Product)
-    RETURN p.name AS ProductName, p.urls AS URLs;
+    RETURN p.name AS ProductName, p.urls AS ProductURLs;
   limit: 10
   title: list all product urls
 - cypher_query: |
@@ -55,7 +55,7 @@
     RETURN DISTINCT labels(n) AS objectType
     ORDER BY objectType
   title: list unique node types
-  comment: |
+  footer: |
     [[https://www.google.com/search?q=neo4j+cypher+DISTINCT][cypher DISTINCT]]
 
     [[https://www.google.com/search?q=neo4j+cypher+labels+function][cypher labels()]]
