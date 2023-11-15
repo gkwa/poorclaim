@@ -70,6 +70,18 @@
     WHERE SIZE(products) > 1
     RETURN productName, products
   title: list products with identical names
+- comment: |
+    Same as above but this lists separate records which makes it more
+    clear in this github markdown view whereas in Go maybe the above
+    is a better view, not sure.
+  cypher_query: |
+    MATCH (p:Product)
+    WITH p.name AS productName, COLLECT(p) AS products
+    WHERE SIZE(products) > 1
+    RETURN products;
+  title: list products with identical names
+  footer: |
+    [[https://www.google.com/search?q=neo4j+cypher+COLLECT+subquery][cypher COLLECT]]
 - cypher_query: |
     MATCH (p:Product)
     WITH p.name AS productName, COLLECT(p) AS products

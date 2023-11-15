@@ -30,3 +30,24 @@ Cheatsheet
 https://memgraph.com/blog/cypher-cheat-sheet
 
 https://www.google.com/search?q=cypher+cheat+sheet
+
+How to run this:
+#+begin_example
+cat >clear <<EOF
+MATCH (n)
+OPTIONAL MATCH (n)-[r]-()
+DELETE n, r;
+EOF
+
+docker rm --force anythingflorida
+docker run --detach --name anythingflorida --rm --publish=7474:7474 --publish=7687:7687 --env NEO4J_AUTH=none --env NEO4J_PLUGINS='["apoc"]' --env apoc.export.file.enabled=true neo4j:5.12.0
+cypher-shell -a neo4j://localhost:7687 --file clear
+echo $?
+
+curl -O https://raw.githubusercontent.com/taylormonacelli/anythingflorida/master/data.cypher
+cypher-shell -a neo4j://localhost:7687 --file data.cypher
+make
+
+# ok, now we're done:
+docker rm --force anythingflorida
+#+end_example
