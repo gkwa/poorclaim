@@ -46,7 +46,16 @@ echo $?
 
 curl -O https://raw.githubusercontent.com/taylormonacelli/anythingflorida/master/data.cypher
 cypher-shell -a neo4j://localhost:7687 --file data.cypher
-make
+
+# make does this stuff, so you could replace next stanza with 'make'
+cat header.txt >sect1
+python main.py --run-neo4j
+curl 'https://raw.githubusercontent.com/ekalinin/github-markdown-toc/b9e7e61c2d87ed7bcab389a3cce43c36f95010cd/gh-md-toc' -o gh-md-toc && chmod +x gh-md-toc
+cat _README.org | ./gh-md-toc - >sect2
+docker run --rm --volume "$(pwd):/data" --user $(id -u):$(id -g) pandoc/extra _README.org --to=gfm --from=org --output=sect3
+cat sect1 >README.md
+cat sect2 >>README.md
+cat sect3 >>README.md
 
 # ok, now we're done:
 docker rm --force anythingflorida
