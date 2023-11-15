@@ -32,7 +32,7 @@ https://memgraph.com/blog/cypher-cheat-sheet
 https://www.google.com/search?q=cypher+cheat+sheet
 
 How to run this:
-#+begin_example
+```
 cat >clear <<EOF
 MATCH (n)
 OPTIONAL MATCH (n)-[r]-()
@@ -59,7 +59,7 @@ cat sect3 >>README.md
 
 # ok, now we're done:
 docker rm --force anythingflorida
-#+end_example
+```
 * [list all nodes and relations](#list-all-nodes-and-relations)
 * [list all products](#list-all-products)
 * [list all products](#list-all-products-1)
