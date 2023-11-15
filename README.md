@@ -33,6 +33,8 @@ https://www.google.com/search?q=cypher+cheat+sheet
 
 How to run this:
 ```
+cd poorclaim
+
 cat >clear <<EOF
 MATCH (n)
 OPTIONAL MATCH (n)-[r]-()
