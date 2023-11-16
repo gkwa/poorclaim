@@ -107,8 +107,8 @@
   title: count products with the same name
 - cypher_query: |
     MATCH (p:Product)
-    WITH p.name AS productName, p.urls AS productUrls
-    UNWIND productUrls AS url
+    WITH p.name AS productName, p.urls AS productURLs
+    UNWIND productURLs AS url
     RETURN productName, url
   limit: 5
   title: list all products with their urls

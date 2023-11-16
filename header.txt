@@ -59,6 +59,6 @@ cat sect1 >README.md
 cat sect2 >>README.md
 cat sect3 >>README.md
 
-# ok, now we're done:
+# teardown: ok, that was fun
 docker rm --force anythingflorida
 ```
