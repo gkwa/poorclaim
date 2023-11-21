@@ -1,5 +1,5 @@
-GH_MD_URL='https://raw.githubusercontent.com/ekalinin/github-markdown-toc/master/gh-md-toc'
 GH_MD_URL='https://raw.githubusercontent.com/ekalinin/github-markdown-toc/b9e7e61c2d87ed7bcab389a3cce43c36f95010cd/gh-md-toc'
+GH_MD_URL='https://raw.githubusercontent.com/ekalinin/github-markdown-toc/master/gh-md-toc'
 
 README.md: sect1 sect2 sect3
 	cat sect1 >README.md

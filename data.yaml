@@ -128,8 +128,7 @@
     count entities namely Product, Store or Recipe(s) with the same
     name
 
-    Ok, so it would be useful too to see what other items have the
-    same name. Thats probably an error.
+    Multiple products with the same name is probably an error.
   cypher_query: |
     // fail:
     // MATCH (n)
